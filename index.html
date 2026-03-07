@@ -32,9 +32,10 @@
       </a>
       <div class="nav-links">
         <a href="#features">Features</a>
+        <a href="#components">Components</a>
+        <a href="#architecture">Architecture</a>
         <a href="#code">Code</a>
         <a href="#showcase">Showcase</a>
-        <a href="architecture.html">Architecture</a>
         <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           GitHub
@@ -49,9 +50,10 @@
   <!-- Mobile menu -->
   <div class="mobile-menu" id="mobileMenu">
     <a href="#features">Features</a>
+    <a href="#components">Components</a>
+    <a href="#architecture">Architecture</a>
     <a href="#code">Code</a>
     <a href="#showcase">Showcase</a>
-    <a href="architecture.html">Architecture</a>
     <a href="https://github.com/skryl/rhdl" target="_blank" rel="noopener">GitHub</a>
   </div>
 
@@ -238,11 +240,99 @@
     </div>
   </section>
 
+  <!-- Architecture -->
+  <section class="section" id="architecture">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-tag">SEC-03 // Architecture</span>
+        <h2 class="section-title">CIRCT IR at the<br><span class="gradient-text">center of everything.</span></h2>
+        <span class="zh">CIRCT IR 是一切的核心</span>
+        <p class="section-desc">RHDL lowers to CIRCT IR. Verilog and VHDL import to it. Multiple execution backends fan out from this central representation.</p>
+      </div>
+      <div class="arch-hub fade-in">
+        <!-- Input sources -->
+        <div class="arch-hub-inputs">
+          <div class="pipeline-step">
+            <div class="pipeline-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg>
+            </div>
+            <h4>RHDL</h4>
+            <p>Ruby HDL lowering</p>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+            </div>
+            <h4>Verilog / VHDL</h4>
+            <p>Import existing HDL</p>
+          </div>
+        </div>
+        <!-- Converging arrows -->
+        <div class="arch-hub-arrows-in">
+          <svg viewBox="0 0 40 80" fill="none" stroke="var(--green)" stroke-width="2">
+            <path d="M5 15h15l10 25"/>
+            <path d="M5 65h15l10-25"/>
+            <path d="M27 37l3 3-3 3"/>
+          </svg>
+        </div>
+        <!-- Central hub -->
+        <div class="pipeline-step arch-hub-center">
+          <div class="pipeline-icon arch-hub-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/></svg>
+          </div>
+          <h4>CIRCT IR</h4>
+          <p>Central representation</p>
+        </div>
+        <!-- Diverging arrows -->
+        <div class="arch-hub-arrows-out">
+          <svg viewBox="0 0 40 100" fill="none" stroke="var(--green)" stroke-width="2">
+            <path d="M10 50h10l15-35"/>
+            <path d="M10 50h10l15 0"/>
+            <path d="M10 50h10l15 35"/>
+            <path d="M32 12l3 3-3 3"/>
+            <path d="M32 47l3 3-3 3"/>
+            <path d="M32 82l3 3-3 3"/>
+          </svg>
+        </div>
+        <!-- Output backends -->
+        <div class="arch-hub-outputs">
+          <div class="pipeline-step">
+            <div class="pipeline-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+            </div>
+            <h4>Verilator</h4>
+            <p>Normalized Verilog</p>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+            </div>
+            <h4>Arcilator</h4>
+            <p>Arc simulation</p>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5m-4.75-11.396c.251.023.501.05.75.082M5 14.5l-1.43 5.51a1.286 1.286 0 001.233 1.633h14.394a1.286 1.286 0 001.233-1.633L19 14.5m-14 0h14"/></svg>
+            </div>
+            <h4>Rust Compiler</h4>
+            <p>Native execution</p>
+          </div>
+        </div>
+      </div>
+      <div class="arch-hub-cta fade-in">
+        <a href="architecture.html" class="btn btn-secondary">
+          Full Architecture Details
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7.8H7.8"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- Code Examples -->
   <section class="section" id="code">
     <div class="container">
       <div class="section-header fade-in">
-        <span class="section-tag">SEC-03 // Code</span>
+        <span class="section-tag">SEC-04 // Code</span>
         <h2 class="section-title">Write hardware like<br><span class="gradient-text">you write software.</span></h2>
         <span class="zh">像写软件一样写硬件</span>
         <p class="section-desc">Familiar Ruby syntax with powerful hardware abstractions. No arcane HDL knowledge required.</p>
@@ -399,7 +489,7 @@
   <section class="section section-dark" id="showcase">
     <div class="container">
       <div class="section-header fade-in">
-        <span class="section-tag">SEC-04 // Showcase</span>
+        <span class="section-tag">SEC-05 // Showcase</span>
         <h2 class="section-title">Real hardware,<br><span class="gradient-text">designed in Ruby.</span></h2>
         <span class="zh">真实硬件，用 Ruby 设计</span>
         <p class="section-desc">Complete CPU and system implementations that prove CIRCT's capabilities at scale.</p>
@@ -476,94 +566,6 @@
               <span>RISC-V ISA</span>
             </div>
           </div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Architecture -->
-  <section class="section" id="architecture">
-    <div class="container">
-      <div class="section-header fade-in">
-        <span class="section-tag">SEC-05 // Architecture</span>
-        <h2 class="section-title">CIRCT IR at the<br><span class="gradient-text">center of everything.</span></h2>
-        <span class="zh">CIRCT IR 是一切的核心</span>
-        <p class="section-desc">RHDL lowers to CIRCT IR. Verilog and VHDL import to it. Multiple execution backends fan out from this central representation.</p>
-      </div>
-      <div class="arch-hub fade-in">
-        <!-- Input sources -->
-        <div class="arch-hub-inputs">
-          <div class="pipeline-step">
-            <div class="pipeline-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg>
-            </div>
-            <h4>RHDL</h4>
-            <p>Ruby HDL lowering</p>
-          </div>
-          <div class="pipeline-step">
-            <div class="pipeline-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
-            </div>
-            <h4>Verilog / VHDL</h4>
-            <p>Import existing HDL</p>
-          </div>
-        </div>
-        <!-- Converging arrows -->
-        <div class="arch-hub-arrows-in">
-          <svg viewBox="0 0 40 80" fill="none" stroke="var(--green)" stroke-width="2">
-            <path d="M5 15h15l10 25"/>
-            <path d="M5 65h15l10-25"/>
-            <path d="M27 37l3 3-3 3"/>
-          </svg>
-        </div>
-        <!-- Central hub -->
-        <div class="pipeline-step arch-hub-center">
-          <div class="pipeline-icon arch-hub-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/></svg>
-          </div>
-          <h4>CIRCT IR</h4>
-          <p>Central representation</p>
-        </div>
-        <!-- Diverging arrows -->
-        <div class="arch-hub-arrows-out">
-          <svg viewBox="0 0 40 100" fill="none" stroke="var(--green)" stroke-width="2">
-            <path d="M10 50h10l15-35"/>
-            <path d="M10 50h10l15 0"/>
-            <path d="M10 50h10l15 35"/>
-            <path d="M32 12l3 3-3 3"/>
-            <path d="M32 47l3 3-3 3"/>
-            <path d="M32 82l3 3-3 3"/>
-          </svg>
-        </div>
-        <!-- Output backends -->
-        <div class="arch-hub-outputs">
-          <div class="pipeline-step">
-            <div class="pipeline-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
-            </div>
-            <h4>Verilator</h4>
-            <p>Normalized Verilog</p>
-          </div>
-          <div class="pipeline-step">
-            <div class="pipeline-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
-            </div>
-            <h4>Arcilator</h4>
-            <p>Arc simulation</p>
-          </div>
-          <div class="pipeline-step">
-            <div class="pipeline-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5m-4.75-11.396c.251.023.501.05.75.082M5 14.5l-1.43 5.51a1.286 1.286 0 001.233 1.633h14.394a1.286 1.286 0 001.233-1.633L19 14.5m-14 0h14"/></svg>
-            </div>
-            <h4>Rust Compiler</h4>
-            <p>Native execution</p>
-          </div>
-        </div>
-      </div>
-      <div class="arch-hub-cta fade-in">
-        <a href="architecture.html" class="btn btn-secondary">
-          Full Architecture Details
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7.8H7.8"/></svg>
         </a>
       </div>
     </div>
