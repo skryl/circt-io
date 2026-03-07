@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Boy - CIRCT Showcase</title>
+  <meta name="description" content="Nintendo Game Boy (DMG) emulation designed in Ruby with CIRCT.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#showcase" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to showcase
+      </a>
+      <div class="showcase-hero-inner">
+        <div class="chip-outline">
+          <div class="chip-label">DMG</div>
+          <div class="chip-pins left"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="chip-pins right"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="showcase-hero-text">
+          <h1>Game <span class="gradient-text">Boy</span></h1>
+          <p class="showcase-subtitle">Nintendo DMG-01 handheld emulation with Sharp SM83 CPU at 4.19MHz, pixel processing unit with sprites and window layers, timer/counter subsystem, and 4-channel audio processing unit.</p>
+          <div class="showcase-tags">
+            <span>SM83 CPU</span>
+            <span>4.19 MHz</span>
+            <span>PPU</span>
+            <span>160x144</span>
+            <span>40 Sprites</span>
+            <span>4-Ch APU</span>
+            <span>Timer</span>
+            <span>Joypad</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">System Architecture</h2>
+
+      <div class="arch-diagram">
+        <div class="arch-diagram-row">
+          <div class="arch-block accent">
+            <h4>SM83 CPU</h4>
+            <p>4.19 MHz, Z80-like ISA</p>
+          </div>
+          <div class="arch-connector">&harr;</div>
+          <div class="arch-block">
+            <h4>Bus Controller</h4>
+            <p>Address decode, DMA</p>
+          </div>
+          <div class="arch-connector">&harr;</div>
+          <div class="arch-block">
+            <h4>Work RAM</h4>
+            <p>8KB internal WRAM</p>
+          </div>
+        </div>
+        <div class="arch-connector-v">&darr;</div>
+        <div class="arch-bus">
+          <div class="arch-bus-label">16-bit address bus / 8-bit data bus</div>
+        </div>
+        <div class="arch-connector-v">&darr;</div>
+        <div class="arch-diagram-row">
+          <div class="arch-block">
+            <h4>PPU</h4>
+            <p>Background, window, 40 sprites</p>
+          </div>
+          <div class="arch-connector">&harr;</div>
+          <div class="arch-block">
+            <h4>APU</h4>
+            <p>2 pulse, 1 wave, 1 noise</p>
+          </div>
+          <div class="arch-connector">&harr;</div>
+          <div class="arch-block">
+            <h4>Timer</h4>
+            <p>DIV, TIMA, TMA, TAC</p>
+          </div>
+          <div class="arch-connector">&harr;</div>
+          <div class="arch-block">
+            <h4>Cartridge</h4>
+            <p>ROM + MBC bank switching</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="arch-section-title">Specifications</h2>
+      <table class="spec-table">
+        <tr><th>Subsystem</th><th>Details</th></tr>
+        <tr><td>CPU</td><td>Sharp SM83 @ 4.194304 MHz (modified Z80, no IX/IY)</td></tr>
+        <tr><td>Registers</td><td>A, F (flags), B, C, D, E, H, L, SP, PC (8/16-bit pairing)</td></tr>
+        <tr><td>Memory</td><td>8KB WRAM, 8KB VRAM, 160B OAM, 127B HRAM</td></tr>
+        <tr><td>PPU</td><td>160x144 LCD, 4 shades, BG + window + 40 sprites (8x8/8x16)</td></tr>
+        <tr><td>PPU modes</td><td>OAM scan (80 dots), drawing (168-291 dots), HBlank, VBlank</td></tr>
+        <tr><td>APU Ch 1-2</td><td>Pulse waves with sweep, envelope, duty cycle (12.5/25/50/75%)</td></tr>
+        <tr><td>APU Ch 3</td><td>Custom 4-bit wave pattern (32 samples)</td></tr>
+        <tr><td>APU Ch 4</td><td>LFSR noise with configurable polynomial</td></tr>
+        <tr><td>Interrupts</td><td>VBlank, STAT, Timer, Serial, Joypad (IE/IF registers)</td></tr>
+      </table>
+
+      <h2 class="arch-section-title">RHDL Implementation</h2>
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">The PPU renders each scanline by fetching tiles from VRAM, compositing background, window, and sprite layers with priority resolution.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">ppu.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">PPU</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::SequentialComponent</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">input</span>  <span class="sym">:vram_data</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:oam_data</span>,  <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:vram_addr</span>, <span class="key">width:</span> <span class="num">16</span>
+  <span class="fn">output</span> <span class="sym">:pixel</span>,     <span class="key">width:</span> <span class="num">2</span>
+  <span class="fn">output</span> <span class="sym">:lcd_x</span>,     <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:lcd_y</span>,     <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:vblank_irq</span>, <span class="sym">:stat_irq</span>
+
+  <span class="cmt"># PPU registers</span>
+  <span class="fn">register</span> <span class="sym">:lcdc</span>,  <span class="key">width:</span> <span class="num">8</span>  <span class="cmt"># LCD control</span>
+  <span class="fn">register</span> <span class="sym">:stat</span>,  <span class="key">width:</span> <span class="num">8</span>  <span class="cmt"># LCD status</span>
+  <span class="fn">register</span> <span class="sym">:scy</span>,   <span class="key">width:</span> <span class="num">8</span>  <span class="cmt"># scroll Y</span>
+  <span class="fn">register</span> <span class="sym">:scx</span>,   <span class="key">width:</span> <span class="num">8</span>  <span class="cmt"># scroll X</span>
+
+  <span class="fn">state_machine</span> <span class="sym">:mode</span>,
+    <span class="key">clock:</span> <span class="sym">:clk</span>, <span class="key">reset:</span> <span class="sym">:rst</span>,
+    <span class="key">states:</span> [
+      <span class="sym">:oam_scan</span>,   <span class="cmt"># mode 2: 80 dots</span>
+      <span class="sym">:drawing</span>,    <span class="cmt"># mode 3: variable</span>
+      <span class="sym">:hblank</span>,     <span class="cmt"># mode 0: remainder</span>
+      <span class="sym">:vblank</span>      <span class="cmt"># mode 1: 10 lines</span>
+    ] <span class="kw">do</span>
+
+    <span class="fn">transition</span> <span class="sym">:oam_scan</span> <span class="op">=&gt;</span> <span class="sym">:drawing</span>,
+      <span class="key">after:</span> <span class="num">80</span>
+    <span class="fn">transition</span> <span class="sym">:drawing</span> <span class="op">=&gt;</span> <span class="sym">:hblank</span>,
+      <span class="key">when:</span> line_done
+    <span class="fn">transition</span> <span class="sym">:hblank</span> <span class="op">=&gt;</span> <span class="sym">:vblank</span>,
+      <span class="key">when:</span> lcd_y.<span class="fn">eq?</span>(<span class="num">144</span>)
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">The APU generates four audio channels mixed to stereo output. Each channel has independent volume envelope, length counter, and channel-specific modulation.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">apu.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">APU</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::SequentialComponent</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">output</span> <span class="sym">:left</span>,  <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:right</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="fn">subcomponent</span> <span class="sym">:ch1</span>, <span class="type">PulseChannel</span>,
+    <span class="key">has_sweep:</span> <span class="kw">true</span>
+  <span class="fn">subcomponent</span> <span class="sym">:ch2</span>, <span class="type">PulseChannel</span>
+  <span class="fn">subcomponent</span> <span class="sym">:ch3</span>, <span class="type">WaveChannel</span>
+  <span class="fn">subcomponent</span> <span class="sym">:ch4</span>, <span class="type">NoiseChannel</span>
+
+  <span class="fn">sequential</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+             <span class="key">reset:</span> <span class="sym">:rst</span> <span class="kw">do</span>
+    <span class="cmt"># Frame sequencer: 512Hz</span>
+    <span class="cmt"># Step 0,4: length counter</span>
+    <span class="cmt"># Step 2,6: length + sweep</span>
+    <span class="cmt"># Step 7:   envelope</span>
+
+    <span class="cmt"># Mix channels to stereo</span>
+    left  <span class="op">&lt;=</span> <span class="fn">mix_channels</span>(
+      nr51[<span class="num">7</span>..<span class="num">4</span>],
+      ch1.out, ch2.out,
+      ch3.out, ch4.out)
+    right <span class="op">&lt;=</span> <span class="fn">mix_channels</span>(
+      nr51[<span class="num">3</span>..<span class="num">0</span>],
+      ch1.out, ch2.out,
+      ch3.out, ch4.out)
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
