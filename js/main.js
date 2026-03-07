@@ -60,8 +60,8 @@
 
     function resize() {
       const dpr = window.devicePixelRatio || 1;
-      const newWidth = canvas.offsetWidth;
-      const newHeight = canvas.offsetHeight;
+      const newWidth = window.innerWidth;
+      const newHeight = window.innerHeight;
 
       // Only regenerate if dimensions actually changed
       if (newWidth === lastWidth && newHeight === lastHeight) return;
