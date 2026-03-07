@@ -17,20 +17,16 @@
     let pulses = [];
     let animationId;
 
-    // Color palette matching the screenshot
+    // Color palette - dark red Ruby/Shenzhen I/O theme
     const COLORS = {
-      compFill: 'rgba(40, 55, 35, 0.6)',
-      compStroke: 'rgba(90, 120, 70, 0.5)',
-      compStrokeLight: 'rgba(120, 160, 90, 0.35)',
-      wireColor: 'rgba(180, 155, 60, 0.25)',
-      wireHighlight: 'rgba(200, 175, 80, 0.4)',
-      portIn: 'rgba(0, 200, 180, 0.7)',
-      portOut: 'rgba(0, 200, 180, 0.5)',
-      portSmall: 'rgba(100, 140, 180, 0.6)',
-      pulseCore: 'rgba(0, 230, 200, 0.9)',
-      pulseGlow: 'rgba(0, 200, 180, 0.3)',
-      labelColor: 'rgba(140, 170, 120, 0.35)',
-      gridLine: 'rgba(30, 50, 30, 0.15)',
+      compFill: 'rgba(50, 25, 20, 0.6)',
+      compStroke: 'rgba(140, 50, 40, 0.45)',
+      wireColor: 'rgba(160, 80, 50, 0.25)',
+      portIn: 'rgba(200, 70, 55, 0.7)',
+      portOut: 'rgba(200, 70, 55, 0.5)',
+      pulseCore: 'rgba(230, 80, 60, 0.9)',
+      pulseGlow: 'rgba(204, 52, 45, 0.3)',
+      labelColor: 'rgba(160, 90, 70, 0.35)',
     };
 
     // Component type templates
@@ -260,7 +256,7 @@
 
       // Draw wires
       for (const wire of wires) {
-        ctx.strokeStyle = `rgba(180, 155, 60, ${wire.brightness * 0.6})`;
+        ctx.strokeStyle = `rgba(160, 80, 50, ${wire.brightness * 0.5})`;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(wire.points[0].x, wire.points[0].y);
@@ -275,8 +271,8 @@
         const a = comp.brightness;
 
         // Component body fill
-        ctx.fillStyle = `rgba(40, 55, 35, ${0.45 * a})`;
-        ctx.strokeStyle = `rgba(90, 120, 70, ${0.4 * a})`;
+        ctx.fillStyle = `rgba(50, 25, 20, ${0.45 * a})`;
+        ctx.strokeStyle = `rgba(140, 50, 40, ${0.35 * a})`;
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.rect(comp.x, comp.y, comp.w, comp.h);
@@ -284,7 +280,7 @@
         ctx.stroke();
 
         // Component label (very subtle)
-        ctx.fillStyle = `rgba(140, 170, 120, ${0.25 * a})`;
+        ctx.fillStyle = `rgba(160, 90, 70, ${0.25 * a})`;
         ctx.font = '8px monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -293,7 +289,7 @@
         // Draw input ports (left side)
         for (const port of comp.inputPorts) {
           // Short wire stub
-          ctx.strokeStyle = `rgba(0, 200, 180, ${0.3 * a})`;
+          ctx.strokeStyle = `rgba(200, 70, 55, ${0.3 * a})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(port.x - 8, port.y);
@@ -301,7 +297,7 @@
           ctx.stroke();
 
           // Port dot
-          ctx.fillStyle = `rgba(0, 200, 180, ${0.6 * a})`;
+          ctx.fillStyle = `rgba(200, 70, 55, ${0.6 * a})`;
           ctx.beginPath();
           ctx.arc(port.x - 8, port.y, 2, 0, Math.PI * 2);
           ctx.fill();
@@ -310,7 +306,7 @@
         // Draw output ports (right side)
         for (const port of comp.outputPorts) {
           // Short wire stub
-          ctx.strokeStyle = `rgba(0, 200, 180, ${0.3 * a})`;
+          ctx.strokeStyle = `rgba(200, 70, 55, ${0.3 * a})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(port.x, port.y);
@@ -318,7 +314,7 @@
           ctx.stroke();
 
           // Port dot
-          ctx.fillStyle = `rgba(0, 200, 180, ${0.5 * a})`;
+          ctx.fillStyle = `rgba(200, 70, 55, ${0.5 * a})`;
           ctx.beginPath();
           ctx.arc(port.x + 8, port.y, 2, 0, Math.PI * 2);
           ctx.fill();
@@ -342,22 +338,22 @@
 
         // Glow
         const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 16);
-        gradient.addColorStop(0, `rgba(0, 230, 200, ${alpha * 0.35})`);
-        gradient.addColorStop(0.5, `rgba(0, 200, 180, ${alpha * 0.1})`);
-        gradient.addColorStop(1, 'rgba(0, 200, 180, 0)');
+        gradient.addColorStop(0, `rgba(230, 80, 60, ${alpha * 0.35})`);
+        gradient.addColorStop(0.5, `rgba(204, 52, 45, ${alpha * 0.1})`);
+        gradient.addColorStop(1, 'rgba(204, 52, 45, 0)');
         ctx.fillStyle = gradient;
         ctx.beginPath();
         ctx.arc(pos.x, pos.y, 16, 0, Math.PI * 2);
         ctx.fill();
 
         // Bright core
-        ctx.fillStyle = `rgba(0, 240, 210, ${alpha * 0.9})`;
+        ctx.fillStyle = `rgba(240, 90, 70, ${alpha * 0.9})`;
         ctx.beginPath();
         ctx.arc(pos.x, pos.y, 2, 0, Math.PI * 2);
         ctx.fill();
 
         // Highlight the wire segment near the pulse
-        ctx.strokeStyle = `rgba(0, 230, 200, ${alpha * 0.3})`;
+        ctx.strokeStyle = `rgba(230, 80, 60, ${alpha * 0.3})`;
         ctx.lineWidth = 2;
         ctx.beginPath();
         const p1 = getPointOnRoute(
