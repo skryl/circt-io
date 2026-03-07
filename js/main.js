@@ -55,10 +55,21 @@
       return Array.isArray(arr) ? arr[randInt(0, arr.length - 1)] : arr;
     }
 
+    let lastWidth = 0;
+    let lastHeight = 0;
+
     function resize() {
       const dpr = window.devicePixelRatio || 1;
-      width = canvas.offsetWidth;
-      height = canvas.offsetHeight;
+      const newWidth = canvas.offsetWidth;
+      const newHeight = canvas.offsetHeight;
+
+      // Only regenerate if dimensions actually changed
+      if (newWidth === lastWidth && newHeight === lastHeight) return;
+
+      lastWidth = newWidth;
+      lastHeight = newHeight;
+      width = newWidth;
+      height = newHeight;
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);

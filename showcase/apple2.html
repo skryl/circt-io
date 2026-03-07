@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apple II - CIRCT Showcase</title>
+  <meta name="description" content="Full Apple II system emulation designed in Ruby with CIRCT.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#showcase" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to showcase
+      </a>
+      <div class="showcase-hero-inner">
+        <div class="chip-outline chip-wide">
+          <div class="chip-label">Apple ][</div>
+          <div class="chip-pins left"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="chip-pins right"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="showcase-hero-text">
+          <h1>Apple <span class="gradient-text">II</span></h1>
+          <p class="showcase-subtitle">Full system emulation with 6502 CPU, 48KB RAM, text and hi-res graphics video modes, Disk II controller with WOZ image support, keyboard input, and piezo speaker.</p>
+          <div class="showcase-tags">
+            <span>6502 CPU</span>
+            <span>48KB RAM</span>
+            <span>Text Mode</span>
+            <span>Lo-Res</span>
+            <span>Hi-Res</span>
+            <span>Disk II</span>
+            <span>Keyboard</span>
+            <span>Speaker</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">System Architecture</h2>
+
+      <div class="arch-diagram">
+        <div class="arch-diagram-row">
+          <div class="arch-block accent">
+            <h4>6502 CPU</h4>
+            <p>1.023 MHz processor</p>
+          </div>
+          <div class="arch-connector">&harr;</div>
+          <div class="arch-block">
+            <h4>MMU</h4>
+            <p>Memory mapping, bank switching</p>
+          </div>
+          <div class="arch-connector">&harr;</div>
+          <div class="arch-block">
+            <h4>48KB RAM</h4>
+            <p>Main memory + aux banks</p>
+          </div>
+        </div>
+        <div class="arch-connector-v">&darr;</div>
+        <div class="arch-bus">
+          <div class="arch-bus-label">system bus</div>
+        </div>
+        <div class="arch-connector-v">&darr;</div>
+        <div class="arch-diagram-row">
+          <div class="arch-block">
+            <h4>Video Generator</h4>
+            <p>Text, Lo-Res, Hi-Res modes</p>
+          </div>
+          <div class="arch-connector">&harr;</div>
+          <div class="arch-block">
+            <h4>Keyboard</h4>
+            <p>$C000 latch + strobe</p>
+          </div>
+          <div class="arch-connector">&harr;</div>
+          <div class="arch-block">
+            <h4>Disk II</h4>
+            <p>Stepper motor, WOZ images</p>
+          </div>
+          <div class="arch-connector">&harr;</div>
+          <div class="arch-block">
+            <h4>Speaker</h4>
+            <p>$C030 toggle, 1-bit</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="arch-section-title">Specifications</h2>
+      <table class="spec-table">
+        <tr><th>Subsystem</th><th>Details</th></tr>
+        <tr><td>CPU</td><td>MOS 6502 @ 1.023 MHz (NTSC timing)</td></tr>
+        <tr><td>Memory</td><td>48KB main RAM, 12KB ROM (Monitor + Applesoft BASIC)</td></tr>
+        <tr><td>Video: Text</td><td>40x24 characters, normal and inverse</td></tr>
+        <tr><td>Video: Lo-Res</td><td>40x48 blocks, 16 colors</td></tr>
+        <tr><td>Video: Hi-Res</td><td>280x192 pixels, 6 colors (artifact coloring)</td></tr>
+        <tr><td>Storage</td><td>Disk II controller, 140KB 5.25" floppies, WOZ format</td></tr>
+        <tr><td>Input</td><td>ASCII keyboard with $C000 data latch, $C010 strobe</td></tr>
+        <tr><td>Audio</td><td>1-bit speaker toggle at $C030</td></tr>
+        <tr><td>I/O slots</td><td>8 expansion slots ($C100-$C7FF ROM, $C080-$C0FF soft switches)</td></tr>
+      </table>
+
+      <h2 class="arch-section-title">RHDL Implementation</h2>
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">The system bus connects the CPU to memory and I/O devices through memory-mapped soft switches in the $C000-$C0FF range.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">apple2.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">Apple2</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::SequentialComponent</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">input</span>  <span class="sym">:key_data</span>,  <span class="key">width:</span> <span class="num">7</span>
+  <span class="fn">input</span>  <span class="sym">:key_strobe</span>
+  <span class="fn">output</span> <span class="sym">:video_out</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:spkr_out</span>
+
+  <span class="fn">subcomponent</span> <span class="sym">:cpu</span>,   <span class="type">MOS6502</span>
+  <span class="fn">subcomponent</span> <span class="sym">:ram</span>,   <span class="type">RAM48K</span>
+  <span class="fn">subcomponent</span> <span class="sym">:rom</span>,   <span class="type">ROM12K</span>
+  <span class="fn">subcomponent</span> <span class="sym">:video</span>, <span class="type">VideoGenerator</span>
+  <span class="fn">subcomponent</span> <span class="sym">:disk</span>,  <span class="type">DiskII</span>
+  <span class="fn">subcomponent</span> <span class="sym">:kbd</span>,   <span class="type">Keyboard</span>
+
+  <span class="fn">wire</span> <span class="sym">:addr</span>, <span class="key">width:</span> <span class="num">16</span>
+  <span class="fn">wire</span> <span class="sym">:data</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">wire</span> <span class="sym">:rw</span>
+
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    <span class="cmt"># Memory map</span>
+    data <span class="op">&lt;=</span> <span class="fn">case_select</span>(addr[<span class="num">15</span>..<span class="num">12</span>], {
+      <span class="num">0x0</span>..<span class="num">0xB</span> <span class="op">=&gt;</span> ram.data_out,
+      <span class="num">0xC</span>       <span class="op">=&gt;</span> <span class="fn">io_read</span>(addr),
+      <span class="num">0xD</span>..<span class="num">0xF</span> <span class="op">=&gt;</span> rom.data_out,
+    })
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">The video generator produces text, lo-res, and hi-res output by scanning the peculiar Apple II memory layout where rows interleave across three 2KB sections.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">video_generator.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">VideoGenerator</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::SequentialComponent</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">input</span>  <span class="sym">:mem_data</span>,  <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:mode</span>,      <span class="key">width:</span> <span class="num">2</span>
+  <span class="fn">output</span> <span class="sym">:mem_addr</span>,  <span class="key">width:</span> <span class="num">16</span>
+  <span class="fn">output</span> <span class="sym">:pixel</span>,     <span class="key">width:</span> <span class="num">4</span>
+  <span class="fn">output</span> <span class="sym">:h_sync</span>, <span class="sym">:v_sync</span>
+
+  <span class="fn">sequential</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+             <span class="key">reset:</span> <span class="sym">:rst</span> <span class="kw">do</span>
+    <span class="cmt"># Apple II screen memory layout</span>
+    <span class="cmt"># Row address = base + (row/8)*40</span>
+    <span class="cmt">#             + (row%8)*0x80</span>
+    <span class="var">base</span> <span class="op">=</span> <span class="fn">mux</span>(page,
+      <span class="num">0x0400</span>, <span class="num">0x0800</span>)
+    <span class="var">row_group</span> <span class="op">=</span> v_count[<span class="num">5</span>..<span class="num">3</span>]
+    <span class="var">row_third</span> <span class="op">=</span> v_count[<span class="num">2</span>..<span class="num">0</span>]
+
+    mem_addr <span class="op">&lt;=</span> base <span class="op">+</span>
+      (row_group <span class="op">*</span> <span class="num">40</span>) <span class="op">+</span>
+      (row_third <span class="op">&lt;&lt;</span> <span class="num">7</span>) <span class="op">+</span>
+      h_count
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

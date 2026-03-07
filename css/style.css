@@ -1027,6 +1027,263 @@ a:hover { color: #e04840; }
   .code-tabs { flex-wrap: wrap; }
 }
 
+/* ============================================
+   Showcase Detail Pages
+   ============================================ */
+
+.showcase-page {
+  padding-top: 56px;
+}
+
+.showcase-hero {
+  padding: 60px 0 40px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-secondary);
+}
+
+.showcase-hero-inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.showcase-hero .chip-outline {
+  width: 100px;
+  height: 110px;
+  flex-shrink: 0;
+}
+
+.showcase-hero .chip-outline.chip-wide {
+  width: 120px;
+}
+
+.showcase-hero .chip-label {
+  font-size: 0.85rem;
+}
+
+.showcase-hero-text h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: var(--font-sans);
+  margin-bottom: 8px;
+}
+
+.showcase-hero-text .showcase-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.showcase-hero-text .showcase-tags {
+  margin-bottom: 0;
+}
+
+.showcase-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.showcase-back:hover {
+  color: var(--accent);
+}
+
+.showcase-back svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Architecture diagram */
+.arch-section {
+  padding: 60px 0;
+}
+
+.arch-section-title {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.arch-diagram {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 40px;
+}
+
+.arch-diagram-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.arch-block {
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  text-align: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.arch-block h4 {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.arch-block p {
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.arch-block.accent {
+  border-color: var(--border-hover);
+  background: rgba(204, 52, 45, 0.05);
+}
+
+.arch-block.accent h4 {
+  color: var(--accent);
+}
+
+.arch-connector {
+  width: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-dim);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.arch-connector-v {
+  text-align: center;
+  padding: 4px 0;
+  color: var(--accent-dim);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.arch-bus {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.arch-bus-label {
+  font-size: 0.6rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  padding: 6px 12px;
+  border: 1px dashed var(--border);
+  text-align: center;
+  flex: 1;
+}
+
+/* Code excerpts on showcase pages */
+.code-excerpt {
+  margin-bottom: 24px;
+}
+
+.code-excerpt .code-block {
+  margin-bottom: 0;
+}
+
+.code-excerpt-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+/* Spec table */
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 32px;
+}
+
+.spec-table th,
+.spec-table td {
+  padding: 8px 14px;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  text-align: left;
+  border: 1px solid var(--border);
+}
+
+.spec-table th {
+  background: var(--bg-card);
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.spec-table td {
+  color: var(--text-secondary);
+}
+
+.spec-table tr:hover td {
+  background: var(--bg-card);
+}
+
+/* Two-column layout for arch pages */
+.arch-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+@media (max-width: 768px) {
+  .showcase-hero-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .showcase-hero-text .showcase-tags {
+    justify-content: center;
+  }
+
+  .arch-diagram-row {
+    flex-direction: column;
+  }
+
+  .arch-connector {
+    width: auto;
+    transform: rotate(90deg);
+  }
+
+  .arch-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .arch-bus {
+    flex-direction: column;
+  }
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-primary); }

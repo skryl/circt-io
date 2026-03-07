@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RISC-V RV32I - CIRCT Showcase</title>
+  <meta name="description" content="RISC-V RV32I processor with pipelined implementation designed in Ruby with CIRCT.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#showcase" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to showcase
+      </a>
+      <div class="showcase-hero-inner">
+        <div class="chip-outline chip-wide">
+          <div class="chip-label">RV32I</div>
+          <div class="chip-pins left"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="chip-pins right"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="showcase-hero-text">
+          <h1>RISC-V <span class="gradient-text">RV32I</span></h1>
+          <p class="showcase-subtitle">Modern 32-bit RISC-V processor implementing the base integer instruction set. Includes both single-cycle and 5-stage pipelined implementations with hazard detection and forwarding.</p>
+          <div class="showcase-tags">
+            <span>32-bit</span>
+            <span>RV32I ISA</span>
+            <span>47 Instructions</span>
+            <span>5-Stage Pipeline</span>
+            <span>Forwarding</span>
+            <span>Branch Prediction</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Pipeline Architecture</h2>
+
+      <div class="arch-diagram">
+        <div class="arch-diagram-row">
+          <div class="arch-block accent">
+            <h4>IF</h4>
+            <p>Instruction fetch, PC+4, branch target</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block accent">
+            <h4>ID</h4>
+            <p>Decode, register read, immediate gen</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block accent">
+            <h4>EX</h4>
+            <p>ALU, branch resolve, forwarding MUX</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block accent">
+            <h4>MEM</h4>
+            <p>Data memory read/write</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block accent">
+            <h4>WB</h4>
+            <p>Register write-back</p>
+          </div>
+        </div>
+        <div class="arch-connector-v">&darr;</div>
+        <div class="arch-bus">
+          <div class="arch-bus-label">forwarding unit (EX&rarr;EX, MEM&rarr;EX)</div>
+          <div class="arch-bus-label">hazard detection (load-use stall)</div>
+          <div class="arch-bus-label">branch predictor (static not-taken)</div>
+        </div>
+      </div>
+
+      <h2 class="arch-section-title">Specifications</h2>
+      <table class="spec-table">
+        <tr><th>Parameter</th><th>Value</th></tr>
+        <tr><td>ISA</td><td>RISC-V RV32I (base integer, 47 instructions)</td></tr>
+        <tr><td>Data width</td><td>32 bits</td></tr>
+        <tr><td>Registers</td><td>32 general-purpose (x0 hardwired to zero)</td></tr>
+        <tr><td>Instruction types</td><td>R, I, S, B, U, J formats</td></tr>
+        <tr><td>ALU operations</td><td>ADD, SUB, AND, OR, XOR, SLL, SRL, SRA, SLT, SLTU</td></tr>
+        <tr><td>Branch types</td><td>BEQ, BNE, BLT, BGE, BLTU, BGEU</td></tr>
+        <tr><td>Memory ops</td><td>LB/LH/LW/LBU/LHU (load), SB/SH/SW (store)</td></tr>
+        <tr><td>Pipeline</td><td>5-stage (IF, ID, EX, MEM, WB) with forwarding</td></tr>
+        <tr><td>Hazard handling</td><td>Data forwarding, load-use stall, branch flush</td></tr>
+      </table>
+
+      <h2 class="arch-section-title">RHDL Implementation</h2>
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">The instruction decoder extracts fields from all six RISC-V instruction formats and generates the immediate value using the sign-extension logic specified by the ISA.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">decoder_rv32i.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">DecoderRV32I</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:instr</span>,    <span class="key">width:</span> <span class="num">32</span>
+  <span class="fn">output</span> <span class="sym">:rs1</span>,      <span class="key">width:</span> <span class="num">5</span>
+  <span class="fn">output</span> <span class="sym">:rs2</span>,      <span class="key">width:</span> <span class="num">5</span>
+  <span class="fn">output</span> <span class="sym">:rd</span>,       <span class="key">width:</span> <span class="num">5</span>
+  <span class="fn">output</span> <span class="sym">:imm</span>,      <span class="key">width:</span> <span class="num">32</span>
+  <span class="fn">output</span> <span class="sym">:alu_op</span>,   <span class="key">width:</span> <span class="num">4</span>
+  <span class="fn">output</span> <span class="sym">:mem_read</span>, <span class="sym">:mem_write</span>
+  <span class="fn">output</span> <span class="sym">:reg_write</span>, <span class="sym">:branch</span>
+
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    <span class="var">opcode</span> <span class="op">=</span> instr[<span class="num">6</span>..<span class="num">0</span>]
+    <span class="var">funct3</span> <span class="op">=</span> instr[<span class="num">14</span>..<span class="num">12</span>]
+    <span class="var">funct7</span> <span class="op">=</span> instr[<span class="num">31</span>..<span class="num">25</span>]
+
+    rs1 <span class="op">&lt;=</span> instr[<span class="num">19</span>..<span class="num">15</span>]
+    rs2 <span class="op">&lt;=</span> instr[<span class="num">24</span>..<span class="num">20</span>]
+    rd  <span class="op">&lt;=</span> instr[<span class="num">11</span>..<span class="num">7</span>]
+
+    <span class="cmt"># Immediate generation</span>
+    imm <span class="op">&lt;=</span> <span class="fn">case_select</span>(opcode, {
+      <span class="num">0b0010011</span> <span class="op">=&gt;</span> <span class="fn">sign_ext</span>(instr[<span class="num">31</span>..<span class="num">20</span>]),
+      <span class="num">0b0100011</span> <span class="op">=&gt;</span> <span class="fn">sign_ext</span>(
+        { instr[<span class="num">31</span>..<span class="num">25</span>], instr[<span class="num">11</span>..<span class="num">7</span>] }),
+      <span class="num">0b1100011</span> <span class="op">=&gt;</span> <span class="fn">sign_ext</span>(
+        { instr[<span class="num">31</span>], instr[<span class="num">7</span>],
+          instr[<span class="num">30</span>..<span class="num">25</span>],
+          instr[<span class="num">11</span>..<span class="num">8</span>], <span class="num">1</span><span class="str">'b0'</span> }),
+    })
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">The forwarding unit resolves data hazards by detecting when a source register matches a pending write-back destination and selecting the forwarded value.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">forwarding_unit.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">ForwardingUnit</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="cmt"># Source registers (ID/EX stage)</span>
+  <span class="fn">input</span>  <span class="sym">:rs1</span>,         <span class="key">width:</span> <span class="num">5</span>
+  <span class="fn">input</span>  <span class="sym">:rs2</span>,         <span class="key">width:</span> <span class="num">5</span>
+  <span class="cmt"># EX/MEM stage write-back</span>
+  <span class="fn">input</span>  <span class="sym">:ex_mem_rd</span>,   <span class="key">width:</span> <span class="num">5</span>
+  <span class="fn">input</span>  <span class="sym">:ex_mem_wr</span>
+  <span class="cmt"># MEM/WB stage write-back</span>
+  <span class="fn">input</span>  <span class="sym">:mem_wb_rd</span>,   <span class="key">width:</span> <span class="num">5</span>
+  <span class="fn">input</span>  <span class="sym">:mem_wb_wr</span>
+  <span class="cmt"># Forward select (0=reg, 1=EX, 2=MEM)</span>
+  <span class="fn">output</span> <span class="sym">:fwd_a</span>,       <span class="key">width:</span> <span class="num">2</span>
+  <span class="fn">output</span> <span class="sym">:fwd_b</span>,       <span class="key">width:</span> <span class="num">2</span>
+
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    <span class="cmt"># Priority: EX/MEM over MEM/WB</span>
+    fwd_a <span class="op">&lt;=</span> <span class="fn">cond</span>(
+      ex_mem_wr <span class="op">&amp;</span> ex_mem_rd.<span class="fn">neq?</span>(<span class="num">0</span>)
+        <span class="op">&amp;</span> ex_mem_rd.<span class="fn">eq?</span>(rs1),
+      <span class="num">1</span>,
+      <span class="fn">cond</span>(
+        mem_wb_wr <span class="op">&amp;</span> mem_wb_rd.<span class="fn">neq?</span>(<span class="num">0</span>)
+          <span class="op">&amp;</span> mem_wb_rd.<span class="fn">eq?</span>(rs1),
+        <span class="num">2</span>, <span class="num">0</span>))
+
+    fwd_b <span class="op">&lt;=</span> <span class="fn">cond</span>(
+      ex_mem_wr <span class="op">&amp;</span> ex_mem_rd.<span class="fn">neq?</span>(<span class="num">0</span>)
+        <span class="op">&amp;</span> ex_mem_rd.<span class="fn">eq?</span>(rs2),
+      <span class="num">1</span>,
+      <span class="fn">cond</span>(
+        mem_wb_wr <span class="op">&amp;</span> mem_wb_rd.<span class="fn">neq?</span>(<span class="num">0</span>)
+          <span class="op">&amp;</span> mem_wb_rd.<span class="fn">eq?</span>(rs2),
+        <span class="num">2</span>, <span class="num">0</span>))
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">The pipelined processor top-level connects all five stages with pipeline registers, forwarding unit, and hazard detection logic.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">rv32i_pipeline.rb</span>
+          </div>
+          <pre><code><span class="kw">class</span> <span class="type">RV32IPipeline</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::SequentialComponent</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">output</span> <span class="sym">:imem_addr</span>,  <span class="key">width:</span> <span class="num">32</span>
+  <span class="fn">input</span>  <span class="sym">:imem_data</span>,  <span class="key">width:</span> <span class="num">32</span>
+  <span class="fn">output</span> <span class="sym">:dmem_addr</span>,  <span class="key">width:</span> <span class="num">32</span>
+  <span class="fn">output</span> <span class="sym">:dmem_wdata</span>, <span class="key">width:</span> <span class="num">32</span>
+  <span class="fn">output</span> <span class="sym">:dmem_wr</span>
+  <span class="fn">input</span>  <span class="sym">:dmem_rdata</span>, <span class="key">width:</span> <span class="num">32</span>
+
+  <span class="cmt"># Pipeline stages</span>
+  <span class="fn">subcomponent</span> <span class="sym">:fetch</span>,   <span class="type">FetchStage</span>
+  <span class="fn">subcomponent</span> <span class="sym">:decode</span>,  <span class="type">DecodeStage</span>
+  <span class="fn">subcomponent</span> <span class="sym">:execute</span>, <span class="type">ExecuteStage</span>
+  <span class="fn">subcomponent</span> <span class="sym">:memory</span>,  <span class="type">MemoryStage</span>
+  <span class="fn">subcomponent</span> <span class="sym">:wb</span>,      <span class="type">WriteBackStage</span>
+
+  <span class="cmt"># Hazard handling</span>
+  <span class="fn">subcomponent</span> <span class="sym">:fwd</span>,     <span class="type">ForwardingUnit</span>
+  <span class="fn">subcomponent</span> <span class="sym">:hazard</span>,  <span class="type">HazardDetector</span>
+  <span class="fn">subcomponent</span> <span class="sym">:regfile</span>, <span class="type">RegisterFile</span>,
+    <span class="key">depth:</span> <span class="num">32</span>, <span class="key">width:</span> <span class="num">32</span>
+
+  <span class="fn">sequential</span> <span class="key">clock:</span> <span class="sym">:clk</span>, <span class="key">reset:</span> <span class="sym">:rst</span> <span class="kw">do</span>
+    <span class="cmt"># Pipeline register updates</span>
+    <span class="cmt"># Stall IF/ID on load-use hazard</span>
+    <span class="cmt"># Flush IF/ID + ID/EX on branch taken</span>
+    <span class="cmt"># Forward EX and MEM results to EX inputs</span>
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

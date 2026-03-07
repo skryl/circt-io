@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOS 6502 - CIRCT Showcase</title>
+  <meta name="description" content="Complete MOS 6502 8-bit processor designed in Ruby with CIRCT.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#showcase" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to showcase
+      </a>
+      <div class="showcase-hero-inner">
+        <div class="chip-outline">
+          <div class="chip-label">6502</div>
+          <div class="chip-pins left"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="chip-pins right"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="showcase-hero-text">
+          <h1>MOS <span class="gradient-text">6502</span></h1>
+          <p class="showcase-subtitle">Complete 8-bit processor with all 56 instructions, 13 addressing modes, BCD arithmetic, and a 26-state control unit FSM. The heart of the Apple II, Commodore 64, and NES.</p>
+          <div class="showcase-tags">
+            <span>8-bit</span>
+            <span>56 Instructions</span>
+            <span>151 Opcodes</span>
+            <span>13 Addr Modes</span>
+            <span>BCD</span>
+            <span>26-State FSM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Processor Architecture</h2>
+
+      <!-- Architecture diagram -->
+      <div class="arch-diagram">
+        <div class="arch-diagram-row">
+          <div class="arch-block accent">
+            <h4>Control Unit</h4>
+            <p>26-state FSM, instruction decoder</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block">
+            <h4>ALU</h4>
+            <p>ADD, SUB, AND, OR, XOR, shift, BCD</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block">
+            <h4>Registers</h4>
+            <p>A, X, Y, SP, PC, status</p>
+          </div>
+        </div>
+        <div class="arch-connector-v">&darr;</div>
+        <div class="arch-bus">
+          <div class="arch-bus-label">16-bit address bus</div>
+          <div class="arch-bus-label">8-bit data bus</div>
+          <div class="arch-bus-label">control lines (R/W, IRQ, NMI, RDY)</div>
+        </div>
+      </div>
+
+      <!-- Specs -->
+      <h2 class="arch-section-title">Specifications</h2>
+      <table class="spec-table">
+        <tr><th>Parameter</th><th>Value</th></tr>
+        <tr><td>Data width</td><td>8 bits</td></tr>
+        <tr><td>Address space</td><td>64KB (16-bit)</td></tr>
+        <tr><td>Registers</td><td>A (accumulator), X, Y (index), SP, PC, P (status)</td></tr>
+        <tr><td>Instructions</td><td>56 unique, 151 opcodes total</td></tr>
+        <tr><td>Addressing modes</td><td>13 (immediate, zero page, absolute, indexed, indirect, etc.)</td></tr>
+        <tr><td>ALU operations</td><td>ADC, SBC (with BCD), AND, ORA, EOR, ASL, LSR, ROL, ROR</td></tr>
+        <tr><td>Interrupts</td><td>IRQ (maskable), NMI (non-maskable), RESET</td></tr>
+        <tr><td>Control FSM</td><td>26 states with microcode-style control signals</td></tr>
+      </table>
+
+      <!-- Code excerpts -->
+      <h2 class="arch-section-title">RHDL Implementation</h2>
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">The control unit FSM decodes each instruction into a sequence of micro-operations, managing the fetch-decode-execute pipeline.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">control_unit.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">ControlUnit</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::SequentialComponent</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">input</span>  <span class="sym">:opcode</span>,  <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:flags</span>,   <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:alu_op</span>,  <span class="key">width:</span> <span class="num">4</span>
+  <span class="fn">output</span> <span class="sym">:src_sel</span>, <span class="key">width:</span> <span class="num">3</span>
+  <span class="fn">output</span> <span class="sym">:dst_sel</span>, <span class="key">width:</span> <span class="num">3</span>
+  <span class="fn">output</span> <span class="sym">:mem_rw</span>,  <span class="sym">:addr_sel</span>
+
+  <span class="fn">state_machine</span> <span class="sym">:phase</span>,
+    <span class="key">clock:</span> <span class="sym">:clk</span>, <span class="key">reset:</span> <span class="sym">:rst</span>,
+    <span class="key">states:</span> [
+      <span class="sym">:fetch_opcode</span>,
+      <span class="sym">:fetch_low</span>,
+      <span class="sym">:fetch_high</span>,
+      <span class="sym">:execute</span>,
+      <span class="sym">:write_back</span>,
+      <span class="cmt"># ... 21 more states</span>
+    ] <span class="kw">do</span>
+
+    <span class="fn">transition</span> <span class="sym">:fetch_opcode</span> <span class="op">=&gt;</span> <span class="sym">:fetch_low</span>
+    <span class="fn">transition</span> <span class="sym">:fetch_low</span> <span class="op">=&gt;</span> <span class="sym">:fetch_high</span>,
+      <span class="key">when:</span> <span class="fn">needs_high_byte?</span>(opcode)
+    <span class="fn">transition</span> <span class="sym">:fetch_low</span> <span class="op">=&gt;</span> <span class="sym">:execute</span>,
+      <span class="key">unless:</span> <span class="fn">needs_high_byte?</span>(opcode)
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">The ALU handles all arithmetic and logic operations, including BCD mode for decimal arithmetic used in financial calculations.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">alu_6502.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">ALU6502</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:a</span>,        <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:b</span>,        <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:carry_in</span>
+  <span class="fn">input</span>  <span class="sym">:bcd_mode</span>
+  <span class="fn">input</span>  <span class="sym">:op</span>,       <span class="key">width:</span> <span class="num">4</span>
+  <span class="fn">output</span> <span class="sym">:result</span>,   <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:carry</span>, <span class="sym">:zero</span>,
+         <span class="sym">:negative</span>, <span class="sym">:overflow</span>
+
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    <span class="var">raw</span> <span class="op">=</span> <span class="fn">case_select</span>(op, {
+      <span class="num">0</span> <span class="op">=&gt;</span> a <span class="op">+</span> b <span class="op">+</span> carry_in,  <span class="cmt"># ADC</span>
+      <span class="num">1</span> <span class="op">=&gt;</span> a <span class="op">-</span> b <span class="op">-</span> ~carry_in, <span class="cmt"># SBC</span>
+      <span class="num">2</span> <span class="op">=&gt;</span> a <span class="op">&amp;</span> b,            <span class="cmt"># AND</span>
+      <span class="num">3</span> <span class="op">=&gt;</span> a <span class="op">|</span> b,            <span class="cmt"># ORA</span>
+      <span class="num">4</span> <span class="op">=&gt;</span> a <span class="op">^</span> b,            <span class="cmt"># EOR</span>
+      <span class="num">5</span> <span class="op">=&gt;</span> a <span class="op">&lt;&lt;</span> <span class="num">1</span>,           <span class="cmt"># ASL</span>
+      <span class="num">6</span> <span class="op">=&gt;</span> a <span class="op">&gt;&gt;</span> <span class="num">1</span>,           <span class="cmt"># LSR</span>
+    })
+
+    result <span class="op">&lt;=</span> <span class="fn">mux</span>(bcd_mode,
+      <span class="fn">bcd_adjust</span>(raw), raw)
+
+    zero     <span class="op">&lt;=</span> result.<span class="fn">eq?</span>(<span class="num">0</span>)
+    negative <span class="op">&lt;=</span> result[<span class="num">7</span>]
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">The instruction decoder maps all 151 opcodes to their instruction type, addressing mode, and cycle count using a lookup table generated from the 6502 opcode matrix.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">decoder.rb</span>
+          </div>
+          <pre><code><span class="kw">class</span> <span class="type">InstructionDecoder</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:opcode</span>,    <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:instr</span>,     <span class="key">width:</span> <span class="num">6</span>   <span class="cmt"># 56 instructions</span>
+  <span class="fn">output</span> <span class="sym">:addr_mode</span>, <span class="key">width:</span> <span class="num">4</span>   <span class="cmt"># 13 addressing modes</span>
+  <span class="fn">output</span> <span class="sym">:cycles</span>,    <span class="key">width:</span> <span class="num">3</span>   <span class="cmt"># base cycle count</span>
+
+  <span class="cmt"># Decode using opcode matrix pattern:</span>
+  <span class="cmt"># bits [1:0] = group (cc), [4:2] = operation (aaa), [7:5] = mode (bbb)</span>
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    <span class="var">cc</span>  <span class="op">=</span> opcode[<span class="num">1</span>..<span class="num">0</span>]
+    <span class="var">aaa</span> <span class="op">=</span> opcode[<span class="num">4</span>..<span class="num">2</span>]
+    <span class="var">bbb</span> <span class="op">=</span> opcode[<span class="num">7</span>..<span class="num">5</span>]
+
+    instr     <span class="op">&lt;=</span> <span class="fn">decode_instruction</span>(cc, aaa)
+    addr_mode <span class="op">&lt;=</span> <span class="fn">decode_addr_mode</span>(cc, bbb)
+    cycles    <span class="op">&lt;=</span> <span class="fn">base_cycles</span>(addr_mode)
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
