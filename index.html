@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CIRCT - Design Hardware in Ruby</title>
+  <meta name="description" content="CIRCT is a Ruby hardware description language with fast simulation, Verilog export, and gate-level synthesis.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="12" x2="20" y2="20" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#code">Code</a>
+        <a href="#showcase">Showcase</a>
+        <a href="#architecture">Architecture</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#features">Features</a>
+    <a href="#code">Code</a>
+    <a href="#showcase">Showcase</a>
+    <a href="#architecture">Architecture</a>
+    <a href="https://github.com/skryl/rhdl" target="_blank" rel="noopener">GitHub</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg">
+      <canvas id="circuitCanvas"></canvas>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge fade-in">
+        <span class="badge-dot"></span>
+        Open Source Hardware Design
+      </div>
+      <h1 class="hero-title fade-in">
+        Design Hardware<br>
+        <span class="gradient-text">in Ruby.</span>
+      </h1>
+      <p class="hero-subtitle fade-in">
+        A powerful Ruby DSL for digital circuit design with fast Rust-powered simulation,
+        synthesizable Verilog export, and gate-level synthesis.
+      </p>
+      <div class="hero-actions fade-in">
+        <a href="https://github.com/skryl/rhdl" class="btn btn-primary" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          Get Started
+        </a>
+        <a href="#code" class="btn btn-secondary">
+          See Examples
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7.8H7.8"/></svg>
+        </a>
+      </div>
+      <div class="hero-stats fade-in">
+        <div class="stat">
+          <span class="stat-value">56</span>
+          <span class="stat-label">6502 Instructions</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">RV32I</span>
+          <span class="stat-label">RISC-V Support</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">WASM</span>
+          <span class="stat-label">Browser Simulator</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-tag">Features</span>
+        <h2 class="section-title">Everything you need to<br><span class="gradient-text">design digital hardware.</span></h2>
+        <p class="section-desc">From high-level Ruby to synthesizable gates, CIRCT provides a complete hardware design pipeline.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg>
+          </div>
+          <h3>Ruby DSL</h3>
+          <p>Design hardware using Ruby's expressive syntax and metaprogramming. Familiar language, powerful abstractions.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"/><circle cx="18" cy="17.25" r="3"/></svg>
+          </div>
+          <h3>Verilog Export</h3>
+          <p>Generate clean, synthesizable Verilog HDL from your Ruby designs. Ready for FPGA synthesis and ASIC flows.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+          </div>
+          <h3>Fast Simulation</h3>
+          <p>RTL and gate-level simulation powered by a Rust backend. WASM support enables in-browser testing.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><line x1="10" y1="6.5" x2="14" y2="6.5"/><line x1="6.5" y1="10" x2="6.5" y2="14"/></svg>
+          </div>
+          <h3>Gate Synthesis</h3>
+          <p>Automatic lowering to primitive gates: AND, OR, XOR, NOT, MUX, and DFF. Full gate-level netlist generation.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5a1.5 1.5 0 001.5-1.5V4.5a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5v15a1.5 1.5 0 001.5 1.5z"/></svg>
+          </div>
+          <h3>Circuit Diagrams</h3>
+          <p>Multi-level circuit visualization in SVG, PNG, and DOT formats. See your hardware at any abstraction level.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5m-4.75-11.396c.251.023.501.05.75.082M5 14.5l-1.43 5.51a1.286 1.286 0 001.233 1.633h14.394a1.286 1.286 0 001.233-1.633L19 14.5m-14 0h14"/></svg>
+          </div>
+          <h3>Component Library</h3>
+          <p>Gates, flip-flops, registers, ALU, memory modules, and more. Build complex designs from proven primitives.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Component Types -->
+  <section class="section section-dark" id="components">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-tag">Components</span>
+        <h2 class="section-title">Four powerful<br><span class="gradient-text">component abstractions.</span></h2>
+      </div>
+      <div class="components-row">
+        <div class="component-card fade-in">
+          <div class="component-icon">
+            <svg viewBox="0 0 48 48" fill="none">
+              <path d="M8 18h10v12H8z" stroke="var(--cyan)" stroke-width="2"/>
+              <line x1="2" y1="22" x2="8" y2="22" stroke="var(--cyan)" stroke-width="2"/>
+              <line x1="2" y1="28" x2="8" y2="28" stroke="var(--cyan)" stroke-width="2"/>
+              <line x1="18" y1="24" x2="24" y2="24" stroke="var(--cyan)" stroke-width="2"/>
+              <path d="M28 18h10v12H28z" stroke="var(--cyan-dim)" stroke-width="2" opacity="0.5"/>
+              <line x1="38" y1="24" x2="44" y2="24" stroke="var(--cyan-dim)" stroke-width="2" opacity="0.5"/>
+            </svg>
+          </div>
+          <h3>Combinational</h3>
+          <p>Direct input-to-output mapping with expressions and case statements</p>
+        </div>
+        <div class="component-card fade-in">
+          <div class="component-icon">
+            <svg viewBox="0 0 48 48" fill="none">
+              <rect x="12" y="14" width="16" height="20" rx="2" stroke="var(--cyan)" stroke-width="2"/>
+              <path d="M12 28l4-4 4 4" stroke="var(--cyan)" stroke-width="2"/>
+              <line x1="6" y1="20" x2="12" y2="20" stroke="var(--cyan)" stroke-width="2"/>
+              <line x1="6" y1="28" x2="12" y2="28" stroke="var(--cyan)" stroke-width="2"/>
+              <line x1="28" y1="24" x2="34" y2="24" stroke="var(--cyan)" stroke-width="2"/>
+              <line x1="6" y1="36" x2="34" y2="36" stroke="var(--cyan-dim)" stroke-width="1.5" stroke-dasharray="2 2"/>
+              <text x="20" y="40" fill="var(--cyan-dim)" font-size="6" text-anchor="middle">CLK</text>
+            </svg>
+          </div>
+          <h3>Sequential</h3>
+          <p>Clock-driven components with synchronous reset and enable signals</p>
+        </div>
+        <div class="component-card fade-in">
+          <div class="component-icon">
+            <svg viewBox="0 0 48 48" fill="none">
+              <rect x="10" y="10" width="20" height="28" rx="2" stroke="var(--cyan)" stroke-width="2"/>
+              <line x1="14" y1="16" x2="26" y2="16" stroke="var(--cyan)" stroke-width="1.5" opacity="0.6"/>
+              <line x1="14" y1="20" x2="26" y2="20" stroke="var(--cyan)" stroke-width="1.5" opacity="0.5"/>
+              <line x1="14" y1="24" x2="26" y2="24" stroke="var(--cyan)" stroke-width="1.5" opacity="0.4"/>
+              <line x1="14" y1="28" x2="26" y2="28" stroke="var(--cyan)" stroke-width="1.5" opacity="0.3"/>
+              <line x1="14" y1="32" x2="26" y2="32" stroke="var(--cyan)" stroke-width="1.5" opacity="0.2"/>
+              <line x1="4" y1="18" x2="10" y2="18" stroke="var(--cyan)" stroke-width="2"/>
+              <line x1="4" y1="30" x2="10" y2="30" stroke="var(--cyan)" stroke-width="2"/>
+              <line x1="30" y1="24" x2="36" y2="24" stroke="var(--cyan)" stroke-width="2"/>
+              <text x="34" y="14" fill="var(--cyan-dim)" font-size="5">256</text>
+            </svg>
+          </div>
+          <h3>Memory</h3>
+          <p>Synchronous write, asynchronous read RAM with configurable depth and width</p>
+        </div>
+        <div class="component-card fade-in">
+          <div class="component-icon">
+            <svg viewBox="0 0 48 48" fill="none">
+              <circle cx="16" cy="16" r="6" stroke="var(--cyan)" stroke-width="2"/>
+              <circle cx="32" cy="16" r="6" stroke="var(--cyan)" stroke-width="2"/>
+              <circle cx="24" cy="32" r="6" stroke="var(--cyan)" stroke-width="2"/>
+              <line x1="21" y1="18" x2="27" y2="14" stroke="var(--cyan)" stroke-width="1.5"/>
+              <line x1="28" y1="20" x2="26" y2="27" stroke="var(--cyan)" stroke-width="1.5"/>
+              <line x1="19" y1="20" x2="21" y2="27" stroke="var(--cyan)" stroke-width="1.5"/>
+              <text x="16" y="18" fill="var(--cyan)" font-size="5" text-anchor="middle">S0</text>
+              <text x="32" y="18" fill="var(--cyan)" font-size="5" text-anchor="middle">S1</text>
+              <text x="24" y="34" fill="var(--cyan)" font-size="5" text-anchor="middle">S2</text>
+            </svg>
+          </div>
+          <h3>State Machines</h3>
+          <p>FSM with transition conditions, timed states, and output logic</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Code Examples -->
+  <section class="section" id="code">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-tag">Code</span>
+        <h2 class="section-title">Write hardware like<br><span class="gradient-text">you write software.</span></h2>
+        <p class="section-desc">Familiar Ruby syntax with powerful hardware abstractions. No arcane HDL knowledge required.</p>
+      </div>
+      <div class="code-tabs fade-in">
+        <button class="code-tab active" data-tab="alu">ALU</button>
+        <button class="code-tab" data-tab="counter">Counter</button>
+        <button class="code-tab" data-tab="memory">Memory</button>
+      </div>
+      <div class="code-container fade-in">
+        <div class="code-panel" id="tab-alu">
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">simple_alu.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">SimpleALU</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:a</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:b</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:op</span>, <span class="key">width:</span> <span class="num">2</span>
+  <span class="fn">output</span> <span class="sym">:result</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    result <span class="op">&lt;=</span> <span class="fn">case_select</span>(op, {
+      <span class="num">0</span> <span class="op">=&gt;</span> a <span class="op">+</span> b,
+      <span class="num">1</span> <span class="op">=&gt;</span> a <span class="op">-</span> b,
+      <span class="num">2</span> <span class="op">=&gt;</span> a <span class="op">&amp;</span> b,
+      <span class="num">3</span> <span class="op">=&gt;</span> a <span class="op">|</span> b
+    }, <span class="key">default:</span> <span class="num">0</span>)
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">simple_alu.v</span>
+              <span class="code-badge">Generated Verilog</span>
+            </div>
+            <pre><code><span class="kw">module</span> <span class="type">SimpleALU</span> (
+  <span class="kw">input</span>  [<span class="num">7</span>:<span class="num">0</span>] <span class="var">a</span>,
+  <span class="kw">input</span>  [<span class="num">7</span>:<span class="num">0</span>] <span class="var">b</span>,
+  <span class="kw">input</span>  [<span class="num">1</span>:<span class="num">0</span>] <span class="var">op</span>,
+  <span class="kw">output reg</span> [<span class="num">7</span>:<span class="num">0</span>] <span class="var">result</span>
+);
+
+<span class="kw">always</span> @(*) <span class="kw">begin</span>
+  <span class="kw">case</span> (<span class="var">op</span>)
+    <span class="num">2'b00</span>: <span class="var">result</span> = <span class="var">a</span> + <span class="var">b</span>;
+    <span class="num">2'b01</span>: <span class="var">result</span> = <span class="var">a</span> - <span class="var">b</span>;
+    <span class="num">2'b10</span>: <span class="var">result</span> = <span class="var">a</span> & <span class="var">b</span>;
+    <span class="num">2'b11</span>: <span class="var">result</span> = <span class="var">a</span> | <span class="var">b</span>;
+    <span class="kw">default</span>: <span class="var">result</span> = <span class="num">8'b0</span>;
+  <span class="kw">endcase</span>
+<span class="kw">end</span>
+
+<span class="kw">endmodule</span></code></pre>
+          </div>
+        </div>
+        <div class="code-panel hidden" id="tab-counter">
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">counter.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">Counter</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::SequentialComponent</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>, <span class="sym">:en</span>
+  <span class="fn">output</span> <span class="sym">:count</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="fn">sequential</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+             <span class="key">reset:</span> <span class="sym">:rst</span>,
+             <span class="key">reset_values:</span> { <span class="sym">count:</span> <span class="num">0</span> } <span class="kw">do</span>
+    count <span class="op">&lt;=</span> <span class="fn">mux</span>(en, count <span class="op">+</span> <span class="num">1</span>, count)
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">counter.v</span>
+              <span class="code-badge">Generated Verilog</span>
+            </div>
+            <pre><code><span class="kw">module</span> <span class="type">Counter</span> (
+  <span class="kw">input</span>        <span class="var">clk</span>,
+  <span class="kw">input</span>        <span class="var">rst</span>,
+  <span class="kw">input</span>        <span class="var">en</span>,
+  <span class="kw">output reg</span> [<span class="num">7</span>:<span class="num">0</span>] <span class="var">count</span>
+);
+
+<span class="kw">always</span> @(<span class="kw">posedge</span> <span class="var">clk</span> <span class="kw">or posedge</span> <span class="var">rst</span>) <span class="kw">begin</span>
+  <span class="kw">if</span> (<span class="var">rst</span>)
+    <span class="var">count</span> &lt;= <span class="num">8'b0</span>;
+  <span class="kw">else if</span> (<span class="var">en</span>)
+    <span class="var">count</span> &lt;= <span class="var">count</span> + <span class="num">1</span>;
+<span class="kw">end</span>
+
+<span class="kw">endmodule</span></code></pre>
+          </div>
+        </div>
+        <div class="code-panel hidden" id="tab-memory">
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">ram.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">RAM256x8</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="kw">include</span> <span class="type">RHDL::DSL::Memory</span>
+
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:we</span>
+  <span class="fn">input</span>  <span class="sym">:addr</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:din</span>,  <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:dout</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="fn">memory</span> <span class="sym">:mem</span>, <span class="key">depth:</span> <span class="num">256</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="fn">sync_write</span>  <span class="sym">:mem</span>,
+    <span class="key">clock:</span> <span class="sym">:clk</span>, <span class="key">enable:</span> <span class="sym">:we</span>,
+    <span class="key">addr:</span>  <span class="sym">:addr</span>, <span class="key">data:</span> <span class="sym">:din</span>
+
+  <span class="fn">async_read</span>  <span class="sym">:dout</span>,
+    <span class="key">from:</span> <span class="sym">:mem</span>, <span class="key">addr:</span> <span class="sym">:addr</span>
+<span class="kw">end</span></code></pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">ram.v</span>
+              <span class="code-badge">Generated Verilog</span>
+            </div>
+            <pre><code><span class="kw">module</span> <span class="type">RAM256x8</span> (
+  <span class="kw">input</span>        <span class="var">clk</span>,
+  <span class="kw">input</span>        <span class="var">we</span>,
+  <span class="kw">input</span>  [<span class="num">7</span>:<span class="num">0</span>] <span class="var">addr</span>,
+  <span class="kw">input</span>  [<span class="num">7</span>:<span class="num">0</span>] <span class="var">din</span>,
+  <span class="kw">output</span> [<span class="num">7</span>:<span class="num">0</span>] <span class="var">dout</span>
+);
+
+<span class="kw">reg</span> [<span class="num">7</span>:<span class="num">0</span>] <span class="var">mem</span> [<span class="num">0</span>:<span class="num">255</span>];
+
+<span class="kw">assign</span> <span class="var">dout</span> = <span class="var">mem</span>[<span class="var">addr</span>];
+
+<span class="kw">always</span> @(<span class="kw">posedge</span> <span class="var">clk</span>) <span class="kw">begin</span>
+  <span class="kw">if</span> (<span class="var">we</span>)
+    <span class="var">mem</span>[<span class="var">addr</span>] &lt;= <span class="var">din</span>;
+<span class="kw">end</span>
+
+<span class="kw">endmodule</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Showcase -->
+  <section class="section section-dark" id="showcase">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-tag">Showcase</span>
+        <h2 class="section-title">Real hardware,<br><span class="gradient-text">designed in Ruby.</span></h2>
+        <p class="section-desc">Complete CPU and system implementations that prove CIRCT's capabilities at scale.</p>
+      </div>
+      <div class="showcase-grid">
+        <div class="showcase-card fade-in">
+          <div class="showcase-visual">
+            <div class="chip-outline">
+              <div class="chip-label">6502</div>
+              <div class="chip-pins left"><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="chip-pins right"><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+          </div>
+          <div class="showcase-info">
+            <h3>MOS 6502</h3>
+            <p>Complete 8-bit processor with all 56 instructions, 13 addressing modes, BCD arithmetic, and a 26-state control unit FSM.</p>
+            <div class="showcase-tags">
+              <span>151 Opcodes</span>
+              <span>13 Addr Modes</span>
+              <span>BCD</span>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-card fade-in">
+          <div class="showcase-visual">
+            <div class="chip-outline chip-wide">
+              <div class="chip-label">Apple ][</div>
+              <div class="chip-pins left"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="chip-pins right"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+          </div>
+          <div class="showcase-info">
+            <h3>Apple II</h3>
+            <p>Full system emulation with 6502 CPU, 48KB RAM, text and graphics video modes, Disk II controller, keyboard, and speaker.</p>
+            <div class="showcase-tags">
+              <span>48KB RAM</span>
+              <span>Hi-Res Video</span>
+              <span>Disk II</span>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-card fade-in">
+          <div class="showcase-visual">
+            <div class="chip-outline">
+              <div class="chip-label">DMG</div>
+              <div class="chip-pins left"><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="chip-pins right"><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+          </div>
+          <div class="showcase-info">
+            <h3>Game Boy</h3>
+            <p>Nintendo handheld emulation with SM83 CPU at 4.19MHz, PPU with sprites and windows, timer/counter, and 4-channel APU.</p>
+            <div class="showcase-tags">
+              <span>SM83 CPU</span>
+              <span>PPU</span>
+              <span>4-Ch Audio</span>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-card fade-in">
+          <div class="showcase-visual">
+            <div class="chip-outline chip-wide">
+              <div class="chip-label">RV32I</div>
+              <div class="chip-pins left"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="chip-pins right"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+          </div>
+          <div class="showcase-info">
+            <h3>RISC-V RV32I</h3>
+            <p>Modern 32-bit RISC-V processor with single-cycle and 5-stage pipelined implementations, full instruction decoder, ALU, and memory hierarchy.</p>
+            <div class="showcase-tags">
+              <span>32-bit</span>
+              <span>Pipelined</span>
+              <span>RISC-V ISA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section class="section" id="architecture">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-tag">Architecture</span>
+        <h2 class="section-title">From Ruby to<br><span class="gradient-text">silicon-ready Verilog.</span></h2>
+        <p class="section-desc">A clean compilation pipeline that transforms high-level Ruby into synthesizable hardware.</p>
+      </div>
+      <div class="pipeline fade-in">
+        <div class="pipeline-step">
+          <div class="pipeline-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg>
+          </div>
+          <h4>Ruby DSL</h4>
+          <p>Write hardware in Ruby</p>
+        </div>
+        <div class="pipeline-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><path d="M5 12h14m-4-4l4 4-4 4"/></svg>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipeline-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 8.25V6zm0 9.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zm9.75-9.75A2.25 2.25 0 0115.75 3.75H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6z"/></svg>
+          </div>
+          <h4>RTL</h4>
+          <p>Register-transfer level</p>
+        </div>
+        <div class="pipeline-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><path d="M5 12h14m-4-4l4 4-4 4"/></svg>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipeline-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </div>
+          <h4>Gate Synthesis</h4>
+          <p>Primitive gate netlist</p>
+        </div>
+        <div class="pipeline-arrow pipeline-fork">
+          <svg viewBox="0 0 40 48" fill="none" stroke="var(--cyan)" stroke-width="2">
+            <path d="M5 24h15"/>
+            <path d="M20 24l10-12"/>
+            <path d="M20 24l10 12"/>
+            <path d="M27 9l3 3-3 3"/>
+            <path d="M27 33l3 3-3 3"/>
+          </svg>
+        </div>
+        <div class="pipeline-outputs">
+          <div class="pipeline-step">
+            <div class="pipeline-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+            </div>
+            <h4>Simulation</h4>
+            <p>Rust + WASM engine</p>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+            </div>
+            <h4>Verilog Export</h4>
+            <p>Synthesizable HDL</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section-cta">
+    <div class="container">
+      <div class="cta-content fade-in">
+        <h2 class="section-title">Ready to design<br><span class="gradient-text">hardware in Ruby?</span></h2>
+        <p class="section-desc">Start building digital circuits today with CIRCT's powerful Ruby DSL.</p>
+        <div class="hero-actions">
+          <a href="https://github.com/skryl/rhdl" class="btn btn-primary" target="_blank" rel="noopener">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">
+            <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+              <circle cx="10" cy="10" r="2" fill="currentColor"/>
+              <circle cx="22" cy="10" r="2" fill="currentColor"/>
+              <circle cx="10" cy="22" r="2" fill="currentColor"/>
+              <circle cx="22" cy="22" r="2" fill="currentColor"/>
+              <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <span>CIRCT</span>
+          </a>
+          <p>Design hardware in Ruby. Simulate at speed. Export to Verilog.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Project</h4>
+            <a href="https://github.com/skryl/rhdl" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://github.com/skryl/rhdl#installation" target="_blank" rel="noopener">Installation</a>
+            <a href="https://github.com/skryl/rhdl#documentation" target="_blank" rel="noopener">Documentation</a>
+          </div>
+          <div class="footer-col">
+            <h4>Resources</h4>
+            <a href="https://github.com/skryl/rhdl#examples" target="_blank" rel="noopener">Examples</a>
+            <a href="https://github.com/skryl/rhdl#showcase" target="_blank" rel="noopener">Showcase</a>
+            <a href="https://github.com/skryl/rhdl/issues" target="_blank" rel="noopener">Issues</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
