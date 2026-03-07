@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture - CIRCT</title>
+  <meta name="description" content="CIRCT architecture: RHDL lowers to CIRCT IR, Verilog/VHDL imports to it, with Verilator, Arcilator, and Rust compiler backends.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="showcase-page">
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="./" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="./#features">Features</a>
+        <a href="./#code">Code</a>
+        <a href="./#showcase">Showcase</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="./#architecture" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to overview
+      </a>
+      <div class="showcase-hero-text" style="max-width: 720px;">
+        <h1>Architecture <span class="gradient-text">Overview</span></h1>
+        <p class="showcase-subtitle">CIRCT IR is the central intermediate representation that connects all frontends to all backends. RHDL lowers to it, existing Verilog and VHDL import to it, and multiple execution targets compile from it.</p>
+        <div class="showcase-tags">
+          <span>CIRCT IR</span>
+          <span>MLIR</span>
+          <span>Verilator</span>
+          <span>Arcilator</span>
+          <span>Rust Backend</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full Pipeline Diagram -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Compilation Pipeline</h2>
+
+      <div class="arch-diagram">
+        <!-- Row 1: Frontends converging to CIRCT IR -->
+        <div class="arch-diagram-row">
+          <div class="arch-block">
+            <h4>RHDL</h4>
+            <p>Ruby hardware description language</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block accent" style="flex: 1.5;">
+            <h4>CIRCT IR</h4>
+            <p>Central intermediate representation (MLIR-based)</p>
+          </div>
+          <div class="arch-connector">&larr;</div>
+          <div class="arch-block">
+            <h4>Verilog / VHDL</h4>
+            <p>Import existing HDL designs</p>
+          </div>
+        </div>
+
+        <!-- Arrows down -->
+        <div class="arch-connector-v">&darr; &darr; &darr;</div>
+
+        <!-- Row 2: Three output backends -->
+        <div class="arch-diagram-row">
+          <div class="arch-block">
+            <h4>Normalized Verilog</h4>
+            <p>Verilator simulation</p>
+          </div>
+          <div class="arch-block">
+            <h4>Arc</h4>
+            <p>Arcilator cycle-accurate simulation</p>
+          </div>
+          <div class="arch-block">
+            <h4>Rust Compilation</h4>
+            <p>Native execution via Rust compiler</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CIRCT IR Section -->
+      <h2 class="arch-section-title">CIRCT IR &mdash; The Central Hinge</h2>
+      <div class="arch-columns">
+        <div>
+          <p class="arch-detail-text">CIRCT IR is the pivotal intermediate representation in the compilation pipeline. Built on MLIR (Multi-Level Intermediate Representation), it provides a modular, composable framework for representing hardware at multiple levels of abstraction.</p>
+          <p class="arch-detail-text">All design sources &mdash; whether written in RHDL's Ruby DSL or imported from existing Verilog/VHDL &mdash; converge into this single canonical form. From there, the IR can be lowered through progressive transformation passes to any supported backend.</p>
+          <p class="arch-detail-text">This hub-and-spoke model means adding a new frontend or backend requires only implementing a single translation, rather than N&times;M pairwise conversions.</p>
+        </div>
+        <div>
+          <table class="spec-table">
+            <tr><th>Property</th><th>Detail</th></tr>
+            <tr><td>Foundation</td><td>MLIR (Multi-Level IR) / LLVM</td></tr>
+            <tr><td>Dialects</td><td>HW, Comb, Seq, SV, FIRRTL, Arc</td></tr>
+            <tr><td>Inputs</td><td>RHDL lowering, Verilog import, VHDL import</td></tr>
+            <tr><td>Outputs</td><td>Verilator, Arcilator, Rust native</td></tr>
+            <tr><td>Passes</td><td>Canonicalization, CSE, DCE, lowering</td></tr>
+            <tr><td>Verification</td><td>Built-in IR validation at every stage</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Frontend: RHDL -->
+      <h2 class="arch-section-title">Frontend: RHDL Lowering</h2>
+      <div class="arch-columns">
+        <div>
+          <p class="arch-detail-text">RHDL provides a high-level Ruby DSL for hardware design. When a design is compiled, the Ruby AST is analyzed and progressively lowered through several stages:</p>
+          <p class="arch-detail-text"><strong>Ruby DSL</strong> &rarr; <strong>RTL model</strong> &rarr; <strong>Gate-level netlist</strong> &rarr; <strong>CIRCT IR</strong></p>
+          <p class="arch-detail-text">The lowering process preserves the designer's intent while transforming high-level constructs (state machines, memory abstractions, behavioral blocks) into concrete hardware operations that map directly to CIRCT's HW and Comb dialects.</p>
+          <p class="arch-detail-text">Ruby's metaprogramming makes it possible to express complex parameterized designs concisely, while the lowering pipeline ensures the generated IR is efficient and correct.</p>
+        </div>
+        <div class="code-excerpt">
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">lowering pipeline</span>
+              <span class="code-badge">Conceptual</span>
+            </div>
+            <pre><code><span class="cmt"># 1. Ruby DSL (source)</span>
+<span class="kw">class</span> <span class="type">Counter</span> <span class="op">&lt;</span> <span class="type">SequentialComponent</span>
+  <span class="fn">output</span> <span class="sym">:count</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">sequential</span> { count <span class="op">&lt;=</span> count <span class="op">+</span> <span class="num">1</span> }
+<span class="kw">end</span>
+
+<span class="cmt"># 2. RTL model (internal)</span>
+<span class="cmt">#    register(count, 8) + adder(count, 1)</span>
+
+<span class="cmt"># 3. CIRCT IR (output)</span>
+<span class="cmt">#    hw.module @Counter</span>
+<span class="cmt">#      %c1 = hw.constant 1 : i8</span>
+<span class="cmt">#      %add = comb.add %count, %c1</span>
+<span class="cmt">#      %reg = seq.compreg %add, %clk</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Frontend: Verilog/VHDL Import -->
+      <h2 class="arch-section-title">Frontend: Verilog / VHDL Import</h2>
+      <div class="arch-columns">
+        <div>
+          <p class="arch-detail-text">Existing Verilog and VHDL designs can be imported directly into CIRCT IR using CIRCT's parsing infrastructure. This allows legacy or third-party IP blocks to participate in the same compilation pipeline as RHDL designs.</p>
+          <p class="arch-detail-text">The importer handles SystemVerilog constructs including modules, interfaces, always blocks, and generate statements, mapping them to corresponding CIRCT dialect operations.</p>
+          <p class="arch-detail-text">This import capability means teams can incrementally adopt RHDL &mdash; wrapping existing Verilog IP in Ruby testbenches, or mixing hand-written HDL modules with RHDL-generated components in the same design hierarchy.</p>
+        </div>
+        <div>
+          <table class="spec-table">
+            <tr><th>Import Feature</th><th>Support</th></tr>
+            <tr><td>Verilog modules</td><td>Full structural and behavioral</td></tr>
+            <tr><td>SystemVerilog</td><td>Subset (interfaces, always_ff/comb)</td></tr>
+            <tr><td>VHDL entities</td><td>Entity/architecture mapping</td></tr>
+            <tr><td>Parameterized modules</td><td>Via CIRCT's type system</td></tr>
+            <tr><td>IP integration</td><td>Black-box and wrapper support</td></tr>
+            <tr><td>Testbench interop</td><td>Mixed RHDL + HDL simulation</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Backend: Verilator -->
+      <h2 class="arch-section-title">Backend: Verilator (Normalized Verilog)</h2>
+      <div class="arch-columns">
+        <div>
+          <p class="arch-detail-text">The Verilator backend lowers CIRCT IR to normalized, Verilator-compatible Verilog. CIRCT's ExportVerilog pass generates clean SystemVerilog with specific workarounds for Verilator compatibility:</p>
+          <ul class="arch-detail-list">
+            <li>Local variables are avoided (disallowLocalVariables option)</li>
+            <li>Location info is formatted for Verilator's parser</li>
+            <li>Wire declarations are hoisted to module scope</li>
+            <li>Expressions are simplified to avoid Verilator limitations</li>
+          </ul>
+          <p class="arch-detail-text">The resulting Verilog is then compiled by Verilator into a C++ simulation model, providing fast cycle-accurate simulation with VCD waveform output.</p>
+        </div>
+        <div class="code-excerpt">
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">verilator output</span>
+              <span class="code-badge">Generated</span>
+            </div>
+            <pre><code><span class="cmt">// Normalized Verilog for Verilator</span>
+<span class="kw">module</span> <span class="type">Counter</span> (
+  <span class="kw">input</span>        <span class="var">clk</span>,
+  <span class="kw">input</span>        <span class="var">rst</span>,
+  <span class="kw">output</span> [<span class="num">7</span>:<span class="num">0</span>] <span class="var">count</span>
+);
+  <span class="kw">reg</span> [<span class="num">7</span>:<span class="num">0</span>] <span class="var">_count_reg</span>;
+  <span class="kw">wire</span> [<span class="num">7</span>:<span class="num">0</span>] <span class="var">_count_next</span>;
+
+  <span class="kw">assign</span> <span class="var">_count_next</span> = <span class="var">_count_reg</span> + <span class="num">8'h1</span>;
+  <span class="kw">assign</span> <span class="var">count</span> = <span class="var">_count_reg</span>;
+
+  <span class="kw">always</span> @(<span class="kw">posedge</span> <span class="var">clk</span>) <span class="kw">begin</span>
+    <span class="kw">if</span> (<span class="var">rst</span>)
+      <span class="var">_count_reg</span> &lt;= <span class="num">8'h0</span>;
+    <span class="kw">else</span>
+      <span class="var">_count_reg</span> &lt;= <span class="var">_count_next</span>;
+  <span class="kw">end</span>
+<span class="kw">endmodule</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Backend: Arcilator -->
+      <h2 class="arch-section-title">Backend: Arcilator (Arc Simulation)</h2>
+      <div class="arch-columns">
+        <div>
+          <p class="arch-detail-text">Arcilator is CIRCT's native cycle-accurate hardware simulator. Instead of generating Verilog as an intermediate step, it transforms CIRCT IR into register-to-register transfer arcs and compiles them directly to machine code via LLVM.</p>
+          <p class="arch-detail-text">This approach eliminates the overhead of Verilog generation and parsing, producing simulation performance comparable to or better than Verilator for many designs.</p>
+          <ul class="arch-detail-list">
+            <li>Direct CIRCT IR to LLVM lowering via the Arc dialect</li>
+            <li>Cycle-accurate simulation without Verilog intermediary</li>
+            <li>Supports lockstep comparison with Verilator for verification</li>
+            <li>Works with all frontends that fully lower to CIRCT core dialects</li>
+          </ul>
+        </div>
+        <div>
+          <table class="spec-table">
+            <tr><th>Property</th><th>Detail</th></tr>
+            <tr><td>IR dialect</td><td>Arc (register-transfer arcs)</td></tr>
+            <tr><td>Compilation</td><td>CIRCT IR &rarr; Arc &rarr; LLVM IR &rarr; native</td></tr>
+            <tr><td>Simulation model</td><td>Cycle-accurate, event-driven</td></tr>
+            <tr><td>Performance</td><td>Comparable to Verilator</td></tr>
+            <tr><td>Waveform output</td><td>VCD trace support</td></tr>
+            <tr><td>Verification</td><td>Lockstep mode with Verilator</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Backend: Rust Compiler -->
+      <h2 class="arch-section-title">Backend: Rust Compiler (Native Execution)</h2>
+      <div class="arch-columns">
+        <div>
+          <p class="arch-detail-text">The Rust compiler backend takes CIRCT IR and generates Rust code that can be compiled natively by rustc. This provides several unique advantages:</p>
+          <ul class="arch-detail-list">
+            <li>Native Rust integration &mdash; simulated hardware can be called directly from Rust test harnesses</li>
+            <li>WebAssembly target &mdash; compile to WASM for in-browser simulation and testing</li>
+            <li>Memory safety guarantees from the Rust compiler</li>
+            <li>Access to Rust's ecosystem for I/O, networking, and visualization</li>
+          </ul>
+          <p class="arch-detail-text">This backend powers RHDL's fast simulation engine and enables the browser-based demos in the showcase. Designs compiled this way run 1&ndash;2 orders of magnitude faster than interpreted Ruby simulation.</p>
+        </div>
+        <div class="code-excerpt">
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">rust output</span>
+              <span class="code-badge">Generated</span>
+            </div>
+            <pre><code><span class="cmt">// Generated Rust simulation model</span>
+<span class="kw">pub struct</span> <span class="type">Counter</span> {
+    <span class="var">count</span>: <span class="type">u8</span>,
+}
+
+<span class="kw">impl</span> <span class="type">Counter</span> {
+    <span class="kw">pub fn</span> <span class="fn">tick</span>(
+        &amp;<span class="kw">mut</span> <span class="var">self</span>,
+        <span class="var">rst</span>: <span class="type">bool</span>,
+    ) -&gt; <span class="type">u8</span> {
+        <span class="kw">if</span> <span class="var">rst</span> {
+            <span class="var">self</span>.<span class="var">count</span> = <span class="num">0</span>;
+        } <span class="kw">else</span> {
+            <span class="var">self</span>.<span class="var">count</span> =
+                <span class="var">self</span>.<span class="var">count</span>.<span class="fn">wrapping_add</span>(<span class="num">1</span>);
+        }
+        <span class="var">self</span>.<span class="var">count</span>
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compilation Flow Summary -->
+      <h2 class="arch-section-title">Pipeline Summary</h2>
+      <table class="spec-table">
+        <tr><th>Stage</th><th>Input</th><th>Output</th><th>Purpose</th></tr>
+        <tr><td>RHDL Lowering</td><td>Ruby DSL source</td><td>CIRCT IR (HW/Comb/Seq)</td><td>Frontend compilation from Ruby</td></tr>
+        <tr><td>HDL Import</td><td>Verilog / VHDL files</td><td>CIRCT IR (HW/Comb/Seq)</td><td>Ingestion of existing designs</td></tr>
+        <tr><td>IR Optimization</td><td>CIRCT IR</td><td>Optimized CIRCT IR</td><td>Canonicalization, CSE, DCE</td></tr>
+        <tr><td>Verilog Export</td><td>CIRCT IR</td><td>Normalized Verilog</td><td>Verilator-compatible output</td></tr>
+        <tr><td>Arc Lowering</td><td>CIRCT IR</td><td>Arc dialect &rarr; LLVM IR</td><td>Arcilator simulation</td></tr>
+        <tr><td>Rust Codegen</td><td>CIRCT IR</td><td>Rust source &rarr; native/WASM</td><td>Rust compiler execution</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
