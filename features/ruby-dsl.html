@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruby DSL - CIRCT Features</title>
+  <meta name="description" content="Design hardware using Ruby's expressive syntax and metaprogramming with RHDL.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#features" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to features
+      </a>
+      <div class="showcase-hero-text" style="max-width: 720px;">
+        <h1>Ruby <span class="gradient-text">DSL</span></h1>
+        <p class="showcase-subtitle">Design hardware using Ruby's expressive syntax and metaprogramming. Familiar language, powerful abstractions for digital circuit design.</p>
+        <div class="showcase-tags">
+          <span>Ruby</span>
+          <span>Metaprogramming</span>
+          <span>DSL</span>
+          <span>HDL</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Ruby for Hardware? -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Why Ruby for Hardware?</h2>
+
+      <p class="code-excerpt-desc">Traditional HDLs like Verilog and VHDL were designed decades ago with verbose, rigid syntax. Ruby brings a modern, expressive language to hardware design &mdash; one that engineers already know and love. RHDL leverages Ruby's metaprogramming to create a DSL that reads like a hardware specification but executes as real Ruby code.</p>
+
+      <table class="spec-table">
+        <tr><th>Aspect</th><th>Verilog / VHDL</th><th>RHDL (Ruby)</th></tr>
+        <tr><td>Syntax verbosity</td><td>High &mdash; explicit begin/end, wire declarations</td><td>Minimal &mdash; Ruby blocks and conventions</td></tr>
+        <tr><td>Parameterization</td><td>Limited generate/generic support</td><td>Full Ruby metaprogramming, loops, conditionals</td></tr>
+        <tr><td>Type system</td><td>Rigid, error-prone width mismatches</td><td>Dynamic with automatic width inference</td></tr>
+        <tr><td>Testbench</td><td>Separate testbench files, $display</td><td>RSpec integration, Ruby assertions</td></tr>
+        <tr><td>Code reuse</td><td>Copy-paste or limited includes</td><td>Modules, mixins, inheritance, gems</td></tr>
+        <tr><td>Tooling</td><td>Proprietary vendor tools</td><td>Open source, standard Ruby ecosystem</td></tr>
+      </table>
+
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">A simple counter in Verilog requires explicit boilerplate for ports, wire types, and sensitivity lists.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">counter.v (Verilog)</span>
+            </div>
+            <pre><code><span class="kw">module</span> <span class="type">counter</span> #(
+  <span class="kw">parameter</span> <span class="type">WIDTH</span> <span class="op">=</span> <span class="num">8</span>
+)(
+  <span class="kw">input</span>  <span class="kw">wire</span> clk,
+  <span class="kw">input</span>  <span class="kw">wire</span> rst,
+  <span class="kw">input</span>  <span class="kw">wire</span> en,
+  <span class="kw">output</span> <span class="kw">reg</span> [<span class="type">WIDTH</span><span class="op">-</span><span class="num">1</span>:<span class="num">0</span>] count
+);
+  <span class="kw">always</span> @(<span class="kw">posedge</span> clk <span class="kw">or</span>
+          <span class="kw">posedge</span> rst) <span class="kw">begin</span>
+    <span class="kw">if</span> (rst)
+      count <span class="op">&lt;=</span> <span class="num">0</span>;
+    <span class="kw">else if</span> (en)
+      count <span class="op">&lt;=</span> count <span class="op">+</span> <span class="num">1</span>;
+  <span class="kw">end</span>
+<span class="kw">endmodule</span></code></pre>
+          </div>
+        </div>
+
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">The same counter in RHDL is concise, readable, and parameterized naturally with Ruby.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">counter.rb (RHDL)</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">Counter</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::SequentialComponent</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>, <span class="sym">:en</span>
+  <span class="fn">output</span> <span class="sym">:count</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="fn">behavior</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+           <span class="key">reset:</span> <span class="sym">:rst</span> <span class="kw">do</span>
+    <span class="kw">if</span> en
+      count <span class="op">&lt;=</span> count <span class="op">+</span> <span class="num">1</span>
+    <span class="kw">end</span>
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DSL Syntax Overview -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">DSL Syntax Overview</h2>
+
+      <p class="code-excerpt-desc">RHDL components are defined as Ruby classes that inherit from base component types. Inputs, outputs, and behavior blocks map directly to hardware concepts while remaining idiomatic Ruby.</p>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">Port declarations use Ruby symbols and keyword arguments. Width defaults to 1 (single bit) when omitted. Multiple ports can share a single declaration line.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">port_declarations.rb</span>
+          </div>
+          <pre><code><span class="kw">class</span> <span class="type">ALU</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="cmt"># Single-bit inputs (width: 1 is default)</span>
+  <span class="fn">input</span>  <span class="sym">:carry_in</span>
+
+  <span class="cmt"># Multi-bit inputs with explicit width</span>
+  <span class="fn">input</span>  <span class="sym">:a</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:b</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:op</span>, <span class="key">width:</span> <span class="num">4</span>
+
+  <span class="cmt"># Multiple outputs on one line</span>
+  <span class="fn">output</span> <span class="sym">:result</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:carry</span>, <span class="sym">:zero</span>, <span class="sym">:overflow</span>
+
+  <span class="cmt"># Combinational behavior block</span>
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    result <span class="op">&lt;=</span> <span class="fn">case_select</span>(op, {
+      <span class="num">0</span> <span class="op">=&gt;</span> a <span class="op">+</span> b <span class="op">+</span> carry_in,
+      <span class="num">1</span> <span class="op">=&gt;</span> a <span class="op">-</span> b,
+      <span class="num">2</span> <span class="op">=&gt;</span> a <span class="op">&amp;</span> b,
+      <span class="num">3</span> <span class="op">=&gt;</span> a <span class="op">|</span> b,
+      <span class="num">4</span> <span class="op">=&gt;</span> a <span class="op">^</span> b,
+    })
+    zero  <span class="op">&lt;=</span> result.<span class="fn">eq?</span>(<span class="num">0</span>)
+    carry <span class="op">&lt;=</span> result[<span class="num">8</span>]
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Sequential components use clock and reset signals. State machines are first-class citizens with declarative transition rules.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">traffic_light.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">TrafficLight</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::SequentialComponent</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">input</span>  <span class="sym">:sensor</span>
+  <span class="fn">output</span> <span class="sym">:red</span>, <span class="sym">:yellow</span>, <span class="sym">:green</span>
+
+  <span class="fn">state_machine</span> <span class="sym">:state</span>,
+    <span class="key">clock:</span> <span class="sym">:clk</span>, <span class="key">reset:</span> <span class="sym">:rst</span>,
+    <span class="key">states:</span> [<span class="sym">:idle</span>, <span class="sym">:go</span>,
+             <span class="sym">:slow</span>, <span class="sym">:stop</span>] <span class="kw">do</span>
+
+    <span class="fn">transition</span> <span class="sym">:idle</span> <span class="op">=&gt;</span> <span class="sym">:go</span>,
+      <span class="key">when:</span> sensor
+    <span class="fn">transition</span> <span class="sym">:go</span> <span class="op">=&gt;</span> <span class="sym">:slow</span>,
+      <span class="key">after:</span> <span class="num">30</span>
+    <span class="fn">transition</span> <span class="sym">:slow</span> <span class="op">=&gt;</span> <span class="sym">:stop</span>,
+      <span class="key">after:</span> <span class="num">5</span>
+    <span class="fn">transition</span> <span class="sym">:stop</span> <span class="op">=&gt;</span> <span class="sym">:go</span>,
+      <span class="key">after:</span> <span class="num">20</span>
+  <span class="kw">end</span>
+
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    red    <span class="op">&lt;=</span> state.<span class="fn">eq?</span>(<span class="sym">:stop</span>)
+    yellow <span class="op">&lt;=</span> state.<span class="fn">eq?</span>(<span class="sym">:slow</span>)
+    green  <span class="op">&lt;=</span> state.<span class="fn">eq?</span>(<span class="sym">:go</span>)
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Components are composed by instantiation. Wiring is explicit and type-checked, catching width mismatches at elaboration time.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">cpu_top.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">CPU</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">input</span>  <span class="sym">:data_in</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:data_out</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:addr</span>, <span class="key">width:</span> <span class="num">16</span>
+
+  <span class="cmt"># Instantiate sub-components</span>
+  <span class="fn">component</span> <span class="sym">:alu</span>,
+    <span class="type">ALU</span>.<span class="fn">new</span>
+  <span class="fn">component</span> <span class="sym">:decoder</span>,
+    <span class="type">Decoder</span>.<span class="fn">new</span>
+  <span class="fn">component</span> <span class="sym">:regfile</span>,
+    <span class="type">RegisterFile</span>.<span class="fn">new</span>(
+      <span class="key">num_regs:</span> <span class="num">8</span>
+    )
+
+  <span class="cmt"># Wire components together</span>
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    decoder.opcode <span class="op">&lt;=</span> data_in
+    alu.a   <span class="op">&lt;=</span> regfile.rd1
+    alu.b   <span class="op">&lt;=</span> regfile.rd2
+    alu.op  <span class="op">&lt;=</span> decoder.alu_op
+    regfile.wd <span class="op">&lt;=</span> alu.result
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metaprogramming Power -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Metaprogramming Power</h2>
+
+      <p class="code-excerpt-desc">Ruby's metaprogramming capabilities enable hardware patterns that are impossible or extremely verbose in traditional HDLs. Generate parameterized components, create pipeline stages dynamically, and build entire architectures from configuration hashes.</p>
+
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Parameterized components use standard Ruby to generate hardware. No special generate syntax needed &mdash; loops, conditionals, and methods just work.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">parameterized_fifo.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">FIFO</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::SequentialComponent</span>
+  <span class="kw">def</span> <span class="fn">initialize</span>(<span class="key">depth:</span> <span class="num">16</span>, <span class="key">width:</span> <span class="num">8</span>)
+    <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+    <span class="fn">input</span>  <span class="sym">:wr_en</span>, <span class="sym">:rd_en</span>
+    <span class="fn">input</span>  <span class="sym">:din</span>,  <span class="key">width:</span> width
+    <span class="fn">output</span> <span class="sym">:dout</span>, <span class="key">width:</span> width
+    <span class="fn">output</span> <span class="sym">:full</span>, <span class="sym">:empty</span>
+
+    <span class="cmt"># Generate storage registers</span>
+    <span class="var">addr_bits</span> <span class="op">=</span> <span class="type">Math</span>.<span class="fn">log2</span>(depth).<span class="fn">ceil</span>
+    <span class="fn">register</span> <span class="sym">:wr_ptr</span>, <span class="key">width:</span> addr_bits
+    <span class="fn">register</span> <span class="sym">:rd_ptr</span>, <span class="key">width:</span> addr_bits
+    <span class="fn">memory</span>   <span class="sym">:mem</span>,
+      <span class="key">depth:</span> depth, <span class="key">width:</span> width
+  <span class="kw">end</span>
+
+  <span class="fn">behavior</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+           <span class="key">reset:</span> <span class="sym">:rst</span> <span class="kw">do</span>
+    <span class="kw">if</span> wr_en <span class="op">&amp;&amp;</span> <span class="op">!</span>full
+      mem[wr_ptr] <span class="op">&lt;=</span> din
+      wr_ptr <span class="op">&lt;=</span> wr_ptr <span class="op">+</span> <span class="num">1</span>
+    <span class="kw">end</span>
+    <span class="kw">if</span> rd_en <span class="op">&amp;&amp;</span> <span class="op">!</span>empty
+      dout <span class="op">&lt;=</span> mem[rd_ptr]
+      rd_ptr <span class="op">&lt;=</span> rd_ptr <span class="op">+</span> <span class="num">1</span>
+    <span class="kw">end</span>
+  <span class="kw">end</span>
+<span class="kw">end</span>
+
+<span class="cmt"># Instantiate with different configs</span>
+<span class="var">small</span> <span class="op">=</span> <span class="type">FIFO</span>.<span class="fn">new</span>(<span class="key">depth:</span> <span class="num">4</span>,  <span class="key">width:</span> <span class="num">8</span>)
+<span class="var">large</span> <span class="op">=</span> <span class="type">FIFO</span>.<span class="fn">new</span>(<span class="key">depth:</span> <span class="num">64</span>, <span class="key">width:</span> <span class="num">32</span>)</code></pre>
+          </div>
+        </div>
+
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Dynamic generation lets you build entire bus architectures, pipeline stages, and interconnects from configuration data.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">pipeline_generator.rb</span>
+            </div>
+            <pre><code><span class="cmt"># Generate an N-stage pipeline dynamically</span>
+<span class="kw">def</span> <span class="fn">build_pipeline</span>(<span class="key">stages:</span>, <span class="key">width:</span>)
+  <span class="type">Class</span>.<span class="fn">new</span>(<span class="type">RHDL::Sim::SequentialComponent</span>) <span class="kw">do</span>
+    <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+    <span class="fn">input</span>  <span class="sym">:din</span>,  <span class="key">width:</span> width
+    <span class="fn">output</span> <span class="sym">:dout</span>, <span class="key">width:</span> width
+    <span class="fn">output</span> <span class="sym">:valid</span>
+
+    <span class="cmt"># Create pipeline registers</span>
+    stages.<span class="fn">times</span> <span class="kw">do</span> |<span class="var">i</span>|
+      <span class="fn">register</span> <span class="str">:"stage_#{i}"</span>,
+        <span class="key">width:</span> width
+      <span class="fn">register</span> <span class="str">:"valid_#{i}"</span>
+    <span class="kw">end</span>
+
+    <span class="fn">behavior</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+             <span class="key">reset:</span> <span class="sym">:rst</span> <span class="kw">do</span>
+      <span class="cmt"># Chain stages together</span>
+      <span class="fn">send</span>(<span class="sym">:stage_0</span>) <span class="op">&lt;=</span> din
+      (<span class="num">1</span>...stages).<span class="fn">each</span> <span class="kw">do</span> |<span class="var">i</span>|
+        <span class="fn">send</span>(<span class="str">:"stage_#{i}"</span>) <span class="op">&lt;=</span>
+          <span class="fn">send</span>(<span class="str">:"stage_#{i-1}"</span>)
+      <span class="kw">end</span>
+      dout <span class="op">&lt;=</span> <span class="fn">send</span>(<span class="str">:"stage_#{stages-1}"</span>)
+    <span class="kw">end</span>
+  <span class="kw">end</span>
+<span class="kw">end</span>
+
+<span class="cmt"># Create pipelines at elaboration time</span>
+<span class="var">Pipe3</span> <span class="op">=</span> <span class="fn">build_pipeline</span>(<span class="key">stages:</span> <span class="num">3</span>, <span class="key">width:</span> <span class="num">16</span>)
+<span class="var">Pipe7</span> <span class="op">=</span> <span class="fn">build_pipeline</span>(<span class="key">stages:</span> <span class="num">7</span>, <span class="key">width:</span> <span class="num">32</span>)</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">Mixins and modules let you share behavior across components &mdash; a common pattern for adding debug interfaces, protocol support, or standard bus connectivity to any design.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">mixins.rb</span>
+          </div>
+          <pre><code><span class="kw">module</span> <span class="type">Debuggable</span>
+  <span class="kw">def</span> <span class="fn">self.included</span>(<span class="var">base</span>)
+    base.<span class="fn">input</span>  <span class="sym">:debug_en</span>
+    base.<span class="fn">output</span> <span class="sym">:debug_data</span>, <span class="key">width:</span> <span class="num">32</span>
+    base.<span class="fn">output</span> <span class="sym">:debug_valid</span>
+  <span class="kw">end</span>
+
+  <span class="kw">def</span> <span class="fn">emit_debug</span>(<span class="var">data</span>)
+    <span class="kw">if</span> debug_en
+      debug_data  <span class="op">&lt;=</span> data
+      debug_valid <span class="op">&lt;=</span> <span class="num">1</span>
+    <span class="kw">end</span>
+  <span class="kw">end</span>
+<span class="kw">end</span>
+
+<span class="kw">class</span> <span class="type">MyProcessor</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::SequentialComponent</span>
+  <span class="kw">include</span> <span class="type">Debuggable</span>
+  <span class="cmt"># debug_en, debug_data, debug_valid ports are</span>
+  <span class="cmt"># automatically added by the mixin</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

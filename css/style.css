@@ -541,6 +541,13 @@ a:hover { color: #e04840; }
   border: 1px solid var(--border);
 }
 
+a.feature-card,
+a.component-card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .feature-card {
   padding: 24px;
   background: var(--bg-primary);
@@ -701,6 +708,13 @@ a:hover { color: #e04840; }
 }
 
 .code-panel.hidden { display: none; }
+
+.code-panel-cta {
+  grid-column: 1 / -1;
+  background: var(--bg-secondary);
+  padding: 16px 24px;
+  text-align: center;
+}
 
 .code-block {
   background: #080c08;

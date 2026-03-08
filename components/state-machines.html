@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>State Machines - CIRCT</title>
+  <meta name="description" content="Finite state machines in RHDL: declarative transitions, timed states, and output logic for complex control flow.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#components" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to components
+      </a>
+      <div class="showcase-hero-text" style="max-width: 720px;">
+        <h1>State <span class="gradient-text">Machines</span></h1>
+        <p class="showcase-subtitle">Finite state machines with transition conditions, timed states, and output logic. Complex control flow made declarative.</p>
+        <div class="showcase-tags">
+          <span>FSM</span>
+          <span>Transitions</span>
+          <span>Timed States</span>
+          <span>Output Logic</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FSM Basics -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">FSM Basics</h2>
+
+      <p class="code-excerpt-desc">A Finite State Machine (FSM) is a sequential circuit that moves between a fixed set of states based on input conditions. At any given time, the machine is in exactly one state. On each clock edge, it evaluates transition conditions and either moves to a new state or remains in the current one. Each state can drive specific output values, making FSMs ideal for control logic: protocol handlers, bus arbiters, instruction sequencers, and peripheral controllers.</p>
+
+      <p class="code-excerpt-desc">An FSM consists of three elements: states (the set of possible configurations), transitions (rules that determine which state comes next), and outputs (signals driven based on the current state and optionally the inputs). RHDL makes all three explicit and declarative, so the hardware intent is clear from the code.</p>
+
+      <table class="spec-table">
+        <tr><th>Element</th><th>Description</th></tr>
+        <tr><td>States</td><td>Named configurations the machine can be in. One state is designated as the initial/reset state.</td></tr>
+        <tr><td>Transitions</td><td>Conditional edges between states, evaluated on each clock cycle. Guarded by <code>when</code>/<code>unless</code> conditions.</td></tr>
+        <tr><td>Outputs</td><td>Signals driven by the current state. Can be Moore-style (state only) or Mealy-style (state + inputs).</td></tr>
+        <tr><td>Timed states</td><td>States that automatically transition after a specified number of clock cycles, using a built-in counter.</td></tr>
+        <tr><td>Reset</td><td>Returns the machine to its initial state on synchronous reset assertion.</td></tr>
+      </table>
+
+      <h2 class="arch-section-title">Defining State Machines</h2>
+
+      <p class="code-excerpt-desc">The <code>state_machine</code> DSL in RHDL lets you define an FSM declaratively. You list the states, their outputs, and their transitions. The framework handles state encoding, the state register, and the next-state logic automatically.</p>
+
+      <div class="code-excerpt">
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">basic_fsm.rb</span>
+          </div>
+          <pre><code><span class="kw">class</span> <span class="type">BasicFSM</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">input</span>  <span class="sym">:start</span>, <span class="sym">:done</span>
+  <span class="fn">output</span> <span class="sym">:busy</span>, <span class="sym">:ready</span>
+
+  <span class="fn">state_machine</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+                <span class="key">reset:</span> <span class="sym">:rst</span>,
+                <span class="key">initial:</span> <span class="sym">:idle</span> <span class="kw">do</span>
+
+    <span class="fn">state</span> <span class="sym">:idle</span> <span class="kw">do</span>
+      ready <span class="op">&lt;=</span> <span class="num">1</span>
+      busy  <span class="op">&lt;=</span> <span class="num">0</span>
+      <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:running</span>, <span class="key">when:</span> start
+    <span class="kw">end</span>
+
+    <span class="fn">state</span> <span class="sym">:running</span> <span class="kw">do</span>
+      ready <span class="op">&lt;=</span> <span class="num">0</span>
+      busy  <span class="op">&lt;=</span> <span class="num">1</span>
+      <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:complete</span>, <span class="key">when:</span> done
+    <span class="kw">end</span>
+
+    <span class="fn">state</span> <span class="sym">:complete</span> <span class="kw">do</span>
+      ready <span class="op">&lt;=</span> <span class="num">0</span>
+      busy  <span class="op">&lt;=</span> <span class="num">0</span>
+      <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:idle</span>  <span class="cmt"># unconditional</span>
+    <span class="kw">end</span>
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+
+      <h2 class="arch-section-title">Transition Conditions</h2>
+
+      <p class="code-excerpt-desc">Transitions can be guarded with <code>when</code> and <code>unless</code> conditions. Multiple transitions from the same state are evaluated in priority order (first match wins). You can also specify multi-state transitions where the same condition leads to different target states based on additional logic.</p>
+
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Priority-based transitions with when/unless guards. The first matching condition determines the next state. If no condition matches, the machine stays in its current state.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">guarded_transitions.rb</span>
+            </div>
+            <pre><code><span class="fn">state</span> <span class="sym">:fetch</span> <span class="kw">do</span>
+  <span class="cmt"># Output: request memory read</span>
+  mem_rd <span class="op">&lt;=</span> <span class="num">1</span>
+  addr   <span class="op">&lt;=</span> pc
+
+  <span class="cmt"># Priority transitions (first match wins)</span>
+  <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:halt</span>,
+    <span class="key">when:</span> halt_req
+  <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:interrupt</span>,
+    <span class="key">when:</span> irq <span class="op">&amp;</span> irq_en
+  <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:decode</span>,
+    <span class="key">when:</span> mem_ready
+  <span class="cmt"># Stay in fetch if memory not ready</span>
+<span class="kw">end</span>
+
+<span class="fn">state</span> <span class="sym">:execute</span> <span class="kw">do</span>
+  <span class="cmt"># Conditional next state based on opcode</span>
+  <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:mem_access</span>,
+    <span class="key">when:</span> is_load <span class="op">|</span> is_store
+  <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:branch_resolve</span>,
+    <span class="key">when:</span> is_branch
+  <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:writeback</span>,
+    <span class="key">unless:</span> is_load <span class="op">|</span> is_store <span class="op">|</span> is_branch
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Timed states use a built-in counter to automatically transition after a specified number of clock cycles. This is useful for wait states, timing protocols, and debouncing.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">timed_states.rb</span>
+            </div>
+            <pre><code><span class="fn">state</span> <span class="sym">:warmup</span>, <span class="key">ticks:</span> <span class="num">100</span> <span class="kw">do</span>
+  <span class="cmt"># Drive outputs for 100 clock cycles</span>
+  power_good <span class="op">&lt;=</span> <span class="num">0</span>
+  led        <span class="op">&lt;=</span> blink_pattern
+
+  <span class="cmt"># Auto-transitions after 100 ticks</span>
+  <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:ready</span>
+<span class="kw">end</span>
+
+<span class="fn">state</span> <span class="sym">:debounce</span>, <span class="key">ticks:</span> <span class="num">50_000</span> <span class="kw">do</span>
+  <span class="cmt"># Wait 1ms at 50MHz for button debounce</span>
+  btn_valid <span class="op">&lt;=</span> <span class="num">0</span>
+
+  <span class="cmt"># Early exit if button released</span>
+  <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:idle</span>,
+    <span class="key">unless:</span> btn_raw
+  <span class="cmt"># After timeout, confirm press</span>
+  <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:pressed</span>
+<span class="kw">end</span>
+
+<span class="fn">state</span> <span class="sym">:pressed</span> <span class="kw">do</span>
+  btn_valid <span class="op">&lt;=</span> <span class="num">1</span>
+  <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:idle</span>,
+    <span class="key">unless:</span> btn_raw
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="arch-section-title">Practical Example: Traffic Light Controller</h2>
+
+      <p class="code-excerpt-desc">A traffic light controller is a classic FSM application. It cycles through green, yellow, and red phases for two directions, using timed states to hold each phase for the correct duration. A pedestrian crossing button can interrupt the normal cycle. This example targets a 50 MHz clock, using tick counts to derive real-world timing.</p>
+
+      <div class="code-excerpt">
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">traffic_light.rb</span>
+          </div>
+          <pre><code><span class="kw">class</span> <span class="type">TrafficLight</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="cmt"># Timing constants (50 MHz clock)</span>
+  GREEN_TICKS  <span class="op">=</span> <span class="num">750_000_000</span>  <span class="cmt"># 15 seconds</span>
+  YELLOW_TICKS <span class="op">=</span> <span class="num">150_000_000</span>  <span class="cmt"># 3 seconds</span>
+  RED_TICKS    <span class="op">=</span> <span class="num">100_000_000</span>  <span class="cmt"># 2 second all-red overlap</span>
+  PED_TICKS    <span class="op">=</span> <span class="num">500_000_000</span>  <span class="cmt"># 10 seconds pedestrian</span>
+
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">input</span>  <span class="sym">:ped_request</span>
+  <span class="cmt"># North-South lights</span>
+  <span class="fn">output</span> <span class="sym">:ns_red</span>, <span class="sym">:ns_yellow</span>, <span class="sym">:ns_green</span>
+  <span class="cmt"># East-West lights</span>
+  <span class="fn">output</span> <span class="sym">:ew_red</span>, <span class="sym">:ew_yellow</span>, <span class="sym">:ew_green</span>
+  <span class="cmt"># Pedestrian signal</span>
+  <span class="fn">output</span> <span class="sym">:ped_walk</span>, <span class="sym">:ped_stop</span>
+
+  <span class="fn">state_machine</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+                <span class="key">reset:</span> <span class="sym">:rst</span>,
+                <span class="key">initial:</span> <span class="sym">:ns_green</span> <span class="kw">do</span>
+
+    <span class="cmt"># === North-South green phase ===</span>
+    <span class="fn">state</span> <span class="sym">:ns_green</span>, <span class="key">ticks:</span> GREEN_TICKS <span class="kw">do</span>
+      ns_green <span class="op">&lt;=</span> <span class="num">1</span>; ns_yellow <span class="op">&lt;=</span> <span class="num">0</span>; ns_red <span class="op">&lt;=</span> <span class="num">0</span>
+      ew_green <span class="op">&lt;=</span> <span class="num">0</span>; ew_yellow <span class="op">&lt;=</span> <span class="num">0</span>; ew_red <span class="op">&lt;=</span> <span class="num">1</span>
+      ped_walk <span class="op">&lt;=</span> <span class="num">0</span>; ped_stop  <span class="op">&lt;=</span> <span class="num">1</span>
+
+      <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:ns_yellow</span>
+    <span class="kw">end</span>
+
+    <span class="fn">state</span> <span class="sym">:ns_yellow</span>, <span class="key">ticks:</span> YELLOW_TICKS <span class="kw">do</span>
+      ns_green <span class="op">&lt;=</span> <span class="num">0</span>; ns_yellow <span class="op">&lt;=</span> <span class="num">1</span>; ns_red <span class="op">&lt;=</span> <span class="num">0</span>
+      ew_green <span class="op">&lt;=</span> <span class="num">0</span>; ew_yellow <span class="op">&lt;=</span> <span class="num">0</span>; ew_red <span class="op">&lt;=</span> <span class="num">1</span>
+      ped_walk <span class="op">&lt;=</span> <span class="num">0</span>; ped_stop  <span class="op">&lt;=</span> <span class="num">1</span>
+
+      <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:all_red_1</span>
+    <span class="kw">end</span>
+
+    <span class="cmt"># === Safety overlap: all red ===</span>
+    <span class="fn">state</span> <span class="sym">:all_red_1</span>, <span class="key">ticks:</span> RED_TICKS <span class="kw">do</span>
+      ns_green <span class="op">&lt;=</span> <span class="num">0</span>; ns_yellow <span class="op">&lt;=</span> <span class="num">0</span>; ns_red <span class="op">&lt;=</span> <span class="num">1</span>
+      ew_green <span class="op">&lt;=</span> <span class="num">0</span>; ew_yellow <span class="op">&lt;=</span> <span class="num">0</span>; ew_red <span class="op">&lt;=</span> <span class="num">1</span>
+      ped_walk <span class="op">&lt;=</span> <span class="num">0</span>; ped_stop  <span class="op">&lt;=</span> <span class="num">1</span>
+
+      <span class="cmt"># Check for pedestrian request</span>
+      <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:ped_phase</span>, <span class="key">when:</span> ped_request
+      <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:ew_green</span>
+    <span class="kw">end</span>
+
+    <span class="cmt"># === East-West green phase ===</span>
+    <span class="fn">state</span> <span class="sym">:ew_green</span>, <span class="key">ticks:</span> GREEN_TICKS <span class="kw">do</span>
+      ns_green <span class="op">&lt;=</span> <span class="num">0</span>; ns_yellow <span class="op">&lt;=</span> <span class="num">0</span>; ns_red <span class="op">&lt;=</span> <span class="num">1</span>
+      ew_green <span class="op">&lt;=</span> <span class="num">1</span>; ew_yellow <span class="op">&lt;=</span> <span class="num">0</span>; ew_red <span class="op">&lt;=</span> <span class="num">0</span>
+      ped_walk <span class="op">&lt;=</span> <span class="num">0</span>; ped_stop  <span class="op">&lt;=</span> <span class="num">1</span>
+
+      <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:ew_yellow</span>
+    <span class="kw">end</span>
+
+    <span class="fn">state</span> <span class="sym">:ew_yellow</span>, <span class="key">ticks:</span> YELLOW_TICKS <span class="kw">do</span>
+      ns_green <span class="op">&lt;=</span> <span class="num">0</span>; ns_yellow <span class="op">&lt;=</span> <span class="num">0</span>; ns_red <span class="op">&lt;=</span> <span class="num">1</span>
+      ew_green <span class="op">&lt;=</span> <span class="num">0</span>; ew_yellow <span class="op">&lt;=</span> <span class="num">1</span>; ew_red <span class="op">&lt;=</span> <span class="num">0</span>
+      ped_walk <span class="op">&lt;=</span> <span class="num">0</span>; ped_stop  <span class="op">&lt;=</span> <span class="num">1</span>
+
+      <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:all_red_2</span>
+    <span class="kw">end</span>
+
+    <span class="fn">state</span> <span class="sym">:all_red_2</span>, <span class="key">ticks:</span> RED_TICKS <span class="kw">do</span>
+      ns_green <span class="op">&lt;=</span> <span class="num">0</span>; ns_yellow <span class="op">&lt;=</span> <span class="num">0</span>; ns_red <span class="op">&lt;=</span> <span class="num">1</span>
+      ew_green <span class="op">&lt;=</span> <span class="num">0</span>; ew_yellow <span class="op">&lt;=</span> <span class="num">0</span>; ew_red <span class="op">&lt;=</span> <span class="num">1</span>
+      ped_walk <span class="op">&lt;=</span> <span class="num">0</span>; ped_stop  <span class="op">&lt;=</span> <span class="num">1</span>
+
+      <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:ped_phase</span>, <span class="key">when:</span> ped_request
+      <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:ns_green</span>
+    <span class="kw">end</span>
+
+    <span class="cmt"># === Pedestrian crossing phase ===</span>
+    <span class="fn">state</span> <span class="sym">:ped_phase</span>, <span class="key">ticks:</span> PED_TICKS <span class="kw">do</span>
+      ns_green <span class="op">&lt;=</span> <span class="num">0</span>; ns_yellow <span class="op">&lt;=</span> <span class="num">0</span>; ns_red <span class="op">&lt;=</span> <span class="num">1</span>
+      ew_green <span class="op">&lt;=</span> <span class="num">0</span>; ew_yellow <span class="op">&lt;=</span> <span class="num">0</span>; ew_red <span class="op">&lt;=</span> <span class="num">1</span>
+      ped_walk <span class="op">&lt;=</span> <span class="num">1</span>; ped_stop  <span class="op">&lt;=</span> <span class="num">0</span>
+
+      <span class="fn">transition</span> <span class="key">to:</span> <span class="sym">:ns_green</span>
+    <span class="kw">end</span>
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

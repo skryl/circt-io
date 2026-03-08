@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sequential Components - CIRCT</title>
+  <meta name="description" content="Sequential logic components in RHDL: clock-driven design with synchronous reset, enable signals, and registers.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#components" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to components
+      </a>
+      <div class="showcase-hero-text" style="max-width: 720px;">
+        <h1>Sequential <span class="gradient-text">Components</span></h1>
+        <p class="showcase-subtitle">Clock-driven components with synchronous reset and enable signals. State that persists across clock cycles.</p>
+        <div class="showcase-tags">
+          <span>Clock</span>
+          <span>Reset</span>
+          <span>Enable</span>
+          <span>Flip-Flop</span>
+          <span>Register</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clock-Driven Design -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Clock-Driven Design</h2>
+
+      <p class="code-excerpt-desc">Sequential logic is what gives digital circuits memory. While combinational logic computes outputs purely from current inputs, sequential components capture and hold values at specific moments in time, determined by a clock signal. On each rising edge of the clock, the circuit samples its inputs and updates its internal state. Between clock edges, outputs remain stable regardless of input changes.</p>
+
+      <p class="code-excerpt-desc">This distinction is fundamental: combinational logic answers "what should the output be given these inputs right now?" while sequential logic answers "what should the output be given these inputs and everything that happened before?" Counters, shift registers, state machines, and pipeline registers all rely on sequential behavior.</p>
+
+      <table class="spec-table">
+        <tr><th>Property</th><th>Combinational</th><th>Sequential</th></tr>
+        <tr><td>Clock</td><td>Not used</td><td>Required (rising edge triggered)</td></tr>
+        <tr><td>State</td><td>None</td><td>Stored in flip-flops/registers</td></tr>
+        <tr><td>Output depends on</td><td>Current inputs only</td><td>Current inputs + stored state</td></tr>
+        <tr><td>RHDL keyword</td><td><code>behavior</code></td><td><code>sequential</code></td></tr>
+        <tr><td>Reset</td><td>Not applicable</td><td>Synchronous reset to known state</td></tr>
+      </table>
+
+      <h2 class="arch-section-title">The Sequential Block</h2>
+
+      <p class="code-excerpt-desc">In RHDL, the <code>sequential</code> keyword declares a clock-driven block. You specify the clock signal, an optional reset signal, and reset values for all stateful outputs. On each rising clock edge, all assignments within the block take effect simultaneously. When reset is asserted, outputs snap to their declared reset values.</p>
+
+      <div class="code-excerpt">
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">d_flip_flop.rb</span>
+          </div>
+          <pre><code><span class="kw">class</span> <span class="type">DFlipFlop</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">input</span>  <span class="sym">:d</span>,   <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:q</span>,   <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="cmt"># Sequential block: updates on rising edge of clk</span>
+  <span class="cmt"># Synchronous reset sets q to 0</span>
+  <span class="fn">sequential</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+             <span class="key">reset:</span> <span class="sym">:rst</span>,
+             <span class="key">reset_values:</span> { <span class="sym">q:</span> <span class="num">0</span> } <span class="kw">do</span>
+    q <span class="op">&lt;=</span> d
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">An enabled register only updates its value when the enable signal is high. This is essential for building pipeline registers that can be stalled, or data registers that should hold their value until explicitly written.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">enabled_register.rb</span>
+          </div>
+          <pre><code><span class="kw">class</span> <span class="type">EnabledRegister</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>, <span class="sym">:en</span>
+  <span class="fn">input</span>  <span class="sym">:d</span>,   <span class="key">width:</span> <span class="num">16</span>
+  <span class="fn">output</span> <span class="sym">:q</span>,   <span class="key">width:</span> <span class="num">16</span>
+
+  <span class="fn">sequential</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+             <span class="key">reset:</span> <span class="sym">:rst</span>,
+             <span class="key">reset_values:</span> { <span class="sym">q:</span> <span class="num">0</span> } <span class="kw">do</span>
+    <span class="cmt"># Only update when enable is asserted</span>
+    q <span class="op">&lt;=</span> <span class="fn">cond</span>(en, d, q)
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+
+      <h2 class="arch-section-title">Registers and Counters</h2>
+
+      <p class="code-excerpt-desc">Registers and counters are the most common sequential building blocks. A counter increments (or decrements) on each clock cycle, optionally wrapping around or stopping at a limit. These are used everywhere: address generators, timers, clock dividers, and control sequencers.</p>
+
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">A parameterized up-counter with configurable width and maximum value. When the counter reaches its limit, it wraps back to zero.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">counter.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">Counter</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">parameter</span> <span class="sym">:WIDTH</span>,  <span class="key">default:</span> <span class="num">8</span>
+  <span class="fn">parameter</span> <span class="sym">:MAX</span>,    <span class="key">default:</span> <span class="num">255</span>
+
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>, <span class="sym">:en</span>
+  <span class="fn">output</span> <span class="sym">:count</span>,  <span class="key">width:</span> WIDTH
+  <span class="fn">output</span> <span class="sym">:wrap</span>
+
+  <span class="fn">sequential</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+             <span class="key">reset:</span> <span class="sym">:rst</span>,
+             <span class="key">reset_values:</span> { <span class="sym">count:</span> <span class="num">0</span> } <span class="kw">do</span>
+    wrap <span class="op">&lt;=</span> count.<span class="fn">eq?</span>(MAX) <span class="op">&amp;</span> en
+
+    count <span class="op">&lt;=</span> <span class="fn">cond</span>(en,
+      <span class="fn">cond</span>(count.<span class="fn">eq?</span>(MAX), <span class="num">0</span>, count <span class="op">+</span> <span class="num">1</span>),
+      count)
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">A shift register that shifts data in serially and provides parallel output. Useful for serial-to-parallel conversion, SPI interfaces, and delay lines.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">shift_register.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">ShiftRegister</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">parameter</span> <span class="sym">:WIDTH</span>, <span class="key">default:</span> <span class="num">8</span>
+
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">input</span>  <span class="sym">:serial_in</span>
+  <span class="fn">input</span>  <span class="sym">:shift_en</span>
+  <span class="fn">input</span>  <span class="sym">:load_en</span>
+  <span class="fn">input</span>  <span class="sym">:parallel_in</span>, <span class="key">width:</span> WIDTH
+  <span class="fn">output</span> <span class="sym">:parallel_out</span>, <span class="key">width:</span> WIDTH
+  <span class="fn">output</span> <span class="sym">:serial_out</span>
+
+  <span class="fn">sequential</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+             <span class="key">reset:</span> <span class="sym">:rst</span>,
+             <span class="key">reset_values:</span> {
+               <span class="sym">parallel_out:</span> <span class="num">0</span>
+             } <span class="kw">do</span>
+    serial_out <span class="op">&lt;=</span> parallel_out[WIDTH <span class="op">-</span> <span class="num">1</span>]
+
+    parallel_out <span class="op">&lt;=</span> <span class="fn">cond</span>(load_en,
+      parallel_in,
+      <span class="fn">cond</span>(shift_en,
+        { parallel_out[WIDTH <span class="op">-</span> <span class="num">2</span>..<span class="num">0</span>], serial_in },
+        parallel_out))
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="arch-section-title">Timing Considerations</h2>
+
+      <p class="code-excerpt-desc">Understanding timing is critical for reliable sequential designs. Every flip-flop has setup and hold time requirements that constrain how fast the clock can run. RHDL's sequential model abstracts away the analog details but the designer must still reason about timing at the architecture level.</p>
+
+      <table class="spec-table">
+        <tr><th>Concept</th><th>Description</th></tr>
+        <tr><td>Setup time</td><td>Data must be stable before the clock edge. Limits maximum clock frequency based on the longest combinational path between registers.</td></tr>
+        <tr><td>Hold time</td><td>Data must remain stable after the clock edge. Ensured by minimum propagation delay through combinational logic.</td></tr>
+        <tr><td>Clock-to-Q delay</td><td>Time from clock edge until the register output is valid. Adds to the critical path of downstream logic.</td></tr>
+        <tr><td>Synchronous reset</td><td>Reset is sampled on the clock edge, like any other input. RHDL uses synchronous reset by default for cleaner synthesis.</td></tr>
+        <tr><td>Asynchronous reset</td><td>Reset takes effect immediately, regardless of the clock. Used when the circuit must reach a known state without waiting for a clock edge (e.g., power-on).</td></tr>
+        <tr><td>Metastability</td><td>When signals cross clock domains, they must be synchronized using multi-stage flip-flop chains to avoid metastable states.</td></tr>
+      </table>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">A two-stage synchronizer for safely crossing clock domains. The input signal is sampled twice through flip-flops in the destination clock domain, dramatically reducing the probability of metastable values propagating into the design.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">synchronizer.rb</span>
+          </div>
+          <pre><code><span class="kw">class</span> <span class="type">Synchronizer</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">input</span>  <span class="sym">:async_in</span>
+  <span class="fn">output</span> <span class="sym">:sync_out</span>
+
+  <span class="cmt"># Internal pipeline stage</span>
+  <span class="fn">signal</span> <span class="sym">:meta</span>
+
+  <span class="fn">sequential</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+             <span class="key">reset:</span> <span class="sym">:rst</span>,
+             <span class="key">reset_values:</span> {
+               <span class="sym">meta:</span> <span class="num">0</span>,
+               <span class="sym">sync_out:</span> <span class="num">0</span>
+             } <span class="kw">do</span>
+    <span class="cmt"># Two flip-flop synchronizer chain</span>
+    meta     <span class="op">&lt;=</span> async_in   <span class="cmt"># first stage (may go metastable)</span>
+    sync_out <span class="op">&lt;=</span> meta       <span class="cmt"># second stage (resolved)</span>
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

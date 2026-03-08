@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Deep Dive - CIRCT</title>
+  <meta name="description" content="Implementing a 256x8 RAM module with synchronous write and asynchronous read in CIRCT.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#code" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to examples
+      </a>
+      <div class="showcase-hero-text" style="max-width: 720px;">
+        <h1>Memory <span class="gradient-text">Deep Dive</span></h1>
+        <p class="showcase-subtitle">Implementing a 256x8 RAM module with synchronous write and asynchronous read. Understanding memory design patterns in hardware.</p>
+        <div class="showcase-tags">
+          <span>Memory</span>
+          <span>RAM</span>
+          <span>Sync Write</span>
+          <span>Async Read</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Ruby Implementation</h2>
+      <p class="code-excerpt-desc">The Memory DSL provides a declarative way to define RAM modules. Include <code>RHDL::DSL::Memory</code> to access <code>memory</code>, <code>sync_write</code>, and <code>async_read</code>.</p>
+
+      <div class="code-excerpt">
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">ram.rb</span>
+          </div>
+          <pre><code><span class="kw">class</span> <span class="type">RAM256x8</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="kw">include</span> <span class="type">RHDL::DSL::Memory</span>
+
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:we</span>        <span class="cmt"># clock and write enable</span>
+  <span class="fn">input</span>  <span class="sym">:addr</span>, <span class="key">width:</span> <span class="num">8</span>  <span class="cmt"># 8-bit address = 256 locations</span>
+  <span class="fn">input</span>  <span class="sym">:din</span>,  <span class="key">width:</span> <span class="num">8</span>  <span class="cmt"># 8-bit data input</span>
+  <span class="fn">output</span> <span class="sym">:dout</span>, <span class="key">width:</span> <span class="num">8</span>  <span class="cmt"># 8-bit data output</span>
+
+  <span class="cmt"># Declare memory array: 256 entries x 8 bits</span>
+  <span class="fn">memory</span> <span class="sym">:mem</span>, <span class="key">depth:</span> <span class="num">256</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="cmt"># Write on rising clock edge when we=1</span>
+  <span class="fn">sync_write</span>  <span class="sym">:mem</span>,
+    <span class="key">clock:</span> <span class="sym">:clk</span>, <span class="key">enable:</span> <span class="sym">:we</span>,
+    <span class="key">addr:</span>  <span class="sym">:addr</span>, <span class="key">data:</span> <span class="sym">:din</span>
+
+  <span class="cmt"># Read is combinational (no clock needed)</span>
+  <span class="fn">async_read</span>  <span class="sym">:dout</span>,
+    <span class="key">from:</span> <span class="sym">:mem</span>, <span class="key">addr:</span> <span class="sym">:addr</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+
+      <h2 class="arch-section-title">Generated Verilog</h2>
+
+      <div class="code-excerpt">
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">ram.v</span>
+            <span class="code-badge">Generated Verilog</span>
+          </div>
+          <pre><code><span class="kw">module</span> <span class="type">RAM256x8</span> (
+  <span class="kw">input</span>        <span class="var">clk</span>,
+  <span class="kw">input</span>        <span class="var">we</span>,
+  <span class="kw">input</span>  [<span class="num">7</span>:<span class="num">0</span>] <span class="var">addr</span>,
+  <span class="kw">input</span>  [<span class="num">7</span>:<span class="num">0</span>] <span class="var">din</span>,
+  <span class="kw">output</span> [<span class="num">7</span>:<span class="num">0</span>] <span class="var">dout</span>
+);
+
+<span class="kw">reg</span> [<span class="num">7</span>:<span class="num">0</span>] <span class="var">mem</span> [<span class="num">0</span>:<span class="num">255</span>];
+
+<span class="kw">assign</span> <span class="var">dout</span> = <span class="var">mem</span>[<span class="var">addr</span>];
+
+<span class="kw">always</span> @(<span class="kw">posedge</span> <span class="var">clk</span>) <span class="kw">begin</span>
+  <span class="kw">if</span> (<span class="var">we</span>)
+    <span class="var">mem</span>[<span class="var">addr</span>] &lt;= <span class="var">din</span>;
+<span class="kw">end</span>
+
+<span class="kw">endmodule</span></code></pre>
+        </div>
+      </div>
+
+      <h2 class="arch-section-title">Read/Write Timing</h2>
+
+      <table class="spec-table">
+        <tr><th>Operation</th><th>Timing</th><th>Behavior</th></tr>
+        <tr><td>Async Read</td><td>Combinational</td><td>Output reflects mem[addr] immediately when addr changes</td></tr>
+        <tr><td>Sync Write</td><td>Posedge clk</td><td>When we=1, din is written to mem[addr] on rising edge</td></tr>
+        <tr><td>Read-During-Write</td><td>Same cycle</td><td>Read returns the old value (write-after-read semantics)</td></tr>
+      </table>
+
+      <h2 class="arch-section-title">Integration Patterns</h2>
+      <p class="code-excerpt-desc">Connect memory to a CPU by wiring address, data, and control signals with address decoding.</p>
+
+      <div class="code-excerpt">
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">memory_system.rb</span>
+          </div>
+          <pre><code><span class="kw">class</span> <span class="type">MemorySystem</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="kw">include</span> <span class="type">RHDL::DSL::Memory</span>
+
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">input</span>  <span class="sym">:cpu_addr</span>, <span class="key">width:</span> <span class="num">16</span>
+  <span class="fn">input</span>  <span class="sym">:cpu_data</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:cpu_rw</span>
+  <span class="fn">output</span> <span class="sym">:data_out</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="fn">component</span> <span class="sym">:main_ram</span>, <span class="type">RAM256x8</span>
+  <span class="fn">component</span> <span class="sym">:rom</span>, <span class="type">ROM</span>,
+    <span class="key">depth:</span> <span class="num">16384</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    <span class="var">is_rom</span> <span class="op">=</span> cpu_addr[<span class="num">15</span>] <span class="op">&amp;</span> cpu_addr[<span class="num">14</span>]
+    data_out <span class="op">&lt;=</span> <span class="fn">mux</span>(is_rom,
+      rom.dout, main_ram.dout)
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

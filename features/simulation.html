@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fast Simulation - CIRCT Features</title>
+  <meta name="description" content="RTL and gate-level simulation powered by a Rust backend with WASM support for in-browser testing.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#features" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to features
+      </a>
+      <div class="showcase-hero-text" style="max-width: 720px;">
+        <h1>Fast <span class="gradient-text">Simulation</span></h1>
+        <p class="showcase-subtitle">RTL and gate-level simulation powered by a Rust backend. WASM support enables in-browser testing and debugging.</p>
+        <div class="showcase-tags">
+          <span>Rust</span>
+          <span>WASM</span>
+          <span>RTL</span>
+          <span>Gate-Level</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Simulation Architecture -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Simulation Architecture</h2>
+
+      <p class="code-excerpt-desc">RHDL's simulation engine is built in Rust for maximum performance. Ruby designs are compiled into an optimized intermediate representation that the Rust backend evaluates cycle-by-cycle. This architecture delivers 10-100x speedups over interpreted simulation while maintaining cycle-accurate behavior.</p>
+
+      <div class="arch-diagram">
+        <div class="arch-diagram-row">
+          <div class="arch-block accent">
+            <h4>Ruby Design</h4>
+            <p>Components, ports, behavior</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block">
+            <h4>Compilation</h4>
+            <p>Lower to simulation IR</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block accent">
+            <h4>Rust Engine</h4>
+            <p>Event-driven evaluation</p>
+          </div>
+        </div>
+        <div class="arch-connector-v">&darr;</div>
+        <div class="arch-bus">
+          <div class="arch-bus-label">VCD waveform output</div>
+          <div class="arch-bus-label">Ruby test assertions</div>
+          <div class="arch-bus-label">WASM browser target</div>
+        </div>
+      </div>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">Run simulations directly from Ruby with full control over clock generation, stimulus, and waveform capture.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">simulation.rb</span>
+          </div>
+          <pre><code><span class="kw">require</span> <span class="str">'rhdl'</span>
+
+<span class="var">counter</span> <span class="op">=</span> <span class="type">Counter</span>.<span class="fn">new</span>(<span class="key">width:</span> <span class="num">8</span>)
+
+<span class="cmt"># Create a simulation context</span>
+<span class="var">sim</span> <span class="op">=</span> <span class="type">RHDL::Sim::Simulator</span>.<span class="fn">new</span>(counter)
+
+<span class="cmt"># Configure waveform dumping</span>
+sim.<span class="fn">vcd</span>(<span class="str">"counter.vcd"</span>) <span class="kw">do</span> |<span class="var">vcd</span>|
+  vcd.<span class="fn">trace</span>(counter.count, counter.clk)
+<span class="kw">end</span>
+
+<span class="cmt"># Apply stimulus and run</span>
+sim.<span class="fn">run</span> <span class="kw">do</span>
+  counter.rst <span class="op">&lt;=</span> <span class="num">1</span>
+  <span class="fn">tick</span>
+  counter.rst <span class="op">&lt;=</span> <span class="num">0</span>
+  counter.en  <span class="op">&lt;=</span> <span class="num">1</span>
+
+  <span class="num">256</span>.<span class="fn">times</span> <span class="kw">do</span> |<span class="var">i</span>|
+    <span class="fn">tick</span>
+    <span class="fn">assert_eq</span> counter.count, i <span class="op">&amp;</span> <span class="num">0xFF</span>
+  <span class="kw">end</span>
+<span class="kw">end</span>
+
+<span class="fn">puts</span> <span class="str">"Simulation passed! #{sim.cycle_count} cycles"</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RTL vs Gate-Level -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">RTL vs Gate-Level</h2>
+
+      <p class="code-excerpt-desc">RHDL supports simulation at multiple abstraction levels. RTL simulation runs your design at the register-transfer level for fast functional verification. Gate-level simulation runs the synthesized netlist for timing-accurate validation.</p>
+
+      <table class="spec-table">
+        <tr><th>Feature</th><th>RTL Simulation</th><th>Gate-Level Simulation</th></tr>
+        <tr><td>Abstraction</td><td>Behavioral / register-transfer</td><td>Primitive gates and flip-flops</td></tr>
+        <tr><td>Speed</td><td>Fast &mdash; millions of cycles/sec</td><td>Slower &mdash; evaluates every gate</td></tr>
+        <tr><td>Accuracy</td><td>Cycle-accurate, no timing</td><td>Gate delays, setup/hold checks</td></tr>
+        <tr><td>Use case</td><td>Functional verification, debugging</td><td>Post-synthesis validation</td></tr>
+        <tr><td>Waveforms</td><td>High-level signals</td><td>Gate-level nets, glitches visible</td></tr>
+        <tr><td>Debug</td><td>Maps to Ruby source lines</td><td>Maps to netlist nodes</td></tr>
+      </table>
+
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">RTL simulation evaluates behavior blocks directly. Fast iteration for design exploration.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">rtl_sim.rb</span>
+            </div>
+            <pre><code><span class="cmt"># RTL-level simulation (default)</span>
+<span class="var">sim</span> <span class="op">=</span> <span class="type">RHDL::Sim::Simulator</span>.<span class="fn">new</span>(
+  design,
+  <span class="key">level:</span> <span class="sym">:rtl</span>
+)
+
+sim.<span class="fn">run</span> <span class="kw">do</span>
+  <span class="cmt"># Apply test vectors</span>
+  design.opcode <span class="op">&lt;=</span> <span class="num">0xA9</span>  <span class="cmt"># LDA imm</span>
+  design.data   <span class="op">&lt;=</span> <span class="num">0x42</span>
+  <span class="fn">tick</span> <span class="num">3</span>
+
+  <span class="fn">assert_eq</span> design.acc, <span class="num">0x42</span>
+  <span class="fn">assert</span> design.zero <span class="op">==</span> <span class="num">0</span>
+<span class="kw">end</span>
+
+<span class="fn">puts</span> <span class="str">"RTL sim: #{sim.cycles_per_sec} Hz"</span>
+<span class="cmt"># =&gt; RTL sim: 2_450_000 Hz</span></code></pre>
+          </div>
+        </div>
+
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Gate-level simulation evaluates the synthesized netlist. Catches issues that RTL simulation misses.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">gate_sim.rb</span>
+            </div>
+            <pre><code><span class="cmt"># Gate-level simulation</span>
+<span class="var">netlist</span> <span class="op">=</span> design.<span class="fn">synthesize</span>
+<span class="var">sim</span> <span class="op">=</span> <span class="type">RHDL::Sim::Simulator</span>.<span class="fn">new</span>(
+  netlist,
+  <span class="key">level:</span> <span class="sym">:gate</span>
+)
+
+sim.<span class="fn">run</span> <span class="kw">do</span>
+  <span class="cmt"># Same test vectors</span>
+  netlist.opcode <span class="op">&lt;=</span> <span class="num">0xA9</span>
+  netlist.data   <span class="op">&lt;=</span> <span class="num">0x42</span>
+  <span class="fn">tick</span> <span class="num">3</span>
+
+  <span class="fn">assert_eq</span> netlist.acc, <span class="num">0x42</span>
+  <span class="fn">assert</span> netlist.zero <span class="op">==</span> <span class="num">0</span>
+<span class="kw">end</span>
+
+<span class="fn">puts</span> <span class="str">"Gate sim: #{sim.cycles_per_sec} Hz"</span>
+<span class="cmt"># =&gt; Gate sim: 185_000 Hz</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Browser Simulation -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Browser Simulation</h2>
+
+      <p class="code-excerpt-desc">The Rust simulation engine compiles to WebAssembly (WASM), enabling simulations to run entirely in the browser. This opens up possibilities for interactive tutorials, shareable demos, and collaborative debugging without any local toolchain installation.</p>
+
+      <div class="arch-diagram">
+        <div class="arch-diagram-row">
+          <div class="arch-block accent">
+            <h4>Rust Sim Engine</h4>
+            <p>Native simulation core</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block">
+            <h4>wasm-pack</h4>
+            <p>Compile to WASM + JS bindings</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block accent">
+            <h4>Browser</h4>
+            <p>Run in any modern browser</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">Compile your design for browser execution. The WASM output includes JavaScript bindings for controlling the simulation from web applications.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">wasm_export.rb</span>
+          </div>
+          <pre><code><span class="cmt"># Compile design to WASM for browser simulation</span>
+<span class="var">design</span> <span class="op">=</span> <span class="type">Counter</span>.<span class="fn">new</span>(<span class="key">width:</span> <span class="num">8</span>)
+
+design.<span class="fn">to_wasm</span>(<span class="str">"web/sim.wasm"</span>,
+  <span class="key">expose:</span> [<span class="sym">:clk</span>, <span class="sym">:rst</span>, <span class="sym">:en</span>, <span class="sym">:count</span>],
+  <span class="key">optimize:</span> <span class="sym">:size</span>   <span class="cmt"># optimize for download size</span>
+)
+
+<span class="cmt"># Generated JS usage:</span>
+<span class="cmt"># import init, { Simulation } from './sim.js';</span>
+<span class="cmt"># const sim = new Simulation();</span>
+<span class="cmt"># sim.set_input('rst', 1);</span>
+<span class="cmt"># sim.tick();</span>
+<span class="cmt"># sim.set_input('rst', 0);</span>
+<span class="cmt"># sim.set_input('en', 1);</span>
+<span class="cmt"># sim.tick();</span>
+<span class="cmt"># console.log(sim.get_output('count')); // 1</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

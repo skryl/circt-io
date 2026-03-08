@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Combinational Components - CIRCT</title>
+  <meta name="description" content="Combinational logic components in RHDL: expressions, case statements, boolean logic, and multiplexers.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#components" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to components
+      </a>
+      <div class="showcase-hero-text" style="max-width: 720px;">
+        <h1>Combinational <span class="gradient-text">Components</span></h1>
+        <p class="showcase-subtitle">Direct input-to-output mapping with expressions, case statements, and boolean logic. Pure functions in hardware.</p>
+        <div class="showcase-tags">
+          <span>Expressions</span>
+          <span>Case Select</span>
+          <span>Boolean Logic</span>
+          <span>Mux</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How Combinational Logic Works -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">How Combinational Logic Works</h2>
+
+      <p class="code-excerpt-desc">Combinational logic is the foundation of all digital circuits. Unlike sequential logic, combinational components have no memory and no clock. The outputs are determined entirely by the current values of the inputs. When any input changes, the outputs update immediately (after propagation delay). This makes combinational components behave like pure functions: the same inputs always produce the same outputs.</p>
+
+      <p class="code-excerpt-desc">In RHDL, combinational logic is expressed using the <code>behavior</code> block. Every signal assignment inside a behavior block creates a direct wire from inputs to outputs with no implicit state. This maps directly to hardware constructs like logic gates, multiplexers, and lookup tables in an FPGA.</p>
+
+      <table class="spec-table">
+        <tr><th>Property</th><th>Description</th></tr>
+        <tr><td>Clock</td><td>Not required. Outputs change whenever inputs change.</td></tr>
+        <tr><td>State</td><td>None. No memory between evaluations.</td></tr>
+        <tr><td>Propagation</td><td>Outputs reflect inputs after gate delay (combinational path).</td></tr>
+        <tr><td>Use cases</td><td>ALUs, decoders, multiplexers, encoders, comparators</td></tr>
+        <tr><td>RHDL keyword</td><td><code>behavior</code></td></tr>
+      </table>
+
+      <h2 class="arch-section-title">Expression Types</h2>
+
+      <p class="code-excerpt-desc">RHDL provides a rich set of operators for building combinational expressions. These map directly to hardware operations and can be freely composed to create complex logic.</p>
+
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Arithmetic and logical operators perform bitwise and mathematical operations on signals. All operations are defined on fixed-width bit vectors, and overflow behavior matches hardware semantics (wrap-around).</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">arithmetic_ops.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">ArithmeticOps</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:a</span>, <span class="sym">:b</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:sum</span>,  <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:diff</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:prod</span>, <span class="key">width:</span> <span class="num">16</span>
+  <span class="fn">output</span> <span class="sym">:band</span>, <span class="sym">:bor</span>, <span class="sym">:bxor</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    <span class="cmt"># Arithmetic operations</span>
+    sum  <span class="op">&lt;=</span> a <span class="op">+</span> b
+    diff <span class="op">&lt;=</span> a <span class="op">-</span> b
+    prod <span class="op">&lt;=</span> a <span class="op">*</span> b
+
+    <span class="cmt"># Bitwise logical operations</span>
+    band <span class="op">&lt;=</span> a <span class="op">&amp;</span> b
+    bor  <span class="op">&lt;=</span> a <span class="op">|</span> b
+    bxor <span class="op">&lt;=</span> a <span class="op">^</span> b
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Comparison and shift operations produce boolean results or shifted bit patterns. These are essential building blocks for control logic, priority encoders, and barrel shifters.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">compare_shift.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">CompareShift</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:a</span>, <span class="sym">:b</span>,   <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:shamt</span>,    <span class="key">width:</span> <span class="num">3</span>
+  <span class="fn">output</span> <span class="sym">:eq</span>, <span class="sym">:lt</span>, <span class="sym">:gt</span>
+  <span class="fn">output</span> <span class="sym">:shl</span>, <span class="sym">:shr</span>, <span class="sym">:sra</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    <span class="cmt"># Comparison operators</span>
+    eq <span class="op">&lt;=</span> a.<span class="fn">eq?</span>(b)
+    lt <span class="op">&lt;=</span> a.<span class="fn">lt?</span>(b)
+    gt <span class="op">&lt;=</span> a.<span class="fn">gt?</span>(b)
+
+    <span class="cmt"># Shift operations</span>
+    shl <span class="op">&lt;=</span> a <span class="op">&lt;&lt;</span> shamt  <span class="cmt"># logical left</span>
+    shr <span class="op">&lt;=</span> a <span class="op">&gt;&gt;</span> shamt  <span class="cmt"># logical right</span>
+    sra <span class="op">&lt;=</span> a.<span class="fn">sra</span>(shamt) <span class="cmt"># arithmetic right</span>
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="arch-section-title">Case Statements</h2>
+
+      <p class="code-excerpt-desc">The <code>case_select</code> construct is RHDL's way of expressing multiplexer-like selection logic. It maps a selector value to one of several output expressions, similar to a case/switch statement in software but synthesized as parallel hardware. Every case_select should include a default value to ensure all paths are covered, preventing unintentional latch inference.</p>
+
+      <div class="code-excerpt">
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">instruction_decoder.rb</span>
+          </div>
+          <pre><code><span class="kw">class</span> <span class="type">InstructionDecoder</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:opcode</span>,     <span class="key">width:</span> <span class="num">4</span>
+  <span class="fn">output</span> <span class="sym">:alu_ctrl</span>,   <span class="key">width:</span> <span class="num">3</span>
+  <span class="fn">output</span> <span class="sym">:reg_write</span>
+  <span class="fn">output</span> <span class="sym">:mem_enable</span>
+  <span class="fn">output</span> <span class="sym">:branch</span>
+
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    <span class="cmt"># Decode ALU control from opcode</span>
+    alu_ctrl <span class="op">&lt;=</span> <span class="fn">case_select</span>(opcode, {
+      <span class="num">0b0000</span> <span class="op">=&gt;</span> <span class="num">0b000</span>,  <span class="cmt"># ADD</span>
+      <span class="num">0b0001</span> <span class="op">=&gt;</span> <span class="num">0b001</span>,  <span class="cmt"># SUB</span>
+      <span class="num">0b0010</span> <span class="op">=&gt;</span> <span class="num">0b010</span>,  <span class="cmt"># AND</span>
+      <span class="num">0b0011</span> <span class="op">=&gt;</span> <span class="num">0b011</span>,  <span class="cmt"># OR</span>
+      <span class="num">0b0100</span> <span class="op">=&gt;</span> <span class="num">0b100</span>,  <span class="cmt"># XOR</span>
+      <span class="num">0b0101</span> <span class="op">=&gt;</span> <span class="num">0b101</span>,  <span class="cmt"># SLT</span>
+    }, <span class="key">default:</span> <span class="num">0b000</span>)
+
+    <span class="cmt"># Control signals with boolean case</span>
+    reg_write  <span class="op">&lt;=</span> opcode.<span class="fn">lt?</span>(<span class="num">0b1000</span>)
+    mem_enable <span class="op">&lt;=</span> opcode.<span class="fn">eq?</span>(<span class="num">0b1000</span>) <span class="op">|</span> opcode.<span class="fn">eq?</span>(<span class="num">0b1001</span>)
+    branch     <span class="op">&lt;=</span> opcode[<span class="num">3</span>] <span class="op">&amp;</span> opcode[<span class="num">1</span>]
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+
+      <h2 class="arch-section-title">Building an ALU</h2>
+
+      <p class="code-excerpt-desc">An Arithmetic Logic Unit is the quintessential combinational component. It takes two data inputs and an operation selector, then produces a result and status flags. This example shows a complete 8-bit ALU with eight operations and four condition flags.</p>
+
+      <div class="code-excerpt">
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">alu.rb</span>
+          </div>
+          <pre><code><span class="kw">class</span> <span class="type">ALU</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:a</span>, <span class="sym">:b</span>,     <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:op</span>,        <span class="key">width:</span> <span class="num">3</span>
+  <span class="fn">output</span> <span class="sym">:result</span>,    <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:zero</span>, <span class="sym">:carry</span>, <span class="sym">:negative</span>, <span class="sym">:overflow</span>
+
+  <span class="cmt"># Operation constants</span>
+  OP_ADD <span class="op">=</span> <span class="num">0b000</span>
+  OP_SUB <span class="op">=</span> <span class="num">0b001</span>
+  OP_AND <span class="op">=</span> <span class="num">0b010</span>
+  OP_OR  <span class="op">=</span> <span class="num">0b011</span>
+  OP_XOR <span class="op">=</span> <span class="num">0b100</span>
+  OP_SHL <span class="op">=</span> <span class="num">0b101</span>
+  OP_SHR <span class="op">=</span> <span class="num">0b110</span>
+  OP_SLT <span class="op">=</span> <span class="num">0b111</span>
+
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    <span class="cmt"># Extended result for carry detection</span>
+    <span class="var">wide_sum</span>  <span class="op">=</span> a.<span class="fn">zero_ext</span>(<span class="num">9</span>) <span class="op">+</span> b.<span class="fn">zero_ext</span>(<span class="num">9</span>)
+    <span class="var">wide_diff</span> <span class="op">=</span> a.<span class="fn">zero_ext</span>(<span class="num">9</span>) <span class="op">-</span> b.<span class="fn">zero_ext</span>(<span class="num">9</span>)
+
+    <span class="cmt"># Select operation result</span>
+    result <span class="op">&lt;=</span> <span class="fn">case_select</span>(op, {
+      OP_ADD <span class="op">=&gt;</span> a <span class="op">+</span> b,
+      OP_SUB <span class="op">=&gt;</span> a <span class="op">-</span> b,
+      OP_AND <span class="op">=&gt;</span> a <span class="op">&amp;</span> b,
+      OP_OR  <span class="op">=&gt;</span> a <span class="op">|</span> b,
+      OP_XOR <span class="op">=&gt;</span> a <span class="op">^</span> b,
+      OP_SHL <span class="op">=&gt;</span> a <span class="op">&lt;&lt;</span> b[<span class="num">2</span>..<span class="num">0</span>],
+      OP_SHR <span class="op">=&gt;</span> a <span class="op">&gt;&gt;</span> b[<span class="num">2</span>..<span class="num">0</span>],
+      OP_SLT <span class="op">=&gt;</span> <span class="fn">cond</span>(a.<span class="fn">lt?</span>(b), <span class="num">1</span>, <span class="num">0</span>),
+    })
+
+    <span class="cmt"># Condition flags</span>
+    zero     <span class="op">&lt;=</span> result.<span class="fn">eq?</span>(<span class="num">0</span>)
+    negative <span class="op">&lt;=</span> result[<span class="num">7</span>]
+    carry    <span class="op">&lt;=</span> <span class="fn">cond</span>(op.<span class="fn">eq?</span>(OP_ADD), wide_sum[<span class="num">8</span>],
+               <span class="fn">cond</span>(op.<span class="fn">eq?</span>(OP_SUB), wide_diff[<span class="num">8</span>], <span class="num">0</span>))
+    overflow <span class="op">&lt;=</span> <span class="fn">cond</span>(op.<span class="fn">eq?</span>(OP_ADD),
+                 (a[<span class="num">7</span>].<span class="fn">eq?</span>(b[<span class="num">7</span>])) <span class="op">&amp;</span> (a[<span class="num">7</span>].<span class="fn">neq?</span>(result[<span class="num">7</span>])),
+               <span class="fn">cond</span>(op.<span class="fn">eq?</span>(OP_SUB),
+                 (a[<span class="num">7</span>].<span class="fn">neq?</span>(b[<span class="num">7</span>])) <span class="op">&amp;</span> (a[<span class="num">7</span>].<span class="fn">neq?</span>(result[<span class="num">7</span>])),
+                 <span class="num">0</span>))
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

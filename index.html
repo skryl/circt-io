@@ -117,48 +117,48 @@
         <p class="section-desc">From high-level Ruby to synthesizable gates, CIRCT provides a complete hardware design pipeline.</p>
       </div>
       <div class="features-grid">
-        <div class="feature-card fade-in">
+        <a href="features/ruby-dsl.html" class="feature-card fade-in">
           <div class="feature-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg>
           </div>
           <h3>Ruby DSL</h3>
           <p>Design hardware using Ruby's expressive syntax and metaprogramming. Familiar language, powerful abstractions.</p>
-        </div>
-        <div class="feature-card fade-in">
+        </a>
+        <a href="features/verilog-export.html" class="feature-card fade-in">
           <div class="feature-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"/><circle cx="18" cy="17.25" r="3"/></svg>
           </div>
           <h3>Verilog Export</h3>
           <p>Generate clean, synthesizable Verilog HDL from your Ruby designs. Ready for FPGA synthesis and ASIC flows.</p>
-        </div>
-        <div class="feature-card fade-in">
+        </a>
+        <a href="features/simulation.html" class="feature-card fade-in">
           <div class="feature-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
           </div>
           <h3>Fast Simulation</h3>
           <p>RTL and gate-level simulation powered by a Rust backend. WASM support enables in-browser testing.</p>
-        </div>
-        <div class="feature-card fade-in">
+        </a>
+        <a href="features/gate-synthesis.html" class="feature-card fade-in">
           <div class="feature-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><line x1="10" y1="6.5" x2="14" y2="6.5"/><line x1="6.5" y1="10" x2="6.5" y2="14"/></svg>
           </div>
           <h3>Gate Synthesis</h3>
           <p>Automatic lowering to primitive gates: AND, OR, XOR, NOT, MUX, and DFF. Full gate-level netlist generation.</p>
-        </div>
-        <div class="feature-card fade-in">
+        </a>
+        <a href="features/circuit-diagrams.html" class="feature-card fade-in">
           <div class="feature-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5a1.5 1.5 0 001.5-1.5V4.5a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5v15a1.5 1.5 0 001.5 1.5z"/></svg>
           </div>
           <h3>Circuit Diagrams</h3>
           <p>Multi-level circuit visualization in SVG, PNG, and DOT formats. See your hardware at any abstraction level.</p>
-        </div>
-        <div class="feature-card fade-in">
+        </a>
+        <a href="features/component-library.html" class="feature-card fade-in">
           <div class="feature-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5m-4.75-11.396c.251.023.501.05.75.082M5 14.5l-1.43 5.51a1.286 1.286 0 001.233 1.633h14.394a1.286 1.286 0 001.233-1.633L19 14.5m-14 0h14"/></svg>
           </div>
           <h3>Component Library</h3>
           <p>Gates, flip-flops, registers, ALU, memory modules, and more. Build complex designs from proven primitives.</p>
-        </div>
+        </a>
       </div>
     </div>
   </section>
@@ -172,7 +172,7 @@
         <span class="zh">四种强大的组件抽象</span>
       </div>
       <div class="components-row">
-        <div class="component-card fade-in">
+        <a href="components/combinational.html" class="component-card fade-in">
           <div class="component-icon">
             <svg viewBox="0 0 48 48" fill="none">
               <path d="M8 18h10v12H8z" stroke="var(--accent)" stroke-width="2"/>
@@ -185,8 +185,8 @@
           </div>
           <h3>Combinational</h3>
           <p>Direct input-to-output mapping with expressions and case statements</p>
-        </div>
-        <div class="component-card fade-in">
+        </a>
+        <a href="components/sequential.html" class="component-card fade-in">
           <div class="component-icon">
             <svg viewBox="0 0 48 48" fill="none">
               <rect x="12" y="14" width="16" height="20" rx="2" stroke="var(--accent)" stroke-width="2"/>
@@ -200,8 +200,8 @@
           </div>
           <h3>Sequential</h3>
           <p>Clock-driven components with synchronous reset and enable signals</p>
-        </div>
-        <div class="component-card fade-in">
+        </a>
+        <a href="components/memory.html" class="component-card fade-in">
           <div class="component-icon">
             <svg viewBox="0 0 48 48" fill="none">
               <rect x="10" y="10" width="20" height="28" rx="2" stroke="var(--accent)" stroke-width="2"/>
@@ -218,8 +218,8 @@
           </div>
           <h3>Memory</h3>
           <p>Synchronous write, asynchronous read RAM with configurable depth and width</p>
-        </div>
-        <div class="component-card fade-in">
+        </a>
+        <a href="components/state-machines.html" class="component-card fade-in">
           <div class="component-icon">
             <svg viewBox="0 0 48 48" fill="none">
               <circle cx="16" cy="16" r="6" stroke="var(--accent)" stroke-width="2"/>
@@ -235,7 +235,7 @@
           </div>
           <h3>State Machines</h3>
           <p>FSM with transition conditions, timed states, and output logic</p>
-        </div>
+        </a>
       </div>
     </div>
   </section>
@@ -390,6 +390,12 @@
 
 <span class="kw">endmodule</span></code></pre>
           </div>
+          <div class="code-panel-cta">
+            <a href="examples/alu.html" class="btn btn-secondary">
+              ALU Deep Dive
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7.8H7.8"/></svg>
+            </a>
+          </div>
         </div>
         <div class="code-panel hidden" id="tab-counter">
           <div class="code-block">
@@ -429,6 +435,12 @@
 <span class="kw">end</span>
 
 <span class="kw">endmodule</span></code></pre>
+          </div>
+          <div class="code-panel-cta">
+            <a href="examples/counter.html" class="btn btn-secondary">
+              Counter Deep Dive
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7.8H7.8"/></svg>
+            </a>
           </div>
         </div>
         <div class="code-panel hidden" id="tab-memory">
@@ -479,6 +491,12 @@
 <span class="kw">end</span>
 
 <span class="kw">endmodule</span></code></pre>
+          </div>
+          <div class="code-panel-cta">
+            <a href="examples/memory.html" class="btn btn-secondary">
+              Memory Deep Dive
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7.8H7.8"/></svg>
+            </a>
           </div>
         </div>
       </div>

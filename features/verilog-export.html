@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verilog Export - CIRCT Features</title>
+  <meta name="description" content="Generate clean, synthesizable Verilog HDL from your Ruby designs with RHDL.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#features" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to features
+      </a>
+      <div class="showcase-hero-text" style="max-width: 720px;">
+        <h1>Verilog <span class="gradient-text">Export</span></h1>
+        <p class="showcase-subtitle">Generate clean, synthesizable Verilog HDL from your Ruby designs. Ready for FPGA synthesis and ASIC flows.</p>
+        <div class="showcase-tags">
+          <span>Verilog</span>
+          <span>Synthesis</span>
+          <span>FPGA</span>
+          <span>ASIC</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Export Pipeline -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Export Pipeline</h2>
+
+      <p class="code-excerpt-desc">RHDL lowers your Ruby hardware descriptions through a multi-stage pipeline. First, the Ruby DSL is elaborated into an intermediate representation (IR) that captures the full circuit structure. Then, the IR is optimized and lowered to synthesizable Verilog HDL. Each stage preserves the design intent while producing industry-standard output.</p>
+
+      <div class="arch-diagram">
+        <div class="arch-diagram-row">
+          <div class="arch-block accent">
+            <h4>Ruby DSL</h4>
+            <p>Classes, ports, behavior blocks</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block">
+            <h4>Elaboration</h4>
+            <p>Resolve params, flatten hierarchy</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block">
+            <h4>IR Graph</h4>
+            <p>Nodes, nets, connections</p>
+          </div>
+        </div>
+        <div class="arch-connector-v">&darr;</div>
+        <div class="arch-diagram-row">
+          <div class="arch-block accent">
+            <h4>Verilog Output</h4>
+            <p>Synthesizable .v files</p>
+          </div>
+          <div class="arch-connector">&larr;</div>
+          <div class="arch-block">
+            <h4>Code Generation</h4>
+            <p>Map IR to Verilog constructs</p>
+          </div>
+          <div class="arch-connector">&larr;</div>
+          <div class="arch-block">
+            <h4>Optimization</h4>
+            <p>Dead code, constant folding</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">Exporting to Verilog is a single method call. You can export individual components or entire hierarchies.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">export.rb</span>
+          </div>
+          <pre><code><span class="kw">require</span> <span class="str">'rhdl'</span>
+
+<span class="cmt"># Export a single component</span>
+<span class="var">counter</span> <span class="op">=</span> <span class="type">Counter</span>.<span class="fn">new</span>(<span class="key">width:</span> <span class="num">8</span>)
+counter.<span class="fn">to_verilog</span>(<span class="str">"output/counter.v"</span>)
+
+<span class="cmt"># Export with all sub-components</span>
+<span class="var">cpu</span> <span class="op">=</span> <span class="type">CPU6502</span>.<span class="fn">new</span>
+cpu.<span class="fn">to_verilog</span>(<span class="str">"output/"</span>, <span class="key">hierarchy:</span> <span class="sym">:flat</span>)
+<span class="cmt"># Creates: output/cpu6502.v (all modules in one file)</span>
+
+cpu.<span class="fn">to_verilog</span>(<span class="str">"output/"</span>, <span class="key">hierarchy:</span> <span class="sym">:split</span>)
+<span class="cmt"># Creates: output/cpu6502.v, output/alu.v,</span>
+<span class="cmt">#          output/control_unit.v, output/decoder.v, ...</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Generated Code Quality -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Generated Code Quality</h2>
+
+      <p class="code-excerpt-desc">RHDL generates clean, readable Verilog that passes lint checks and synthesizes efficiently. Signal names are preserved from your Ruby source, making debugging and waveform analysis straightforward.</p>
+
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Ruby source: a parameterized shift register with configurable depth and width.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">shift_register.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">ShiftRegister</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::SequentialComponent</span>
+  <span class="kw">def</span> <span class="fn">initialize</span>(<span class="key">depth:</span> <span class="num">4</span>, <span class="key">width:</span> <span class="num">8</span>)
+    <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>, <span class="sym">:en</span>
+    <span class="fn">input</span>  <span class="sym">:din</span>,  <span class="key">width:</span> width
+    <span class="fn">output</span> <span class="sym">:dout</span>, <span class="key">width:</span> width
+
+    depth.<span class="fn">times</span> <span class="kw">do</span> |<span class="var">i</span>|
+      <span class="fn">register</span> <span class="str">:"stage_#{i}"</span>,
+        <span class="key">width:</span> width
+    <span class="kw">end</span>
+  <span class="kw">end</span>
+
+  <span class="fn">behavior</span> <span class="key">clock:</span> <span class="sym">:clk</span>,
+           <span class="key">reset:</span> <span class="sym">:rst</span> <span class="kw">do</span>
+    <span class="kw">if</span> en
+      stage_0 <span class="op">&lt;=</span> din
+      (<span class="num">1</span>...depth).<span class="fn">each</span> <span class="kw">do</span> |<span class="var">i</span>|
+        <span class="fn">send</span>(<span class="str">:"stage_#{i}"</span>) <span class="op">&lt;=</span>
+          <span class="fn">send</span>(<span class="str">:"stage_#{i-1}"</span>)
+      <span class="kw">end</span>
+      dout <span class="op">&lt;=</span> <span class="fn">send</span>(<span class="str">:"stage_#{depth-1}"</span>)
+    <span class="kw">end</span>
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Generated Verilog: clean, synthesizable output with preserved signal names and proper reset logic.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">shift_register.v (generated)</span>
+            </div>
+            <pre><code><span class="kw">module</span> <span class="type">shift_register</span> (
+  <span class="kw">input</span>  <span class="kw">wire</span>        clk,
+  <span class="kw">input</span>  <span class="kw">wire</span>        rst,
+  <span class="kw">input</span>  <span class="kw">wire</span>        en,
+  <span class="kw">input</span>  <span class="kw">wire</span> [<span class="num">7</span>:<span class="num">0</span>] din,
+  <span class="kw">output</span> <span class="kw">reg</span>  [<span class="num">7</span>:<span class="num">0</span>] dout
+);
+  <span class="kw">reg</span> [<span class="num">7</span>:<span class="num">0</span>] stage_0;
+  <span class="kw">reg</span> [<span class="num">7</span>:<span class="num">0</span>] stage_1;
+  <span class="kw">reg</span> [<span class="num">7</span>:<span class="num">0</span>] stage_2;
+  <span class="kw">reg</span> [<span class="num">7</span>:<span class="num">0</span>] stage_3;
+
+  <span class="kw">always</span> @(<span class="kw">posedge</span> clk <span class="kw">or</span>
+          <span class="kw">posedge</span> rst) <span class="kw">begin</span>
+    <span class="kw">if</span> (rst) <span class="kw">begin</span>
+      stage_0 <span class="op">&lt;=</span> <span class="num">8'b0</span>;
+      stage_1 <span class="op">&lt;=</span> <span class="num">8'b0</span>;
+      stage_2 <span class="op">&lt;=</span> <span class="num">8'b0</span>;
+      stage_3 <span class="op">&lt;=</span> <span class="num">8'b0</span>;
+      dout    <span class="op">&lt;=</span> <span class="num">8'b0</span>;
+    <span class="kw">end else if</span> (en) <span class="kw">begin</span>
+      stage_0 <span class="op">&lt;=</span> din;
+      stage_1 <span class="op">&lt;=</span> stage_0;
+      stage_2 <span class="op">&lt;=</span> stage_1;
+      stage_3 <span class="op">&lt;=</span> stage_2;
+      dout    <span class="op">&lt;=</span> stage_3;
+    <span class="kw">end</span>
+  <span class="kw">end</span>
+<span class="kw">endmodule</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Synthesis Compatibility -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Synthesis Compatibility</h2>
+
+      <p class="code-excerpt-desc">Generated Verilog targets the synthesizable subset of IEEE 1364-2005 (Verilog-2005). The output has been tested with major FPGA and ASIC synthesis tools to ensure broad compatibility.</p>
+
+      <table class="spec-table">
+        <tr><th>Tool</th><th>Vendor</th><th>Target</th><th>Status</th></tr>
+        <tr><td>Vivado</td><td>AMD/Xilinx</td><td>FPGA (7-series, UltraScale)</td><td>Fully supported</td></tr>
+        <tr><td>Quartus Prime</td><td>Intel/Altera</td><td>FPGA (Cyclone, Stratix)</td><td>Fully supported</td></tr>
+        <tr><td>Yosys</td><td>Open source</td><td>FPGA (iCE40, ECP5, Gowin)</td><td>Fully supported</td></tr>
+        <tr><td>Lattice Diamond</td><td>Lattice</td><td>FPGA (MachXO, ECP)</td><td>Fully supported</td></tr>
+        <tr><td>Design Compiler</td><td>Synopsys</td><td>ASIC</td><td>Compatible</td></tr>
+        <tr><td>Genus</td><td>Cadence</td><td>ASIC</td><td>Compatible</td></tr>
+        <tr><td>Icarus Verilog</td><td>Open source</td><td>Simulation</td><td>Fully supported</td></tr>
+        <tr><td>Verilator</td><td>Open source</td><td>Simulation / Lint</td><td>Fully supported</td></tr>
+      </table>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">The export pipeline avoids unsynthesizable constructs. All generated Verilog uses only blocking/non-blocking assignments, continuous assigns, and standard always blocks.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">synthesis_flow.rb</span>
+          </div>
+          <pre><code><span class="cmt"># Full synthesis workflow</span>
+<span class="var">design</span> <span class="op">=</span> <span class="type">MyProcessor</span>.<span class="fn">new</span>
+
+<span class="cmt"># Export with synthesis-friendly options</span>
+design.<span class="fn">to_verilog</span>(<span class="str">"rtl/"</span>,
+  <span class="key">hierarchy:</span>     <span class="sym">:split</span>,       <span class="cmt"># one file per module</span>
+  <span class="key">reset_style:</span>   <span class="sym">:async</span>,       <span class="cmt"># async reset (default)</span>
+  <span class="key">clock_edge:</span>    <span class="sym">:posedge</span>,     <span class="cmt"># rising edge triggered</span>
+  <span class="key">naming:</span>        <span class="sym">:snake_case</span>,  <span class="cmt"># signal naming convention</span>
+  <span class="key">vendor_pragma:</span> <span class="sym">:xilinx</span>,     <span class="cmt"># include synthesis attributes</span>
+)
+
+<span class="cmt"># Verify with Verilator lint</span>
+design.<span class="fn">lint!</span>  <span class="cmt"># raises on warnings</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
