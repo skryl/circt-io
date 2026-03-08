@@ -514,6 +514,15 @@
       const currentText = el.textContent;
       const maxLen = Math.max(currentText.length, targetText.length);
       const paddedTarget = targetText.padEnd(maxLen);
+      let done = false;
+
+      function finish() {
+        if (done) return;
+        done = true;
+        clearInterval(scrambleInterval);
+        el.textContent = targetText;
+        if (onDone) onDone();
+      }
 
       // Build initial char spans
       let chars = [];
@@ -552,28 +561,20 @@
       const resolveStart = SCRAMBLE_DURATION * 0.35;
       chars.forEach((c, i) => {
         setTimeout(() => {
+          if (done) return;
           c.resolved = true;
           c.current = c.target;
           render();
 
           // All done?
           if (i === maxLen - 1) {
-            clearInterval(scrambleInterval);
-            // Clean up: set final text without spans
-            setTimeout(() => {
-              el.textContent = targetText;
-              if (onDone) onDone();
-            }, 400);
+            setTimeout(finish, 400);
           }
         }, resolveStart + i * CHAR_RESOLVE_STAGGER);
       });
 
       // Safety cleanup
-      setTimeout(() => {
-        clearInterval(scrambleInterval);
-        el.textContent = targetText;
-        if (onDone) onDone();
-      }, SCRAMBLE_DURATION + maxLen * CHAR_RESOLVE_STAGGER + 500);
+      setTimeout(finish, SCRAMBLE_DURATION + maxLen * CHAR_RESOLVE_STAGGER + 500);
     }
 
     function cycle() {
