@@ -491,6 +491,118 @@
     });
   }
 
+  // ---- Hero Word Cycling Animation ----
+  function initHeroCycle() {
+    const verbEl = document.getElementById('heroVerb');
+    const langEl = document.getElementById('heroLang');
+    if (!verbEl || !langEl) return;
+
+    const states = [
+      { verb: 'Design', lang: 'Ruby' },
+      { verb: 'Simulate', lang: 'Rust' },
+      { verb: 'Run', lang: 'the Browser' },
+    ];
+
+    const GLITCH_CHARS = '01!@#$%&<>{}[]=/\\|~^`_';
+    const HOLD_DURATION = 3000;
+    const SCRAMBLE_DURATION = 1200;
+    const CHAR_RESOLVE_STAGGER = 60;
+
+    let currentState = 0;
+
+    function scrambleTransition(el, targetText, onDone) {
+      const currentText = el.textContent;
+      const maxLen = Math.max(currentText.length, targetText.length);
+      const paddedTarget = targetText.padEnd(maxLen);
+
+      // Build initial char spans
+      let chars = [];
+      for (let i = 0; i < maxLen; i++) {
+        chars.push({
+          resolved: false,
+          target: paddedTarget[i],
+          current: i < currentText.length ? currentText[i] : ' ',
+        });
+      }
+
+      // Render the spans
+      function render() {
+        el.innerHTML = chars
+          .map((c, i) => {
+            const cls = c.resolved ? 'resolved' : 'scrambling';
+            const ch = c.resolved ? c.target : c.current;
+            // Don't show trailing spaces
+            if (i >= targetText.length && c.resolved) return '';
+            return `<span class="cyber-char ${cls}">${ch === ' ' ? '&nbsp;' : ch}</span>`;
+          })
+          .join('');
+      }
+
+      // Phase 1: scramble all characters
+      let scrambleInterval = setInterval(() => {
+        chars.forEach((c) => {
+          if (!c.resolved) {
+            c.current = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+          }
+        });
+        render();
+      }, 50);
+
+      // Phase 2: resolve characters one by one from left to right
+      const resolveStart = SCRAMBLE_DURATION * 0.35;
+      chars.forEach((c, i) => {
+        setTimeout(() => {
+          c.resolved = true;
+          c.current = c.target;
+          render();
+
+          // All done?
+          if (i === maxLen - 1) {
+            clearInterval(scrambleInterval);
+            // Clean up: set final text without spans
+            setTimeout(() => {
+              el.textContent = targetText;
+              if (onDone) onDone();
+            }, 400);
+          }
+        }, resolveStart + i * CHAR_RESOLVE_STAGGER);
+      });
+
+      // Safety cleanup
+      setTimeout(() => {
+        clearInterval(scrambleInterval);
+        el.textContent = targetText;
+        if (onDone) onDone();
+      }, SCRAMBLE_DURATION + maxLen * CHAR_RESOLVE_STAGGER + 500);
+    }
+
+    function cycle() {
+      const nextState = (currentState + 1) % states.length;
+      const next = states[nextState];
+
+      let verbDone = false;
+      let langDone = false;
+
+      function checkDone() {
+        if (verbDone && langDone) {
+          currentState = nextState;
+          setTimeout(cycle, HOLD_DURATION);
+        }
+      }
+
+      scrambleTransition(verbEl, next.verb, () => {
+        verbDone = true;
+        checkDone();
+      });
+      scrambleTransition(langEl, next.lang, () => {
+        langDone = true;
+        checkDone();
+      });
+    }
+
+    setTimeout(cycle, HOLD_DURATION);
+  }
+
   // ---- Smooth Scroll for Anchor Links ----
   function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -512,5 +624,6 @@
     initMobileMenu();
     initCodeTabs();
     initSmoothScroll();
+    initHeroCycle();
   });
 })();

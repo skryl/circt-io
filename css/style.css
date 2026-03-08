@@ -309,6 +309,57 @@ a:hover { color: #e04840; }
   -webkit-text-fill-color: transparent;
 }
 
+/* Hero word cycling animation */
+.hero-cycle-word {
+  display: inline-block;
+  position: relative;
+}
+
+.hero-cycle-word .cyber-char {
+  display: inline-block;
+  transition: none;
+}
+
+.hero-cycle-word .cyber-char.scrambling {
+  color: var(--green-bright);
+  -webkit-text-fill-color: var(--green-bright);
+  text-shadow: 0 0 8px var(--green), 0 0 16px rgba(58, 106, 58, 0.4);
+}
+
+.hero-cycle-word .cyber-char.resolved {
+  text-shadow: 0 0 6px rgba(204, 52, 45, 0.3);
+  animation: cyber-resolve 0.3s ease-out;
+}
+
+.gradient-text .cyber-char.scrambling {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--green-bright);
+}
+
+.gradient-text .cyber-char.resolved {
+  background: linear-gradient(135deg, var(--accent), #e05550, var(--amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes cyber-resolve {
+  0% {
+    opacity: 0.7;
+    transform: translateY(-2px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hero-zh {
   font-size: 0.85rem;
   color: var(--text-dim);
