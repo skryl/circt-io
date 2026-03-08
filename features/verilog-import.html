@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verilog/VHDL Import - CIRCT Features</title>
+  <meta name="description" content="Import existing Verilog and VHDL designs into RHDL. Integrate legacy IP, vendor cores, and third-party modules.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#features" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to features
+      </a>
+      <div class="showcase-hero-text" style="max-width: 720px;">
+        <h1>Verilog/VHDL <span class="gradient-text">Import</span></h1>
+        <p class="showcase-subtitle">Import existing Verilog and VHDL designs into RHDL. Integrate legacy IP, vendor cores, and third-party modules into your Ruby hardware workflow.</p>
+        <div class="showcase-tags">
+          <span>Verilog</span>
+          <span>VHDL</span>
+          <span>IP Integration</span>
+          <span>Legacy Support</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Import Pipeline -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Import Pipeline</h2>
+
+      <p class="code-excerpt-desc">RHDL parses Verilog and VHDL source files into an intermediate representation, then wraps them as native Ruby components. Imported modules expose their ports as typed Ruby interfaces, enabling seamless composition with DSL-defined components.</p>
+
+      <div class="arch-diagram">
+        <div class="arch-diagram-row">
+          <div class="arch-block accent">
+            <h4>Verilog / VHDL</h4>
+            <p>Source files (.v, .sv, .vhd)</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block">
+            <h4>Parser</h4>
+            <p>Extract modules, ports, parameters</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block">
+            <h4>IR Mapping</h4>
+            <p>Map to RHDL internal graph</p>
+          </div>
+        </div>
+        <div class="arch-connector-v">&darr;</div>
+        <div class="arch-diagram-row">
+          <div class="arch-block accent">
+            <h4>Ruby Component</h4>
+            <p>Native RHDL interface</p>
+          </div>
+          <div class="arch-connector">&larr;</div>
+          <div class="arch-block">
+            <h4>Port Binding</h4>
+            <p>Typed ports, width inference</p>
+          </div>
+          <div class="arch-connector">&larr;</div>
+          <div class="arch-block">
+            <h4>Elaboration</h4>
+            <p>Resolve params, validate hierarchy</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">Importing a Verilog or VHDL file is a single method call. The imported module becomes a first-class Ruby component.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">import.rb</span>
+          </div>
+          <pre><code><span class="kw">require</span> <span class="str">'rhdl'</span>
+
+<span class="cmt"># Import a single Verilog module</span>
+<span class="type">UartRx</span> <span class="op">=</span> <span class="type">RHDL</span>.<span class="fn">import</span>(<span class="str">"vendor/uart_rx.v"</span>)
+
+<span class="cmt"># Import a VHDL entity</span>
+<span class="type">FifoCtrl</span> <span class="op">=</span> <span class="type">RHDL</span>.<span class="fn">import</span>(<span class="str">"ip/fifo_ctrl.vhd"</span>)
+
+<span class="cmt"># Import with parameter overrides</span>
+<span class="type">SpiMaster</span> <span class="op">=</span> <span class="type">RHDL</span>.<span class="fn">import</span>(<span class="str">"vendor/spi_master.v"</span>,
+  <span class="key">params:</span> { <span class="sym">CLK_DIV</span> <span class="op">=&gt;</span> <span class="num">4</span>, <span class="sym">DATA_WIDTH</span> <span class="op">=&gt;</span> <span class="num">16</span> }
+)
+
+<span class="cmt"># Import all modules from a directory</span>
+<span class="type">RHDL</span>.<span class="fn">import_all</span>(<span class="str">"vendor/xilinx_ip/"</span>,
+  <span class="key">pattern:</span> <span class="str">"**/*.v"</span>
+)</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Supported Formats -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Supported Formats</h2>
+
+      <p class="code-excerpt-desc">RHDL supports importing from all major HDL formats and common IP packaging standards. The parser handles the synthesizable subset of each language, covering the constructs used in real-world IP cores and vendor libraries.</p>
+
+      <table class="spec-table">
+        <tr><th>Format</th><th>Extensions</th><th>Standard</th><th>Coverage</th></tr>
+        <tr><td>Verilog</td><td>.v</td><td>IEEE 1364-2005</td><td>Full synthesizable subset</td></tr>
+        <tr><td>SystemVerilog</td><td>.sv</td><td>IEEE 1800-2017</td><td>Synthesizable subset (interfaces, packages, structs)</td></tr>
+        <tr><td>VHDL</td><td>.vhd, .vhdl</td><td>IEEE 1076-2008</td><td>Full synthesizable subset</td></tr>
+        <tr><td>EDIF Netlist</td><td>.edf</td><td>EDIF 2.0.0</td><td>Gate-level netlist import</td></tr>
+        <tr><td>Liberty</td><td>.lib</td><td>Synopsys Liberty</td><td>Timing/area annotations</td></tr>
+      </table>
+
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Verilog module with parameters and multi-bit ports is imported and used directly in Ruby.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">spi_master.v (original)</span>
+            </div>
+            <pre><code><span class="kw">module</span> <span class="type">spi_master</span> #(
+  <span class="kw">parameter</span> CLK_DIV  <span class="op">=</span> <span class="num">8</span>,
+  <span class="kw">parameter</span> DATA_W   <span class="op">=</span> <span class="num">8</span>
+)(
+  <span class="kw">input</span>  <span class="kw">wire</span>              clk,
+  <span class="kw">input</span>  <span class="kw">wire</span>              rst_n,
+  <span class="kw">input</span>  <span class="kw">wire</span>              start,
+  <span class="kw">input</span>  <span class="kw">wire</span> [DATA_W-<span class="num">1</span>:<span class="num">0</span>] tx_data,
+  <span class="kw">output</span> <span class="kw">reg</span>  [DATA_W-<span class="num">1</span>:<span class="num">0</span>] rx_data,
+  <span class="kw">output</span> <span class="kw">reg</span>              busy,
+  <span class="kw">output</span> <span class="kw">wire</span>             sclk,
+  <span class="kw">output</span> <span class="kw">wire</span>             mosi,
+  <span class="kw">input</span>  <span class="kw">wire</span>             miso
+);
+  <span class="cmt">// ... implementation ...</span>
+<span class="kw">endmodule</span></code></pre>
+          </div>
+        </div>
+
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">The imported module is used in Ruby just like a native RHDL component with full port access.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">system.rb</span>
+            </div>
+            <pre><code><span class="type">SpiMaster</span> <span class="op">=</span> <span class="type">RHDL</span>.<span class="fn">import</span>(
+  <span class="str">"vendor/spi_master.v"</span>,
+  <span class="key">params:</span> { <span class="sym">DATA_W</span> <span class="op">=&gt;</span> <span class="num">16</span> }
+)
+
+<span class="kw">class</span> <span class="type">SensorHub</span> <span class="op">&lt;</span> <span class="type">RHDL::Component</span>
+  <span class="kw">def</span> <span class="fn">initialize</span>
+    <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst_n</span>
+    <span class="fn">output</span> <span class="sym">:sensor_data</span>, <span class="key">width:</span> <span class="num">16</span>
+
+    <span class="cmt"># Instantiate imported module</span>
+    <span class="var">@spi</span> <span class="op">=</span> <span class="fn">add</span> <span class="type">SpiMaster</span>.<span class="fn">new</span>
+
+    <span class="cmt"># Connect ports naturally</span>
+    <span class="var">@spi</span>.clk   <span class="op">&lt;=</span> clk
+    <span class="var">@spi</span>.rst_n <span class="op">&lt;=</span> rst_n
+    sensor_data <span class="op">&lt;=</span> <span class="var">@spi</span>.rx_data
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Integration Patterns -->
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Integration Patterns</h2>
+
+      <p class="code-excerpt-desc">RHDL supports common integration workflows for bringing external IP into your designs. Whether wrapping vendor primitives, reusing legacy blocks, or pulling in open-source cores, the import system handles hierarchy, port mapping, and clock domain crossings.</p>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">Wrap a vendor memory IP with a Ruby interface, adding address decoding and error handling in the DSL while preserving the original HDL implementation.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">memory_wrapper.rb</span>
+          </div>
+          <pre><code><span class="cmt"># Import vendor BRAM primitive</span>
+<span class="type">BramTDP</span> <span class="op">=</span> <span class="type">RHDL</span>.<span class="fn">import</span>(<span class="str">"xilinx/BRAM_TDP_MACRO.v"</span>,
+  <span class="key">params:</span> {
+    <span class="sym">BRAM_SIZE</span>  <span class="op">=&gt;</span> <span class="str">"36Kb"</span>,
+    <span class="sym">DATA_WIDTH</span> <span class="op">=&gt;</span> <span class="num">32</span>,
+    <span class="sym">ADDR_WIDTH</span> <span class="op">=&gt;</span> <span class="num">10</span>
+  }
+)
+
+<span class="kw">class</span> <span class="type">MemoryController</span> <span class="op">&lt;</span> <span class="type">RHDL::Component</span>
+  <span class="kw">def</span> <span class="fn">initialize</span>(<span class="key">banks:</span> <span class="num">4</span>)
+    <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+    <span class="fn">input</span>  <span class="sym">:addr</span>, <span class="key">width:</span> <span class="num">12</span>
+    <span class="fn">input</span>  <span class="sym">:wdata</span>, <span class="key">width:</span> <span class="num">32</span>
+    <span class="fn">input</span>  <span class="sym">:we</span>
+    <span class="fn">output</span> <span class="sym">:rdata</span>, <span class="key">width:</span> <span class="num">32</span>
+
+    <span class="cmt"># Instantiate multiple BRAM banks</span>
+    <span class="var">@banks</span> <span class="op">=</span> banks.<span class="fn">times</span>.<span class="fn">map</span> <span class="kw">do</span>
+      <span class="fn">add</span> <span class="type">BramTDP</span>.<span class="fn">new</span>
+    <span class="kw">end</span>
+
+    <span class="cmt"># Address decoding in Ruby DSL</span>
+    <span class="var">bank_sel</span> <span class="op">=</span> addr[<span class="num">11</span>..<span class="num">10</span>]
+    <span class="var">@banks</span>.<span class="fn">each_with_index</span> <span class="kw">do</span> |<span class="var">bank</span>, <span class="var">i</span>|
+      bank.clk  <span class="op">&lt;=</span> clk
+      bank.addr <span class="op">&lt;=</span> addr[<span class="num">9</span>..<span class="num">0</span>]
+      bank.din  <span class="op">&lt;=</span> wdata
+      bank.we   <span class="op">&lt;=</span> we <span class="op">&amp;</span> (bank_sel <span class="op">==</span> i)
+    <span class="kw">end</span>
+
+    rdata <span class="op">&lt;=</span> <span class="fn">mux</span>(bank_sel, <span class="var">@banks</span>.<span class="fn">map</span>(<span class="op">&amp;</span><span class="sym">:dout</span>))
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">Import a VHDL entity and use it alongside Ruby components. RHDL handles the cross-language port type mapping automatically.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">mixed_design.rb</span>
+          </div>
+          <pre><code><span class="cmt"># Import VHDL FIR filter IP</span>
+<span class="type">FirFilter</span> <span class="op">=</span> <span class="type">RHDL</span>.<span class="fn">import</span>(<span class="str">"ip/fir_filter.vhd"</span>)
+
+<span class="cmt"># Import Verilog ADC interface</span>
+<span class="type">AdcInterface</span> <span class="op">=</span> <span class="type">RHDL</span>.<span class="fn">import</span>(<span class="str">"vendor/adc_spi.v"</span>)
+
+<span class="cmt"># Compose in Ruby</span>
+<span class="kw">class</span> <span class="type">SignalChain</span> <span class="op">&lt;</span> <span class="type">RHDL::Component</span>
+  <span class="kw">def</span> <span class="fn">initialize</span>
+    <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+    <span class="fn">input</span>  <span class="sym">:adc_miso</span>
+    <span class="fn">output</span> <span class="sym">:filtered</span>, <span class="key">width:</span> <span class="num">16</span>
+
+    <span class="var">@adc</span> <span class="op">=</span> <span class="fn">add</span> <span class="type">AdcInterface</span>.<span class="fn">new</span>
+    <span class="var">@fir</span> <span class="op">=</span> <span class="fn">add</span> <span class="type">FirFilter</span>.<span class="fn">new</span>
+
+    <span class="cmt"># Wire: ADC -> FIR -> output</span>
+    <span class="var">@adc</span>.clk  <span class="op">&lt;=</span> clk
+    <span class="var">@adc</span>.miso <span class="op">&lt;=</span> adc_miso
+    <span class="var">@fir</span>.clk  <span class="op">&lt;=</span> clk
+    <span class="var">@fir</span>.din  <span class="op">&lt;=</span> <span class="var">@adc</span>.data_out
+    filtered  <span class="op">&lt;=</span> <span class="var">@fir</span>.dout
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
