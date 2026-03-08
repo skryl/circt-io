@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Component Library - CIRCT</title>
+  <meta name="description" content="Gates, flip-flops, registers, ALU, memory modules in the CIRCT component library.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#features" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to features
+      </a>
+      <div class="showcase-hero-text" style="max-width: 720px;">
+        <h1>Component <span class="gradient-text">Library</span></h1>
+        <p class="showcase-subtitle">Gates, flip-flops, registers, ALU, memory modules, and more. Build complex designs from proven, tested primitives.</p>
+        <div class="showcase-tags">
+          <span>Gates</span>
+          <span>Flip-Flops</span>
+          <span>Registers</span>
+          <span>ALU</span>
+          <span>Memory</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Primitive Catalog</h2>
+      <p class="code-excerpt-desc">Ready-to-use building blocks organized by category. Each component is fully tested and synthesizable.</p>
+
+      <table class="spec-table">
+        <tr><th>Category</th><th>Components</th><th>Description</th></tr>
+        <tr><td>Logic Gates</td><td>AND, OR, XOR, NOT, NAND, NOR, XNOR</td><td>Basic combinational logic, parameterized width</td></tr>
+        <tr><td>Multiplexers</td><td>Mux2, Mux4, MuxN</td><td>2-input, 4-input, and N-input select</td></tr>
+        <tr><td>Arithmetic</td><td>Adder, Subtractor, Comparator, Shifter</td><td>Parameterized width arithmetic units</td></tr>
+        <tr><td>Flip-Flops</td><td>DFF, DFFE, DFFR, DFFER</td><td>D flip-flop with enable and reset variants</td></tr>
+        <tr><td>Registers</td><td>Register, ShiftRegister, LFSR</td><td>Multi-bit storage with load, shift, feedback</td></tr>
+        <tr><td>Counters</td><td>Counter, UpDownCounter, RingCounter</td><td>Configurable width, wrap, and direction</td></tr>
+        <tr><td>Memory</td><td>RAM, ROM, RegisterFile</td><td>Configurable depth and width storage</td></tr>
+        <tr><td>ALU</td><td>SimpleALU, ALU</td><td>Arithmetic logic units with selectable ops</td></tr>
+      </table>
+
+      <h2 class="arch-section-title">Usage Patterns</h2>
+
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Instantiate and wire library components directly into your design. All components support parameterized widths.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">using_primitives.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">Datapath</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:rst</span>
+  <span class="fn">input</span>  <span class="sym">:a</span>, <span class="sym">:b</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">input</span>  <span class="sym">:op</span>, <span class="key">width:</span> <span class="num">2</span>
+  <span class="fn">output</span> <span class="sym">:result</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="fn">component</span> <span class="sym">:alu</span>,
+    <span class="type">SimpleALU</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="fn">component</span> <span class="sym">:out_reg</span>,
+    <span class="type">Register</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="fn">wire</span> <span class="sym">:alu</span>, <span class="sym">:a</span> <span class="op">=&gt;</span> <span class="sym">:a</span>
+  <span class="fn">wire</span> <span class="sym">:alu</span>, <span class="sym">:b</span> <span class="op">=&gt;</span> <span class="sym">:b</span>
+  <span class="fn">wire</span> <span class="sym">:alu</span>, <span class="sym">:op</span> <span class="op">=&gt;</span> <span class="sym">:op</span>
+  <span class="fn">wire</span> <span class="sym">:out_reg</span>, <span class="sym">:d</span> <span class="op">=&gt;</span> <span class="sym">:alu</span>.<span class="fn">result</span>
+  <span class="fn">wire</span> <span class="sym">:result</span> <span class="op">=&gt;</span> <span class="sym">:out_reg</span>.<span class="fn">q</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">Compose primitives into larger building blocks. A register file uses individual registers and a decoder.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">register_file.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">RegFile8x8</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:clk</span>, <span class="sym">:we</span>
+  <span class="fn">input</span>  <span class="sym">:rd_addr</span>, <span class="key">width:</span> <span class="num">3</span>
+  <span class="fn">input</span>  <span class="sym">:wr_addr</span>, <span class="key">width:</span> <span class="num">3</span>
+  <span class="fn">input</span>  <span class="sym">:wr_data</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="fn">output</span> <span class="sym">:rd_data</span>, <span class="key">width:</span> <span class="num">8</span>
+
+  <span class="num">8</span>.<span class="fn">times</span> <span class="kw">do</span> |<span class="var">i</span>|
+    <span class="fn">component</span> <span class="str">"r#{i}"</span>,
+      <span class="type">Register</span>, <span class="key">width:</span> <span class="num">8</span>
+  <span class="kw">end</span>
+
+  <span class="fn">component</span> <span class="sym">:rd_mux</span>,
+    <span class="type">MuxN</span>,
+    <span class="key">inputs:</span> <span class="num">8</span>, <span class="key">width:</span> <span class="num">8</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

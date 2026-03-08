@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circuit Diagrams - CIRCT</title>
+  <meta name="description" content="Multi-level circuit visualization in SVG, PNG, and DOT formats with CIRCT.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#features" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to features
+      </a>
+      <div class="showcase-hero-text" style="max-width: 720px;">
+        <h1>Circuit <span class="gradient-text">Diagrams</span></h1>
+        <p class="showcase-subtitle">Multi-level circuit visualization in SVG, PNG, and DOT formats. See your hardware at any abstraction level, from high-level block diagrams to individual gates.</p>
+        <div class="showcase-tags">
+          <span>SVG</span>
+          <span>PNG</span>
+          <span>DOT</span>
+          <span>Graphviz</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Output Formats</h2>
+
+      <table class="spec-table">
+        <tr><th>Format</th><th>Type</th><th>Best For</th><th>Scalability</th></tr>
+        <tr><td>SVG</td><td>Vector</td><td>Documentation, web embedding, zoom-friendly viewing</td><td>Unlimited resolution</td></tr>
+        <tr><td>PNG</td><td>Raster</td><td>Quick previews, presentations, reports</td><td>Fixed resolution</td></tr>
+        <tr><td>DOT</td><td>Graph description</td><td>Custom rendering with Graphviz, CI pipelines</td><td>Text-based, any renderer</td></tr>
+      </table>
+
+      <h2 class="arch-section-title">Abstraction Levels</h2>
+      <p class="code-excerpt-desc">CIRCT generates diagrams at three abstraction levels. Choose the right level for your needs.</p>
+
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc"><strong>Hierarchical view</strong> shows component boundaries and interconnections as labeled blocks with port connections.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">hierarchical.rb</span>
+            </div>
+            <pre><code><span class="var">cpu</span> <span class="op">=</span> <span class="type">CPU6502</span>.<span class="fn">new</span>
+
+<span class="var">cpu</span>.<span class="fn">diagram</span>(
+  <span class="key">level:</span> <span class="sym">:hierarchical</span>,
+  <span class="key">format:</span> <span class="sym">:svg</span>,
+  <span class="key">output:</span> <span class="str">"cpu_blocks.svg"</span>
+)</code></pre>
+          </div>
+        </div>
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc"><strong>RTL view</strong> shows registers, multiplexers, and arithmetic operators matching the source abstraction.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">rtl_view.rb</span>
+            </div>
+            <pre><code><span class="var">alu</span> <span class="op">=</span> <span class="type">SimpleALU</span>.<span class="fn">new</span>
+
+<span class="var">alu</span>.<span class="fn">diagram</span>(
+  <span class="key">level:</span> <span class="sym">:rtl</span>,
+  <span class="key">format:</span> <span class="sym">:svg</span>,
+  <span class="key">output:</span> <span class="str">"alu_rtl.svg"</span>
+)</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="arch-section-title">Usage Examples</h2>
+
+      <div class="code-excerpt">
+        <p class="code-excerpt-desc">Generate diagrams in all formats at once, or target a specific abstraction level with custom options.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">diagram_examples.rb</span>
+          </div>
+          <pre><code><span class="var">counter</span> <span class="op">=</span> <span class="type">Counter</span>.<span class="fn">new</span>
+
+<span class="cmt"># Generate all three formats</span>
+<span class="var">counter</span>.<span class="fn">diagram</span>(<span class="key">format:</span> <span class="sym">:svg</span>, <span class="key">output:</span> <span class="str">"counter.svg"</span>)
+<span class="var">counter</span>.<span class="fn">diagram</span>(<span class="key">format:</span> <span class="sym">:png</span>, <span class="key">output:</span> <span class="str">"counter.png"</span>)
+<span class="var">counter</span>.<span class="fn">diagram</span>(<span class="key">format:</span> <span class="sym">:dot</span>, <span class="key">output:</span> <span class="str">"counter.dot"</span>)
+
+<span class="cmt"># Gate-level view after synthesis</span>
+<span class="var">netlist</span> <span class="op">=</span> <span class="var">counter</span>.<span class="fn">synthesize</span>(<span class="key">target:</span> <span class="sym">:gates</span>)
+<span class="var">netlist</span>.<span class="fn">diagram</span>(
+  <span class="key">format:</span> <span class="sym">:svg</span>,
+  <span class="key">output:</span> <span class="str">"counter_gates.svg"</span>,
+  <span class="key">show_labels:</span> <span class="num">true</span>,
+  <span class="key">color_by:</span> <span class="sym">:gate_type</span>
+)</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

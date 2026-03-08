@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gate Synthesis - CIRCT</title>
+  <meta name="description" content="Automatic lowering to primitive gates with full netlist generation in CIRCT.">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="showcase-page">
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <line x1="12" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10" y1="12" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>CIRCT</span>
+      </a>
+      <div class="nav-links">
+        <a href="../#features">Features</a>
+        <a href="../#code">Code</a>
+        <a href="../#showcase">Showcase</a>
+        <a href="https://github.com/skryl/rhdl" class="nav-btn" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="showcase-hero">
+    <div class="container">
+      <a href="../#features" class="showcase-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7l-7 7 7 7"/></svg>
+        Back to features
+      </a>
+      <div class="showcase-hero-text" style="max-width: 720px;">
+        <h1>Gate <span class="gradient-text">Synthesis</span></h1>
+        <p class="showcase-subtitle">Automatic lowering to primitive gates with full netlist generation. AND, OR, XOR, NOT, MUX, and DFF primitives form the foundation of every digital circuit.</p>
+        <div class="showcase-tags">
+          <span>AND</span>
+          <span>OR</span>
+          <span>XOR</span>
+          <span>NOT</span>
+          <span>MUX</span>
+          <span>DFF</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="arch-section">
+    <div class="container">
+      <h2 class="arch-section-title">Gate Primitives</h2>
+      <p class="code-excerpt-desc">CIRCT synthesizes down to six fundamental gate types. Every digital circuit, no matter how complex, is built from these primitives.</p>
+
+      <table class="spec-table">
+        <tr><th>Gate</th><th>Inputs</th><th>Function</th><th>Use Case</th></tr>
+        <tr><td>AND</td><td>2+</td><td>Output high when all inputs high</td><td>Masking, enable logic</td></tr>
+        <tr><td>OR</td><td>2+</td><td>Output high when any input high</td><td>Flag combining, priority logic</td></tr>
+        <tr><td>XOR</td><td>2+</td><td>Output high when odd number of inputs high</td><td>Parity, comparison, arithmetic</td></tr>
+        <tr><td>NOT</td><td>1</td><td>Output is complement of input</td><td>Inversion, active-low signals</td></tr>
+        <tr><td>MUX</td><td>2 data + 1 select</td><td>Select between inputs based on control</td><td>Data routing, conditionals</td></tr>
+        <tr><td>DFF</td><td>D + CLK</td><td>Capture input on clock edge</td><td>State storage, registers, pipelines</td></tr>
+      </table>
+
+      <h2 class="arch-section-title">Lowering Pipeline</h2>
+      <p class="code-excerpt-desc">The synthesis pipeline transforms high-level RTL through multiple passes, progressively lowering abstractions until only primitive gates remain.</p>
+
+      <div class="arch-diagram">
+        <div class="arch-diagram-row">
+          <div class="arch-block accent">
+            <h4>RTL</h4>
+            <p>High-level operators, case statements</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block">
+            <h4>Boolean</h4>
+            <p>AND/OR/NOT/XOR expressions</p>
+          </div>
+          <div class="arch-connector">&rarr;</div>
+          <div class="arch-block">
+            <h4>Netlist</h4>
+            <p>Gate instances, wire connections</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-columns">
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">A simple 2-to-1 multiplexer at the RTL level uses a <code>mux</code> call.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">mux_rtl.rb</span>
+            </div>
+            <pre><code><span class="kw">class</span> <span class="type">Mux2</span> <span class="op">&lt;</span> <span class="type">RHDL::Sim::Component</span>
+  <span class="fn">input</span>  <span class="sym">:a</span>, <span class="sym">:b</span>, <span class="sym">:sel</span>
+  <span class="fn">output</span> <span class="sym">:y</span>
+
+  <span class="fn">behavior</span> <span class="kw">do</span>
+    y <span class="op">&lt;=</span> <span class="fn">mux</span>(sel, a, b)
+  <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+          </div>
+        </div>
+        <div class="code-excerpt">
+          <p class="code-excerpt-desc">After synthesis: <code>y = (a AND NOT sel) OR (b AND sel)</code>.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">gate_netlist</span>
+              <span class="code-badge">Synthesized</span>
+            </div>
+            <pre><code><span class="cmt"># NOT  g0 (.in(sel), .out(sel_n))</span>
+<span class="cmt"># AND  g1 (.in(a, sel_n), .out(t0))</span>
+<span class="cmt"># AND  g2 (.in(b, sel), .out(t1))</span>
+<span class="cmt"># OR   g3 (.in(t0, t1), .out(y))</span>
+<span class="cmt">#</span>
+<span class="cmt"># Total: 4 gates, 1 level of logic</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="arch-section-title">Netlist Generation</h2>
+
+      <div class="code-excerpt">
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-filename">synthesis_example.rb</span>
+          </div>
+          <pre><code><span class="var">alu</span> <span class="op">=</span> <span class="type">SimpleALU</span>.<span class="fn">new</span>
+<span class="var">netlist</span> <span class="op">=</span> <span class="var">alu</span>.<span class="fn">synthesize</span>(<span class="key">target:</span> <span class="sym">:gates</span>)
+
+<span class="var">netlist</span>.<span class="fn">stats</span>
+<span class="cmt"># => { and: 24, or: 16, xor: 8, not: 12, mux: 4, dff: 0 }</span>
+<span class="cmt"># => Total: 64 gates</span>
+
+<span class="var">netlist</span>.<span class="fn">to_verilog</span>(<span class="str">"alu_gates.v"</span>)
+<span class="var">netlist</span>.<span class="fn">to_dot</span>(<span class="str">"alu_gates.dot"</span>)</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>Built with Ruby & Rust. Open source under MIT License.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
