@@ -315,6 +315,13 @@ a:hover { color: #e04840; }
   position: relative;
 }
 
+.gradient-text .hero-cycle-word {
+  background: linear-gradient(135deg, var(--accent), #e05550, var(--amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .hero-cycle-word .cyber-char {
   display: inline-block;
   transition: none;

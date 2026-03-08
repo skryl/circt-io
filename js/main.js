@@ -504,7 +504,7 @@
     ];
 
     const GLITCH_CHARS = '01_-=+:.';
-    const HOLD_DURATION = 30000;
+    const HOLD_DURATION = 5000;
     const SCRAMBLE_DURATION = 800;
     const CHAR_RESOLVE_STAGGER = 45;
 
