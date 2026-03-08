@@ -321,21 +321,21 @@ a:hover { color: #e04840; }
 }
 
 .hero-cycle-word .cyber-char.scrambling {
-  color: var(--green-bright);
-  -webkit-text-fill-color: var(--green-bright);
-  text-shadow: 0 0 8px var(--green), 0 0 16px rgba(58, 106, 58, 0.4);
+  color: var(--text-secondary);
+  -webkit-text-fill-color: var(--text-secondary);
+  opacity: 0.6;
 }
 
 .hero-cycle-word .cyber-char.resolved {
-  text-shadow: 0 0 6px rgba(204, 52, 45, 0.3);
-  animation: cyber-resolve 0.3s ease-out;
+  animation: cyber-resolve 0.2s ease-out;
 }
 
 .gradient-text .cyber-char.scrambling {
   background: none;
   -webkit-background-clip: unset;
   background-clip: unset;
-  -webkit-text-fill-color: var(--green-bright);
+  -webkit-text-fill-color: var(--text-secondary);
+  opacity: 0.6;
 }
 
 .gradient-text .cyber-char.resolved {
@@ -346,18 +346,8 @@ a:hover { color: #e04840; }
 }
 
 @keyframes cyber-resolve {
-  0% {
-    opacity: 0.7;
-    transform: translateY(-2px);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(1px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
 }
 
 .hero-zh {

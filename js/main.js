@@ -503,10 +503,10 @@
       { verb: 'Run', lang: 'the Browser' },
     ];
 
-    const GLITCH_CHARS = '01!@#$%&<>{}[]=/\\|~^`_';
-    const HOLD_DURATION = 3000;
-    const SCRAMBLE_DURATION = 1200;
-    const CHAR_RESOLVE_STAGGER = 60;
+    const GLITCH_CHARS = '01_-=+:.';
+    const HOLD_DURATION = 30000;
+    const SCRAMBLE_DURATION = 800;
+    const CHAR_RESOLVE_STAGGER = 45;
 
     let currentState = 0;
 
@@ -546,7 +546,7 @@
           }
         });
         render();
-      }, 50);
+      }, 80);
 
       // Phase 2: resolve characters one by one from left to right
       const resolveStart = SCRAMBLE_DURATION * 0.35;
