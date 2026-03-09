@@ -1,72 +1,192 @@
 @use "./base.scss";
 
-// RHDL Blog - Shenzhen I/O inspired theme
-// Matches the main circt-io website aesthetic
+// ============================================
+// RHDL Blog - Shenzhen I/O Theme
+// PCB board aesthetic, technical manual style
+// Mirrors the main circt-io website
+// ============================================
+
+// ---------- Shared (both modes) ----------
+
+// All text in monospace — technical manual feel
+body {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, thead {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+// Section tags & meta in small mono uppercase
+.content-meta {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+}
+
+// No border-radius anywhere — flat industrial
+a.internal {
+  border-radius: 0;
+}
+
+pre {
+  border-radius: 0 !important;
+}
+
+code {
+  border-radius: 0;
+}
+
+input[type="checkbox"] {
+  border-radius: 0;
+}
+
+.search > .search-button {
+  border-radius: 0;
+}
+
+// Tag links — industrial chip style
+a.internal.tag-link {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 0;
+  padding: 0.15rem 0.5rem;
+}
+
+// Page title — large, bold, uppercase
+.page-title {
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+// Article title
+article > h1 {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+// Explorer headings
+button.desktop-explorer h2,
+button.mobile-explorer h2 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+// TOC heading
+button.toc-header h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+// Backlinks heading
+.backlinks > h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+// Footer
+footer {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+
+  & ul {
+    gap: 1.5rem;
+  }
+}
+
+// Explorer tree lines
+.explorer-content .folder-outer > ul {
+  border-left: 1px solid var(--secondary);
+}
+
+// Folder icons use accent color
+.folder-icon {
+  color: var(--secondary);
+}
+
+// ---------- Dark Mode ----------
 
 :root[saved-theme="dark"] {
-  // PCB dot grid background
+  // PCB dot grid background — matches main site
   body {
+    background-color: #0a0e0a;
     background-image: radial-gradient(
       circle,
-      rgba(58, 106, 58, 0.08) 1px,
+      rgba(58, 106, 58, 0.12) 1px,
       transparent 1px
     );
     background-size: 20px 20px;
+    background-attachment: fixed;
   }
 
-  // Card-like surfaces
-  .left,
-  .right {
+  // Sidebar panels — card style with green border
+  .sidebar {
     .explorer,
     .toc,
     .backlinks,
-    .search,
-    .graph {
-      background: rgba(14, 22, 14, 0.6);
-      border: 1px solid rgba(58, 106, 58, 0.2);
-      border-radius: 4px;
-      padding: 0.8rem;
+    .search {
+      background: rgba(14, 22, 14, 0.85);
+      border: 1px solid rgba(58, 106, 58, 0.25);
+      border-radius: 0;
+      padding: 0.75rem;
     }
   }
 
-  // Code blocks
-  pre {
-    background: #080c08 !important;
-    border: 1px solid rgba(58, 106, 58, 0.2);
+  // Search button
+  .search > .search-button {
+    border-color: rgba(58, 106, 58, 0.25);
+    background: rgba(14, 22, 14, 0.85);
+
+    &:hover {
+      border-color: rgba(204, 52, 45, 0.4);
+    }
+
+    & > p {
+      color: #5a6e52;
+    }
   }
 
-  // Links - red accent on hover
+  // Code blocks — darkest background
+  pre {
+    background: #080c08 !important;
+    border: 1px solid rgba(58, 106, 58, 0.25) !important;
+  }
+
+  code {
+    background: rgba(14, 22, 14, 0.6);
+  }
+
+  // Links
   a {
+    color: #cc342d;
+
     &:hover {
       color: #e04840 !important;
     }
   }
 
-  // Footer styling
-  footer {
-    border-top: 1px solid rgba(58, 106, 58, 0.2);
+  // Internal links — green highlight bg
+  a.internal {
+    background-color: rgba(58, 106, 58, 0.12);
+
+    &:hover {
+      background-color: rgba(204, 52, 45, 0.12);
+    }
   }
 
-  // Page title
-  .page-title {
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-
-  // Article title
-  article h1 {
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-
-  // Blockquotes with accent border
-  blockquote {
-    border-left: 3px solid #cc342d;
-    background: rgba(14, 22, 14, 0.4);
-    padding: 0.5rem 1rem;
-  }
-
-  // Tags
+  // Tag links
   a.internal.tag-link {
     background: rgba(58, 106, 58, 0.15);
     border: 1px solid rgba(58, 106, 58, 0.3);
@@ -77,13 +197,107 @@
     }
   }
 
-  // Horizontal rules
+  // Blockquotes — red accent border
+  blockquote {
+    border-left: 3px solid #cc342d;
+    background: rgba(14, 22, 14, 0.4);
+    padding: 0.5rem 1rem;
+    border-radius: 0;
+  }
+
+  // Horizontal rules — green trace line
   hr {
-    border-color: rgba(58, 106, 58, 0.2);
+    background-color: rgba(58, 106, 58, 0.25);
+  }
+
+  // Footnotes border
+  .footnotes {
+    border-top: 1px solid rgba(58, 106, 58, 0.25);
+  }
+
+  // Tables
+  th {
+    border-bottom: 2px solid rgba(58, 106, 58, 0.4);
+    color: #5a9a5a;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  tr {
+    border-bottom: 1px solid rgba(58, 106, 58, 0.15);
+  }
+
+  // Footer
+  footer {
+    border-top: 1px solid rgba(58, 106, 58, 0.25);
+    padding-top: 1.5rem;
+    opacity: 0.5;
+  }
+
+  // Explorer folder tree lines
+  .explorer-content .folder-outer > ul {
+    border-left-color: rgba(58, 106, 58, 0.3);
+  }
+
+  // Explorer active item
+  .explorer-content ul li > a.active {
+    color: #cc342d;
+  }
+
+  // Search modal
+  .search > .search-container > .search-space > * {
+    box-shadow:
+      0 14px 50px rgba(0, 0, 0, 0.4),
+      0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(58, 106, 58, 0.25);
+    border-radius: 0;
+  }
+
+  .search > .search-container > .search-space > input {
+    border-color: rgba(58, 106, 58, 0.25);
+    background: #0d110d;
+    border-radius: 0;
+  }
+
+  .search-layout .result-card {
+    border-bottom-color: rgba(58, 106, 58, 0.15) !important;
+
+    &:hover, &:focus, &.focus {
+      background: rgba(58, 106, 58, 0.1) !important;
+    }
+  }
+
+  // TOC links
+  ul.toc-content > li > a.in-view {
+    color: #cc342d;
+    opacity: 1;
+  }
+
+  // Mobile explorer background
+  @media all and (max-width: 800px) {
+    .explorer .explorer-content {
+      background-color: #0a0e0a;
+    }
+
+    .sidebar.left:has(.explorer) {
+      background-color: #0a0e0a;
+    }
+  }
+
+  // Navigation progress bar
+  .navigation-progress {
+    background: #cc342d;
+  }
+
+  // Selection color
+  ::selection {
+    background: rgba(204, 52, 45, 0.3);
   }
 }
 
-// Light mode adjustments
+// ---------- Light Mode ----------
+
 :root[saved-theme="light"] {
   body {
     background-image: radial-gradient(
@@ -92,26 +306,58 @@
       transparent 1px
     );
     background-size: 20px 20px;
+    background-attachment: fixed;
   }
 
   pre {
-    border: 1px solid rgba(58, 106, 58, 0.15);
+    border: 1px solid rgba(58, 106, 58, 0.15) !important;
   }
 
   blockquote {
     border-left: 3px solid #cc342d;
-    background: rgba(58, 106, 58, 0.05);
+    background: rgba(58, 106, 58, 0.04);
+    border-radius: 0;
   }
-}
 
-// Monospace headings for technical feel
-h1, h2, h3, h4, h5, h6 {
-  font-family: "JetBrains Mono", monospace;
-}
+  th {
+    color: #3a6a3a;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
 
-// Content meta date styling
-.content-meta {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.85rem;
-  opacity: 0.7;
+  hr {
+    background-color: rgba(58, 106, 58, 0.15);
+  }
+
+  footer {
+    border-top: 1px solid rgba(58, 106, 58, 0.15);
+    padding-top: 1.5rem;
+  }
+
+  a.internal.tag-link {
+    background: rgba(58, 106, 58, 0.08);
+    border: 1px solid rgba(58, 106, 58, 0.2);
+
+    &:hover {
+      background: rgba(204, 52, 45, 0.08);
+      border-color: rgba(204, 52, 45, 0.2);
+    }
+  }
+
+  .search > .search-container > .search-space > * {
+    border-radius: 0;
+  }
+
+  .search > .search-container > .search-space > input {
+    border-radius: 0;
+  }
+
+  .navigation-progress {
+    background: #cc342d;
+  }
+
+  ::selection {
+    background: rgba(204, 52, 45, 0.2);
+  }
 }
