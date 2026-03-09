@@ -141,6 +141,7 @@ Tutorials, guides, and reference for the CIRCT toolchain and hardware design wit
 <li><a href="docs/showcase/apple-ii-system">Apple II System Design</a></li>
 <li><a href="docs/showcase/game-boy-implementation">Game Boy Implementation</a></li>
 <li><a href="docs/showcase/risc-v-rv32i">RISC-V RV32I</a></li>
+<li><a href="docs/showcase/8bit-cpu">8-bit CPU Tutorial</a></li>
 </ul>
 </div>
 

@@ -3,59 +3,149 @@ title: Gate Synthesis
 date: 2025-03-20
 tags:
   - synthesis
-  - gates
+  - gate-level
 ---
 
-Gate synthesis lowers your RTL design to a netlist of primitive gates — the first step toward real hardware.
+RHDL's gate-level synthesis backend lowers HDL components to primitive gate netlists — AND, OR, XOR, NOT, MUX, BUF, CONST, and DFF. This provides gate count metrics, structural verification, and a path to hardware implementation.
 
-## Primitive Gate Library
+## Quick Start
 
-CIRCT synthesizes to six primitive gates:
-
-| Gate | Symbol | Description |
-|------|--------|-------------|
-| AND | `&` | N-input logical AND |
-| OR | `\|` | N-input logical OR |
-| XOR | `^` | 2-input exclusive OR |
-| NOT | `~` | Inverter |
-| MUX | `?:` | 2:1 multiplexer |
-| DFF | `□` | D flip-flop with clock |
-
-## Running Synthesis
+### CLI
 
 ```bash
-rhdl synthesize lib/counter.rb -o output/counter_gates.json
+# Synthesize all components to gate-level JSON
+rhdl gates --export
+
+# Show gate count statistics
+rhdl gates --stats
+
+# Synthesize CPU datapath components
+rhdl gates --simcpu
+
+# Clean output
+rhdl gates --clean
 ```
 
-## Synthesis Report
+### Programmatic
 
-The synthesis report shows gate counts and critical path depth:
+```ruby
+# Lower a component to gate-level IR
+component = RHDL::HDL::ALU.new('alu', width: 8)
+ir = RHDL::Codegen::Structure::Lower.from_components([component], name: 'alu')
 
-```
-Module: Counter
-  AND gates:  12
-  OR gates:    8
-  XOR gates:   4
-  NOT gates:   6
-  MUX gates:   3
-  DFF gates:   4
-  ---
-  Total gates: 37
-  Critical path depth: 6
+puts "Gates: #{ir.gates.length}"
+puts "DFFs:  #{ir.dffs.length}"
+puts "Nets:  #{ir.net_count}"
+
+# Export to JSON
+File.write('alu.json', ir.to_json)
 ```
 
-## Optimization
+## Statistics Output
 
-The compiler applies technology-independent optimizations:
-
-- **Logic minimization** — reduce gate count
-- **Retiming** — move registers to balance pipeline stages
-- **Sharing** — reuse hardware for mutually exclusive operations
-
-## Inspecting the Netlist
-
-Export the gate-level netlist as a circuit diagram:
-
-```bash
-rhdl diagram lib/counter.rb --level gate --format svg
 ```
+RHDL Gate-Level Synthesis Statistics
+==================================================
+
+Components by Gate Count:
+--------------------------------------------------
+  cpu/synth_datapath: 505 gates, 24 DFFs, 892 nets
+  arithmetic/alu: 312 gates, 0 DFFs, 456 nets
+  arithmetic/multiplier: 256 gates, 0 DFFs, 384 nets
+  ...
+
+==================================================
+Total Components: 53
+Total Gates: 2847
+Total DFFs: 156
+```
+
+## Primitive Gate Types
+
+| Gate | Function | Notes |
+|------|----------|-------|
+| `AND` | `a & b` | N-ary reduced to binary tree |
+| `OR` | `a \| b` | N-ary reduced to binary tree |
+| `XOR` | `a ^ b` | Binary only |
+| `NOT` | `~a` | Inverter |
+| `MUX` | `sel ? t : f` | 2-to-1 multiplexer |
+| `BUF` | `a` | Buffer (fan-out) |
+| `CONST` | `0` or `1` | Constant value |
+| `DFF` | D flip-flop | With optional reset and enable |
+
+## Supported Components (53 total)
+
+| Category | Count | Examples |
+|----------|-------|---------|
+| Gates | 13 | AND, OR, XOR, NOT, NAND, NOR, Bitwise ops |
+| Sequential | 12 | DFF, Register, ShiftRegister, Counter, PC, SP |
+| Arithmetic | 10 | Adders, Subtractor, ALU, Multiplier, Divider |
+| Combinational | 16 | Mux2–MuxN, Decoders, Encoders, BarrelShifter |
+| CPU | 2 | InstructionDecoder, SynthDatapath |
+
+## Gate Count Reference
+
+| Component | Width | Gates | DFFs | Nets |
+|-----------|-------|-------|------|------|
+| AndGate | 1 | 1 | 0 | 3 |
+| FullAdder | 1 | 5 | 0 | 9 |
+| RippleCarryAdder | 8 | 48 | 0 | 67 |
+| Register | 8 | 0 | 8 | 24 |
+| Counter | 8 | ~60 | 8 | ~80 |
+| ALU | 8 | ~400 | 0 | ~500 |
+| Multiplier | 8 | ~800 | 0 | ~1000 |
+| SynthDatapath (CPU) | — | ~505 | 24 | ~600 |
+
+## Output Format
+
+Each component generates two files:
+
+```
+export/gates/
+├── arithmetic/
+│   ├── alu.json          # Machine-readable netlist
+│   ├── alu.txt           # Human-readable statistics
+│   └── ...
+├── sequential/
+│   ├── counter.json
+│   ├── counter.txt
+│   └── ...
+└── cpu/
+    ├── synth_datapath.json
+    └── synth_datapath.txt
+```
+
+### JSON Netlist Format
+
+```json
+{
+  "name": "alu",
+  "net_count": 1234,
+  "inputs": {
+    "a": [0, 1, 2, 3, 4, 5, 6, 7],
+    "b": [8, 9, 10, 11, 12, 13, 14, 15]
+  },
+  "outputs": {
+    "result": [100, 101, 102, 103, 104, 105, 106, 107]
+  },
+  "gates": [
+    {"type": "AND", "inputs": [0, 8], "output": 50},
+    {"type": "XOR", "inputs": [0, 8], "output": 51}
+  ],
+  "dffs": []
+}
+```
+
+## Limitations
+
+- **Memories**: RAM/ROM not supported at gate level
+- **Clock domains**: Single clock domain only
+- **Tristate**: Lowers to simple gates (not true high-Z)
+- **Large designs**: Gate counts grow quadratically for multipliers/dividers
+- **Timing**: Functional only, no propagation delay modeling
+
+## Next Steps
+
+- [Verilog Export](../synthesis/verilog-export) — RTL-level Verilog generation
+- [FPGA Workflows](../synthesis/fpga-workflows) — verification with Icarus Verilog
+- [Gate-Level IR](../architecture/circt-ir-overview) — IR data structures
