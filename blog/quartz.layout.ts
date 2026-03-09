@@ -7,7 +7,7 @@ export const sharedPageComponents: SharedLayout = {
   afterBody: [],
   footer: Component.Footer({
     links: {
-      "RHDL Home": "https://skryl.github.io/circt-io",
+      "CIRCT Home": "https://skryl.github.io/circt-io",
       GitHub: "https://github.com/skryl/rhdl",
     },
   }),
