@@ -1,8 +1,8 @@
 ---
-title: CIRCT
+title: Documentation
 ---
 
-Welcome to **CIRCT** — the Comprehensive IR Compiler for Hardware. Explore tutorials, deep dives, and guides covering the CIRCT toolchain and hardware design with Ruby.
+Tutorials, guides, and reference for the CIRCT toolchain and hardware design with Ruby.
 
 <style>
 .topics-grid {
