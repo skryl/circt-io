@@ -52,4 +52,4 @@ end
 
 ## Try It
 
-The [CIRCT showcase](https://skryl.github.io/circt-io/showcase/6502.html) includes a live browser simulation where you can load 6502 programs and watch them execute cycle by cycle.
+The [CIRCT showcase](https://circt.io/showcase/6502.html) includes a live browser simulation where you can load 6502 programs and watch them execute cycle by cycle.
