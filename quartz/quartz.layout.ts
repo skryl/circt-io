@@ -1,5 +1,34 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
+import { FileTrieNode } from "./quartz/util/fileTrie"
+
+const explorerSortFn = (a: FileTrieNode, b: FileTrieNode) => {
+  const order: Record<string, number> = {
+    docs: 0,
+    blog: 1,
+    introduction: 0,
+    installation: 1,
+    basics: 2,
+    components: 3,
+    architecture: 4,
+    simulation: 5,
+    synthesis: 6,
+    showcase: 7,
+  }
+  const orderA = order[a.slugSegment]
+  const orderB = order[b.slugSegment]
+  if (orderA !== undefined && orderB !== undefined) return orderA - orderB
+  if (orderA !== undefined) return -1
+  if (orderB !== undefined) return 1
+
+  if ((!a.isFolder && !b.isFolder) || (a.isFolder && b.isFolder)) {
+    return a.displayName.localeCompare(b.displayName, undefined, {
+      numeric: true,
+      sensitivity: "base",
+    })
+  }
+  return a.isFolder ? -1 : 1
+}
 
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
@@ -37,7 +66,7 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({ sortFn: explorerSortFn }),
   ],
   right: [
     Component.DesktopOnly(Component.TableOfContents()),
@@ -59,7 +88,7 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({ sortFn: explorerSortFn }),
   ],
   right: [],
 }
