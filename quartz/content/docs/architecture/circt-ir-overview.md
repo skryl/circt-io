@@ -1,47 +1,147 @@
 ---
-title: CIRCT IR Overview
+title: Gate-Level IR
 date: 2025-03-01
 tags:
   - architecture
   - ir
-  - mlir
+  - gate-level
 ---
 
-The CIRCT Intermediate Representation is the core of the compiler — a multi-level IR built on MLIR that represents hardware at different levels of abstraction.
+RHDL's gate-level backend converts high-level HDL components into netlists composed of seven primitive gate types plus D flip-flops. This intermediate representation (IR) is the foundation for gate-level simulation, synthesis statistics, and verification.
 
-## What is MLIR?
-
-MLIR (Multi-Level Intermediate Representation) is a compiler infrastructure from the LLVM project designed for building domain-specific compilers. CIRCT uses MLIR to define hardware-specific dialects — each capturing a particular level of abstraction.
-
-## The Hub-and-Spoke Model
-
-CIRCT IR sits at the center of the toolchain:
+## Architecture
 
 ```
-   Ruby DSL ──┐
-              ├──▶ CIRCT IR ──┬──▶ Verilog Export
-   Verilog ───┘     (hub)     ├──▶ Simulation
-                              ├──▶ Gate Synthesis
-                              └──▶ Visualization
+HDL Component (Ruby DSL)
+        │
+        ▼
+┌───────────────────┐
+│   Netlist Lower   │  lib/rhdl/codegen/structure/lower.rb
+└───────────────────┘
+        │
+        ▼
+┌───────────────────┐
+│  Structure IR     │  Gate-level intermediate representation
+└───────────────────┘
+        │
+        ├──────────────┬──────────────┬──────────────┐
+        ▼              ▼              ▼              ▼
+┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+│  JSON Export│ │ CPU Sim     │ │ SIMD Sim    │ │ Verilog Gen │
+└─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
 ```
 
-Multiple frontends lower into the same IR, and multiple backends consume it. This decouples the input language from the output target.
+## Primitive Gates
 
-## IR Structure
+The IR uses seven combinational primitives plus a sequential element:
 
-A CIRCT IR module contains:
+| Gate | Inputs | Function |
+|------|--------|----------|
+| `AND` | 2+ | Bitwise AND (N-ary reduced to binary tree) |
+| `OR` | 2+ | Bitwise OR (N-ary reduced to binary tree) |
+| `XOR` | 2 | Exclusive OR |
+| `NOT` | 1 | Inverter |
+| `MUX` | 3 | 2-to-1 multiplexer (select, when_true, when_false) |
+| `BUF` | 1 | Buffer/identity (used for fan-out) |
+| `CONST` | 0 | Constant 0 or 1 |
 
-- **Modules** — hardware modules with ports (inputs/outputs)
-- **Operations** — combinational and sequential operations within modules
-- **Types** — integer types, clock types, memory types
-- **Attributes** — metadata like names, locations, and annotations
+| Element | Inputs | Function |
+|---------|--------|----------|
+| `DFF` | d, clk, rst, en | D flip-flop with optional reset and enable |
 
-## Inspection
+## IR Data Structures
 
-You can dump the IR at any stage of compilation to inspect what the compiler is doing:
+The Structure IR (`RHDL::Codegen::Structure::IR`) represents a complete gate-level design:
 
-```bash
-rhdl compile lib/counter.rb --emit-ir --stage=after-lowering
+```ruby
+ir = RHDL::Codegen::Structure::IR.new(
+  name: "component_name",
+  net_count: 42,
+  gates: [...],
+  dffs: [...],
+  inputs: { "a" => [0, 1, 2, 3, 4, 5, 6, 7] },
+  outputs: { "y" => [32, 33, 34, 35, 36, 37, 38, 39] }
+)
 ```
 
-This transparency is a key advantage over black-box HDL tools — you can see exactly how your design is transformed at each compilation stage.
+### Gate Struct
+
+```ruby
+Gate = Struct.new(:type, :inputs, :output, :value)
+# type:   :AND, :OR, :XOR, :NOT, :MUX, :BUF, :CONST
+# inputs: Array of net indices feeding this gate
+# output: Net index for gate output
+# value:  Constant value (for CONST gates only)
+```
+
+### DFF Struct
+
+```ruby
+DFF = Struct.new(:d, :q, :rst, :en, :async_reset, :reset_value)
+# d:           D input net index
+# q:           Q output net index
+# rst:         Reset signal net index (optional)
+# en:          Enable signal net index (optional)
+# async_reset: Boolean for asynchronous reset behavior
+# reset_value: Value on reset (0 or 1)
+```
+
+### Net Mapping
+
+Every signal in the design is bit-blasted — multi-bit buses become arrays of individual net indices. Input and output ports map to arrays of net IDs:
+
+```json
+{
+  "inputs": {
+    "a": [0, 1, 2, 3, 4, 5, 6, 7],
+    "b": [8, 9, 10, 11, 12, 13, 14, 15]
+  },
+  "outputs": {
+    "result": [100, 101, 102, 103, 104, 105, 106, 107]
+  }
+}
+```
+
+## Gate Count Examples
+
+Typical gate counts for common components:
+
+| Component | Width | Gates | DFFs | Nets |
+|-----------|-------|-------|------|------|
+| AndGate | 1 | 1 | 0 | 3 |
+| RippleCarryAdder | 8 | 48 | 0 | 67 |
+| Register | 8 | 0 | 8 | 24 |
+| Counter | 8 | ~60 | 8 | ~80 |
+| ALU | 8 | ~400 | 0 | ~500 |
+| Multiplier | 8 | ~800 | 0 | ~1000 |
+| SynthDatapath (CPU) | — | ~505 | 24 | ~600 |
+
+## Supported Components
+
+The backend supports 53 HDL components across all categories:
+
+| Category | Count | Examples |
+|----------|-------|---------|
+| Gates | 13 | AND, OR, XOR, NOT, NAND, NOR, Bitwise ops |
+| Sequential | 12 | DFF, Register, ShiftRegister, Counter, PC |
+| Arithmetic | 10 | Adders, Subtractor, ALU, Multiplier, Divider |
+| Combinational | 16 | Mux2–MuxN, Decoders, Encoders, BarrelShifter |
+| CPU | 2 | InstructionDecoder, SynthDatapath |
+
+## File Locations
+
+```
+lib/rhdl/codegen/structure/
+├── ir.rb           # Gate-level IR data structures
+├── lower.rb        # HDL to gate-level lowering
+├── primitives.rb   # Gate primitive definitions
+├── toposort.rb     # Topological sorting
+├── sim_cpu.rb      # CPU-based interpreter
+└── sim_gpu.rb      # SIMD-style simulator
+```
+
+## Next Steps
+
+- [Lowering Algorithms](../architecture/dialects-and-passes) — how high-level constructs map to gates
+- [Compilation Pipeline](../architecture/compilation-pipeline) — from Ruby to Verilog
+- [Gate Synthesis](../synthesis/gate-synthesis) — using the gate-level backend

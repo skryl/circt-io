@@ -4,45 +4,169 @@ date: 2025-03-12
 tags:
   - simulation
   - gate-level
+  - verification
 ---
 
-Gate-level simulation runs your design after synthesis — verifying that the gate-level netlist behaves identically to the RTL description.
+RHDL can simulate designs at the gate level — evaluating AND, OR, NOT, MUX, and DFF primitives directly. This enables structural verification against behavioral models and provides hardware-accurate simulation.
 
-## Why Gate-Level Simulation?
+## Gate-Level Backends
 
-After gate synthesis, your design is decomposed into primitive gates (AND, OR, XOR, NOT, MUX, DFF). Gate-level simulation verifies that:
+| Backend | Description | Speed |
+|---------|-------------|-------|
+| CPU Interpreter | Evaluates gates in topological order | ~2x behavioral |
+| SIMD (64-lane) | Evaluates 64 test vectors in parallel | ~5–10x behavioral |
+| Rust Native | Compiled native code | ~50–100x behavioral |
 
-- Synthesis did not introduce functional errors
-- Timing constraints are met (with delay annotation)
-- Reset sequences initialize all state correctly
+## CPU Interpreter
 
-## Running Gate-Level Simulation
+The interpreter evaluates each gate in topologically sorted order:
 
-```bash
-rhdl simulate lib/counter.rb --level gate
+```ruby
+# Lower component to gate-level IR
+component = RHDL::HDL::ALU.new('alu', width: 8)
+sim = RHDL::Codegen.gate_level([component], backend: :interpreter)
+
+# Set inputs
+sim.poke('a', 0x42)
+sim.poke('b', 0x13)
+sim.poke('op', 0)  # ADD
+
+# Evaluate
+sim.evaluate
+
+# Read outputs
+result = sim.peek('result')
 ```
 
-## Primitive Gates
+### Evaluation Algorithm
 
-The gate-level netlist consists of:
+1. Topologically sort gates by dependencies
+2. For each gate in sorted order:
+   - Read input net values
+   - Compute gate output
+   - Write to output net
+3. For DFFs on clock edge:
+   - Sample D inputs
+   - Update Q outputs
 
-| Gate | Inputs | Description |
-|------|--------|-------------|
-| AND | 2+ | Logical AND |
-| OR | 2+ | Logical OR |
-| XOR | 2 | Exclusive OR |
-| NOT | 1 | Inversion |
-| MUX | 3 | 2:1 multiplexer |
-| DFF | 2 | D flip-flop with clock |
+## SIMD Gate-Level Simulator
 
-## Performance Considerations
+The SIMD simulator evaluates 64 test vectors simultaneously using bit-parallel operations:
 
-Gate-level simulation is slower than RTL — typically 10-100x depending on design size. Use it selectively:
+```ruby
+sim = RHDL::Codegen.gate_level([component], backend: :gpu, lanes: 64)
 
-- Run RTL simulation during development
-- Run gate-level simulation before tapeout or FPGA deployment
-- Use the Rust/WASM backend for gate-level speed optimization
+# Set inputs — each bit position represents one test vector
+sim.poke('a', 0xFFFFFFFFFFFFFFFF)  # All 1s in all 64 lanes
+sim.poke('b', 0x0000000000000001)  # Only lane 0 has b=1
 
-## Comparing Results
+# Evaluate all 64 lanes in one pass
+sim.evaluate
 
-RHDL can automatically compare RTL and gate-level simulation results to flag any discrepancies introduced during synthesis.
+# Read results (bitmask across all lanes)
+result = sim.peek('result')
+```
+
+### How SIMD Works
+
+Each net is represented as a 64-bit integer where bit `i` = the value of that net in lane `i`:
+
+- **AND**: `output = input_a & input_b` (single CPU instruction)
+- **OR**: `output = input_a | input_b`
+- **XOR**: `output = input_a ^ input_b`
+- **NOT**: `output = ~input_a`
+- **MUX**: `output = (~sel & false_val) | (sel & true_val)`
+
+This means 64 independent simulations run in the time of one, making it ideal for exhaustive testing of small components.
+
+## Rust Native Backend
+
+For maximum performance, compile to native code:
+
+```ruby
+# Native interpreter (Rust implementation of the gate evaluator)
+sim = RHDL::Codegen.gate_level([component], backend: :native_interpreter)
+
+# JIT-compiled simulation
+sim = RHDL::Codegen.gate_level([component], backend: :jit)
+```
+
+Build the native extensions:
+
+```bash
+rake native:build
+```
+
+## Verification Flow
+
+Use gate-level simulation to verify behavioral models:
+
+```ruby
+# Behavioral simulation
+component = RHDL::HDL::ALU.new('alu', width: 8)
+component.set_input(:a, 10)
+component.set_input(:b, 5)
+component.set_input(:op, 0)
+component.propagate
+expected = component.get_output(:result)
+
+# Gate-level simulation
+sim = RHDL::Codegen.gate_level([component], backend: :interpreter)
+sim.poke('a', 10)
+sim.poke('b', 5)
+sim.poke('op', 0)
+sim.evaluate
+actual = sim.peek('result')
+
+# Verify
+raise "Mismatch!" unless expected == actual
+```
+
+### Exhaustive Verification with SIMD
+
+Test all 256 input combinations of an 8-bit operation in just 4 evaluations:
+
+```ruby
+sim = RHDL::Codegen.gate_level([component], backend: :gpu, lanes: 64)
+
+# Pack 64 test vectors per evaluation
+(0..255).each_slice(64) do |batch|
+  packed_a = batch.each_with_index.sum { |v, i| v << i }
+  sim.poke('a', packed_a)
+  sim.evaluate
+  # Unpack and verify each lane...
+end
+```
+
+## Icarus Verilog Integration
+
+When Icarus Verilog is installed, gate-level equivalence tests can run generated Verilog:
+
+```ruby
+if HdlToolchain.iverilog_available?
+  it "matches behavioral simulation" do
+    # Generate Verilog, create testbench
+    # Compile with iverilog, run and compare
+  end
+end
+```
+
+Install Icarus Verilog:
+
+```bash
+apt-get install iverilog    # Ubuntu/Debian
+brew install icarus-verilog  # macOS
+```
+
+## Limitations
+
+- **Memories**: RAM/ROM not yet supported at gate level (use behavioral)
+- **Clock domains**: Only single clock domain
+- **Tristate**: Tristate buffers lower to simple gates (not true high-Z)
+- **Timing**: No propagation delay modeling (functional only)
+
+## Next Steps
+
+- [RTL Simulation](../simulation/rtl-simulation) — behavioral simulation and debugging
+- [Browser Simulation](../simulation/browser-simulation) — WASM-based web simulator
+- [Performance Tuning](../simulation/performance-tuning) — backend benchmarks

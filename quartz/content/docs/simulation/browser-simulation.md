@@ -4,38 +4,103 @@ date: 2025-03-14
 tags:
   - simulation
   - wasm
-  - browser
+  - web
 ---
 
-CIRCT can compile hardware designs to WebAssembly, enabling interactive simulation directly in the browser — no installation required.
+RHDL includes a browser-based simulator that compiles the IR simulation backends to WebAssembly and renders live VCD waveforms using p5.js visualization.
 
-## How It Works
+## Overview
 
-The Rust compilation backend produces a native binary that can also target `wasm32-unknown-unknown`. The WASM module is loaded in the browser and driven by JavaScript:
+The web simulator lets you run RHDL designs directly in the browser — no installation required. It supports multiple execution backends, preconfigured runner presets, and interactive debugging tools.
 
-```
-RHDL → CIRCT IR → Rust → WASM → Browser
-```
+## Features
 
-## Use Cases
+- **Multiple backends** — interpreter, JIT, and compiler execution modes
+- **Live waveforms** — VCD signal visualization rendered with p5.js
+- **Preconfigured presets** — ready-made runners for Generic, CPU, MOS 6502, Apple II, and Game Boy architectures
+- **Debugging tools** — value breakpoints and memory inspection
+- **Interactive schematic** — component visualization using ELK.js layout and WebGL 2.0
 
-- **Interactive demos** — let users experiment with designs without installing tools
-- **Education** — teach digital logic with instant visual feedback
-- **Documentation** — embed live simulations alongside explanatory text
-- **Sharing** — send a URL instead of a toolchain
+## Architecture
 
-## Performance
+The build process has two stages:
 
-WASM simulation runs at near-native speed in modern browsers. The CIRCT showcase demonstrates complete processor designs (6502, RISC-V) running in the browser at real-time interactive rates.
+1. **Ruby-side artifact generation** — produces WASM binaries and metadata from RHDL IR
+2. **Bun bundling** — packages JavaScript, LitElement components, and runtime assets into `web/dist/`
 
-## Visualization
+The application uses:
+- **LitElement** components for the UI
+- **Redux** for state management
+- **ELK.js** for schematic layout
+- **WebGL 2.0** for interactive rendering
+- **SharedArrayBuffer** for multi-threaded WASM execution
 
-The browser runtime includes circuit diagram rendering and signal visualization. Watch registers change, memory update, and control signals propagate as the simulation runs.
+## User Interface
 
-## Building for WASM
+The workspace is organized into tabbed panels:
+
+| Panel | Purpose |
+|-------|---------|
+| **I/O** | Set inputs, read outputs, control simulation |
+| **VCD** | Signal analysis with waveform viewer |
+| **Memory** | Browse and inspect memory contents |
+| **Components** | Component tree with drill-down |
+| **Schematic** | Interactive circuit visualization |
+
+## Running the Simulator
+
+### Prerequisites
+
+- Rust toolchain with `wasm-pack`
+- Bun (JavaScript bundler)
+
+### Build
 
 ```bash
-rhdl compile lib/design.rb --target wasm -o output/design.wasm
+# Build WASM artifacts
+rake web:build
+
+# Bundle and serve
+cd web && bun run dev
 ```
 
-The output includes the WASM binary and a JavaScript harness for embedding in web pages.
+### CORS Requirements
+
+The simulator requires specific HTTP headers for SharedArrayBuffer:
+
+```
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Embedder-Policy: require-corp
+```
+
+These are automatically configured for local development. For deployment, the build includes a service worker fallback.
+
+## Presets
+
+The simulator ships with preconfigured presets for demonstration:
+
+| Preset | Description | Components |
+|--------|-------------|------------|
+| Generic | Basic component testing | Any single component |
+| CPU | 8-bit CPU datapath | ALU, registers, PC, decoder |
+| MOS 6502 | Full 6502 processor | CPU, memory, I/O |
+| Apple II | Apple II system | 6502, video, keyboard, memory |
+| Game Boy | Game Boy system | SM83 CPU, PPU, APU, memory |
+
+## Deployment
+
+GitHub Actions workflows automate deployment to GitHub Pages:
+
+```bash
+# Build for production
+rake web:dist
+
+# Deploy (via CI)
+gh workflow run deploy-web
+```
+
+## Next Steps
+
+- [RTL Simulation](../simulation/rtl-simulation) — Ruby behavioral simulation
+- [Performance Tuning](../simulation/performance-tuning) — backend comparison
+- [Building a 6502](../showcase/building-a-6502) — try the MOS 6502 preset

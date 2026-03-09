@@ -3,63 +3,164 @@ title: Signals and Types
 date: 2025-02-12
 tags:
   - basics
+  - signals
   - types
 ---
 
-Understanding RHDL's type system — how signals are declared, sized, and connected.
+RHDL signals carry digital values between components. This guide covers signal values, bit selection, concatenation, and reduction operators.
 
-## Signal Declaration
+## Signal Values
 
-Signals in RHDL are typed by their bit width:
+Signals can represent:
+
+- **Binary values** — `0` or `1` for single-bit, multi-bit integers for buses
+- **Unknown (X)** — uninitialized or conflicting values
+- **High-impedance (Z)** — disconnected or tri-state outputs
+
+## Wires
+
+Wires connect components and propagate signal changes:
 
 ```ruby
-input  :data, width: 8    # 8-bit input
-output :result, width: 16  # 16-bit output
-signal :temp, width: 32    # 32-bit internal signal
+wire = RHDL::HDL::Wire.new("my_signal", width: 8)
+wire.set(0x42)
+wire.get      # => 66
+wire.bit(0)   # => 0 (LSB)
+wire.bit(6)   # => 1
 ```
 
-Single-bit signals omit the width:
+Internal wires within a component are declared with the `wire` macro:
 
 ```ruby
-input  :clk              # 1-bit clock
-output :valid             # 1-bit flag
+wire :intermediate, width: 8
+wire :carry
+wire :alu_out, width: :width   # Parameterized width
 ```
 
-## Bit Slicing
+## Bit Selection and Slicing
 
-Access individual bits or ranges:
+Extract individual bits or ranges within a behavior block:
 
 ```ruby
-data[0]       # LSB
-data[7]       # MSB
-data[3..0]    # lower nibble
-data[7..4]    # upper nibble
+behavior do
+  # Single bit
+  lsb <= a[0]              # Least significant bit
+  msb <= a[7]              # Most significant bit (8-bit signal)
+  sign <= a[7]             # Sign bit for 8-bit signed
+
+  # Range slicing
+  low_nibble  <= a[3..0]   # Bits 0-3
+  high_nibble <= a[7..4]   # Bits 4-7
+  byte        <= word[15..8]  # Upper byte of 16-bit word
+end
 ```
 
 ## Concatenation
 
-Combine signals with array syntax:
+Join signals together — the first argument becomes the high bits:
 
 ```ruby
-result <= [upper_byte, lower_byte]
+behavior do
+  # Combine two bytes into a 16-bit word
+  combined <= high_byte.concat(low_byte)
+
+  # Multiple concatenation
+  word <= a.concat(b).concat(c).concat(d)
+
+  # Shift left by 1 with zero fill
+  shifted_left <= a[6..0].concat(lit(0, width: 1))
+
+  # Shift right by 1 with zero fill
+  shifted_right <= lit(0, width: 1).concat(a[7..1])
+end
 ```
 
-## Constants
+## Replication
 
-Use Ruby integers directly. RHDL infers the required width:
+Repeat a signal multiple times:
 
 ```ruby
-output <= 0xFF
-output <= 0b1010
-output <= 42
+behavior do
+  # Sign extension: replicate sign bit
+  sign_ext <= sign_bit.replicate(8)
+
+  # Arithmetic shift right (preserve sign)
+  sign = a[7]
+  asr1 <= sign.concat(a[7..1])
+  asr2 <= sign.replicate(2).concat(a[7..2])
+end
 ```
 
-## Type Coercion
+## Reduction Operators
 
-Signals are automatically extended or truncated to match the target width on assignment. Explicit casting is available when you need control:
+Reduce a multi-bit signal to a single bit:
 
 ```ruby
-narrow <= wide.truncate(8)
-wide   <= narrow.extend(16)
-wide   <= narrow.sign_extend(16)
+behavior do
+  # OR reduction — is any bit set?
+  non_zero <= reduce_or(error_flags)
+
+  # AND reduction — are all bits set?
+  all_ready <= reduce_and(ready_signals)
+
+  # XOR reduction — parity
+  parity <= reduce_xor(data)
+end
 ```
+
+## Literals
+
+Always specify explicit widths for synthesis correctness:
+
+```ruby
+behavior do
+  zero    <= lit(0, width: 8)
+  max     <= lit(0xFF, width: 8)
+  one_bit <= lit(1, width: 1)
+  masked  <= a & lit(0x0F, width: 8)
+end
+```
+
+## Port Width Query
+
+Get the width of a port at elaboration time:
+
+```ruby
+behavior do
+  w = port_width(:result)
+  default_val <= lit(0, width: w)
+end
+```
+
+## Complete Example: Bit Manipulation
+
+```ruby
+class BitManipulator < RHDL::Sim::Component
+  input :data, width: 8
+  input :op, width: 3
+  output :result, width: 8
+  output :flag
+
+  behavior do
+    reversed = data[0].concat(data[1]).concat(data[2]).concat(data[3])
+               .concat(data[4]).concat(data[5]).concat(data[6]).concat(data[7])
+    swapped  = data[3..0].concat(data[7..4])
+    parity   = reduce_xor(data)
+
+    result <= case_select(op, {
+      0 => data[7..1].concat(lit(0, width: 1)),  # Shift right
+      1 => data[6..0].concat(lit(0, width: 1)),  # Shift left
+      2 => reversed,                               # Bit reverse
+      3 => swapped,                                # Nibble swap
+      4 => ~data                                   # Invert
+    }, default: data)
+
+    flag <= parity
+  end
+end
+```
+
+## Next Steps
+
+- [Ports and Interfaces](../basics/ports-and-interfaces) — Vec and Bundle for structured types
+- [Ruby DSL Fundamentals](../basics/ruby-dsl-fundamentals) — complete operator reference
