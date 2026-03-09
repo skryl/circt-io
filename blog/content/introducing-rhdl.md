@@ -60,6 +60,6 @@ gem install rhdl
 rhdl new my_design
 ```
 
-Check out the [documentation](https://skryl.github.io/circt-io) for tutorials and API reference.
+Check out the [documentation](https://circt.io) for tutorials and API reference.
 
 We're excited to see what the community builds. Hardware design should be accessible, enjoyable, and powerful — and RHDL aims to make that a reality.
