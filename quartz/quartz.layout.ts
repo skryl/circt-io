@@ -50,22 +50,19 @@ export const defaultContentPageLayout: PageLayout = {
       component: Component.Breadcrumbs(),
       condition: (page) => page.fileData.slug !== "index",
     }),
-    Component.ArticleTitle(),
+    Component.Flex({
+      components: [
+        { Component: Component.ArticleTitle(), grow: true },
+        { Component: Component.Darkmode() },
+      ],
+    }),
     Component.ContentMeta(),
     Component.TagList(),
   ],
   left: [
     Component.PageTitle(),
     Component.MobileOnly(Component.Spacer()),
-    Component.Flex({
-      components: [
-        {
-          Component: Component.Search(),
-          grow: true,
-        },
-        { Component: Component.Darkmode() },
-      ],
-    }),
+    Component.Search(),
     Component.Explorer({ sortFn: explorerSortFn }),
   ],
   right: [
@@ -75,19 +72,20 @@ export const defaultContentPageLayout: PageLayout = {
 }
 
 export const defaultListPageLayout: PageLayout = {
-  beforeBody: [Component.Breadcrumbs(), Component.ArticleTitle(), Component.ContentMeta()],
-  left: [
-    Component.PageTitle(),
-    Component.MobileOnly(Component.Spacer()),
+  beforeBody: [
+    Component.Breadcrumbs(),
     Component.Flex({
       components: [
-        {
-          Component: Component.Search(),
-          grow: true,
-        },
+        { Component: Component.ArticleTitle(), grow: true },
         { Component: Component.Darkmode() },
       ],
     }),
+    Component.ContentMeta(),
+  ],
+  left: [
+    Component.PageTitle(),
+    Component.MobileOnly(Component.Spacer()),
+    Component.Search(),
     Component.Explorer({ sortFn: explorerSortFn }),
   ],
   right: [],
