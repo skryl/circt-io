@@ -3,8 +3,8 @@ import * as Plugin from "./quartz/plugins"
 
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "RHDL Blog",
-    pageTitleSuffix: " | RHDL",
+    pageTitle: "CIRCT",
+    pageTitleSuffix: " | CIRCT",
     enableSPA: true,
     enablePopovers: true,
     analytics: null,
