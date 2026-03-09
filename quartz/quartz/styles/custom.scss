@@ -131,18 +131,6 @@ footer {
     background-attachment: fixed;
   }
 
-  // Sidebar panels — card style with green border
-  .sidebar {
-    .explorer,
-    .toc,
-    .backlinks {
-      background: rgba(30, 50, 30, 0.55);
-      border: 1px solid rgba(58, 106, 58, 0.2);
-      border-radius: 0;
-      padding: 0.75rem;
-    }
-  }
-
   // Search button — simple bar, no extra container
   .search > .search-button {
     border-color: rgba(58, 106, 58, 0.3);
