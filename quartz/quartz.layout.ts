@@ -8,6 +8,8 @@ export const sharedPageComponents: SharedLayout = {
   footer: Component.Footer({
     links: {
       "CIRCT Home": "https://circt.io",
+      Docs: "https://circt.io/docs/",
+      Blog: "https://circt.io/blog/",
       GitHub: "https://github.com/skryl/rhdl",
     },
   }),
