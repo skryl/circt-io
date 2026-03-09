@@ -23,13 +23,41 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: blog/package-lock.json
+
+      - name: Install blog dependencies
+        run: npm ci
+        working-directory: blog
+
+      - name: Build blog with Quartz
+        run: npx quartz build -o ../blog-output
+        working-directory: blog
+
+      - name: Copy blog output to site
+        run: |
+          mkdir -p blog-dist
+          cp -r blog-output/* blog-dist/
+
+      - name: Prepare deployment artifact
+        run: |
+          mkdir -p _site
+          # Copy main site (everything except blog source, node_modules, etc.)
+          rsync -a --exclude=blog --exclude=_site --exclude=blog-output --exclude=blog-dist --exclude=.git . _site/
+          # Copy built blog into /blog subdirectory
+          cp -r blog-dist _site/blog
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: '_site'
 
       - name: Deploy to GitHub Pages
         id: deployment
