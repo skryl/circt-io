@@ -17,13 +17,13 @@ Tutorials, guides, and reference for the CIRCT toolchain and hardware design wit
   }
 }
 .topic-card {
-  border: 1px solid rgba(58, 106, 58, 0.3);
+  border: 1px solid rgba(58, 106, 58, 0.2);
   padding: 1.25rem;
-  background: rgba(14, 22, 14, 0.3);
+  background: rgba(58, 106, 58, 0.06);
 }
 :root[saved-theme="light"] .topic-card {
   background: rgba(58, 106, 58, 0.04);
-  border-color: rgba(58, 106, 58, 0.2);
+  border-color: rgba(58, 106, 58, 0.15);
 }
 .topic-card h3 {
   margin: 0 0 0.25rem 0;
