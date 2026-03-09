@@ -48,6 +48,7 @@ export default ((opts?: Partial<BreadcrumbOptions>) => {
     fileData,
     allFiles,
     displayClass,
+    cfg,
     ctx,
   }: QuartzComponentProps) => {
     const trie = (ctx.trie ??= trieFromAllFiles(allFiles))
@@ -62,6 +63,7 @@ export default ((opts?: Partial<BreadcrumbOptions>) => {
       const crumb = formatCrumb(node.displayName, fileData.slug!, simplifySlug(node.slug))
       if (idx === 0) {
         crumb.displayName = options.rootName
+        crumb.path = cfg.baseUrl ? `https://${cfg.baseUrl}` : crumb.path
       }
 
       // For last node (current page), set empty path
